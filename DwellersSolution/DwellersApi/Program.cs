@@ -1,4 +1,5 @@
 using Dwellers.Household.Application;
+using Dwellers.Chat;
 using Dwellers.Household.Application.Features.Household.Chat.Hubs;
 using DwellersApi;
 using Microsoft.OpenApi.Models;
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Other services
 builder.Services.AddCoreServices();
 builder.Services.AddHouseholdModuleServices(builder.Configuration);
+builder.Services.AddChatModuleServices(builder.Configuration);
+
 
 // DEVELOPMENT -- for authentication testing 
 builder.Services.AddSwaggerGen(c => {

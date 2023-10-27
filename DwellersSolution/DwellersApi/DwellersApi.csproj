@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Application\Dwellers.Household.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
   </ItemGroup>
