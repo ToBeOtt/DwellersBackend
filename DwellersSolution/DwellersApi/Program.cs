@@ -1,7 +1,9 @@
-using Dwellers.Household.Application;
+using Dwellers.Authentication.Contracts.Config;
 using Dwellers.Chat;
-using Dwellers.Household.Application.Features.Household.Chat.Hubs;
+using Dwellers.Chat.Application.Hubs;
+using Dwellers.Household.Application;
 using DwellersApi;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.OpenApi.Models;
 using SharedKernel.Exceptions;
 
@@ -12,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCoreServices();
 builder.Services.AddHouseholdModuleServices(builder.Configuration);
 builder.Services.AddChatModuleServices(builder.Configuration);
+builder.Services.AddAuthModuleServices(builder.Configuration);
 
 
 // DEVELOPMENT -- for authentication testing 
@@ -62,8 +65,14 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<HouseholdHub>("/householdHub");
+    endpoints.MapHub<HouseholdHub>("/householdHub", options =>
+    {
+        options.TransportMaxBufferSize = 1024;
+        options.LongPolling.PollTimeout = TimeSpan.FromSeconds(30);
+        options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+    });
 });
+
 app.MapControllers();
 
 

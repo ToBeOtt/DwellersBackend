@@ -1,6 +1,5 @@
 ﻿using Dwellers.Household.Application.Common.Behaviours;
 using Dwellers.Household.Application.Interfaces.Authentication;
-using Dwellers.Household.Application.Interfaces.Household.Chat;
 using Dwellers.Household.Application.Interfaces.Household.DwellerEvents;
 using Dwellers.Household.Application.Interfaces.Household.DwellerItems;
 using Dwellers.Household.Application.Interfaces.Household.DwellerService;
@@ -10,12 +9,11 @@ using Dwellers.Household.Application.Interfaces.Users;
 using Dwellers.Household.Domain.Entities;
 using Dwellers.Household.Infrastructure.Data;
 using Dwellers.Household.Infrastructure.Repositories.Authentication;
-using Dwellers.Household.Infrastructure.Repositories.Household.Chat;
+using Dwellers.Household.Infrastructure.Repositories.DwellerHouse;
 using Dwellers.Household.Infrastructure.Repositories.Household.DwellerEvents;
 using Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem;
 using Dwellers.Household.Infrastructure.Repositories.Household.DwellerService;
 using Dwellers.Household.Infrastructure.Repositories.Household.Meetings;
-using Dwellers.Household.Infrastructure.Repositories.DwellerHouse;
 using Dwellers.Household.Infrastructure.Repositories.Users;
 using FluentValidation;
 using MediatR;
@@ -40,16 +38,7 @@ namespace Dwellers.Household.Application
                 throw new InvalidOperationException("Connection string not found.");
 
             // Makes sure this modules DbContext is used 
-            services.AddDbContext<HouseholdDbContext>(options => options.UseSqlServer
-            (connectionString, x => x.MigrationsHistoryTable("__HouseholdMigrationsHistory", "HouseholdSchema")));
-
-            services.AddDefaultIdentity<DwellerUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<HouseholdDbContext>()
-                .AddDefaultTokenProviders();
-
-            // Authentication & Tokens
-            services.AddAuth(configuration);
+            services.AddDbContext<HouseholdDbContext>(options => options.UseSqlServer());
 
             // Other services
             services.AddHttpContextAccessor();
@@ -62,19 +51,14 @@ namespace Dwellers.Household.Application
             
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            //Mediatr-events
             
             //Repositories
-            services.AddTransient<IUserCommandRepository, UserCommandRepository>();
-            services.AddTransient<IUserQueryRepository, UserQueryRepository>();
             services.AddTransient<IHouseCommandRepository, HouseCommandRepository>();
             services.AddTransient<IHouseQueryRepository, HouseQueryRepository>();
             services.AddTransient<INoteCommandRepository, NoteCommandRepository>();
             services.AddTransient<INoteQueryRepository, NoteQueryRepository>();
             services.AddTransient<IDwellerEventsCommandRepository, DwellerEventsCommandRepository>();
             services.AddTransient<IDwellerEventsQueryRepository, DwellerEventsQueryRepository>();
-            services.AddTransient<IChatCommandRepository, ChatCommandRepository>();
-            services.AddTransient<IChatQueryRepository, ChatQueryRepository>();
             services.AddTransient<IDwellerItemCommandRepository, DwellerItemCommandRepository>();
             services.AddTransient<IDwellerItemQueryRepository, DwellerItemQueryRepository>();
             services.AddTransient<IDwellerServiceCommandRepository, DwellerServiceCommandRepository>();
@@ -104,44 +88,11 @@ namespace Dwellers.Household.Application
 
                 // Create DbContextOptions using the connection string
                 var optionsBuilder = new DbContextOptionsBuilder<HouseholdDbContext>()
-                    .UseSqlServer(connectionString, x => x.MigrationsHistoryTable
-                    ("__HouseholdMigrationsHistory", "HouseholdSchema"));
+                    .UseSqlServer(connectionString);
 
                 // Create the AuthDbContext instance and return it
                 return new HouseholdDbContext(optionsBuilder.Options);
             }
-        }
-
-        public static IServiceCollection AddAuth(
-            this IServiceCollection services, 
-            IConfiguration configuration)
-        {
-            var jwtSettings = configuration.GetSection("JwtSettings");
-
-            services.AddSingleton(Options.Create(jwtSettings));
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime= true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["SecretKey"])),
-                    ValidIssuer = jwtSettings["Issuer"],
-                    ValidAudience = jwtSettings["Audience"]
-                };
-            });
-
-            services.AddTransient<IJwtTokenRepository, JwtTokenRepository>();
-
-            return services;
         }
     }
 }

@@ -2,13 +2,14 @@
 {
     public class DwellerMessage
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string MessageText { get; set; }
         public DateTime Timestamp { get; set; }
         public bool IsRead { get; set; }
-        public string UserID { get; set; }
+        public string UserId { get; set; }
 
-        public HouseConversation Conversation { get; set; }
+        public Guid DwellerConversationId { get; set; }
+        public DwellerConversation Conversation { get; set; }
 
         public DwellerMessage()
         {
@@ -17,10 +18,10 @@
         public DwellerMessage(
             string userID,
             string messageText,
-            HouseConversation conversation)
+            DwellerConversation conversation)
         {
-            ID = Guid.NewGuid();
-            UserID = userID;
+            Id = Guid.NewGuid();
+            UserId = userID;
             MessageText = messageText;
             Timestamp = DateTime.Now;
             IsRead = false;

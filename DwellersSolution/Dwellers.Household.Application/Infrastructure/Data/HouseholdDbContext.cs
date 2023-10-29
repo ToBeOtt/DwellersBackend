@@ -1,11 +1,9 @@
 ﻿using Dwellers.Household.Domain.Entities;
-using Dwellers.Household.Domain.Entities.Chat;
 using Dwellers.Household.Domain.Entities.DwellerEvents;
 using Dwellers.Household.Domain.Entities.DwellerHouse;
 using Dwellers.Household.Domain.Entities.DwellerItems;
 using Dwellers.Household.Domain.Entities.DwellerServices;
 using Dwellers.Household.Domain.Entities.Notes;
-using Dwellers.Household.Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,10 +28,6 @@ public class HouseholdDbContext : IdentityDbContext<DwellerUser>
     public DbSet<Note> Notes { get; set; } = null!;
 
     public DbSet<DwellerEvent> Events { get; set; } = null!;
-
-    public DbSet<DwellerMessage> DwellerMessages { get; set; } = null!;
-    public DbSet<DwellerConversation> DwellerConversations { get; set; } = null!;
-    public DbSet<HouseConversation> HouseConversations { get; set; } = null!;
 
     public DbSet<DwellerItem> DwellerItems { get; set; } = null!;
     public DbSet<BorrowedItem> BorrowedItems { get; set; } = null!;
@@ -87,16 +81,6 @@ public class HouseholdDbContext : IdentityDbContext<DwellerUser>
             .HasOne(nhn => nhn.Note)
             .WithMany(n => n.NoteholderNotes)
             .HasForeignKey(nhn => nhn.NoteId);
-
-        builder.Entity<HouseConversation>()
-          .HasOne(h => h.House)
-          .WithMany(hc => hc.HouseConversations)
-          .HasForeignKey(h => h.HouseId);
-
-        builder.Entity<HouseConversation>()
-            .HasOne(dc => dc.DwellerConversation)
-            .WithMany(hc => hc.HouseConversations)
-            .HasForeignKey(dc => dc.DwellerConversationId);
 
         builder.Entity<BorrowedItem>()
          .HasOne(di => di.DwellerItem)

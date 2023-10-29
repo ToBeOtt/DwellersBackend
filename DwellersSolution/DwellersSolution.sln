@@ -23,7 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DwellersApi.Tests", "Dwelle
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{AF85C0F0-B04E-4BFC-81DD-0E8062335DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Chat", "Dwellers.Chat\Dwellers.Chat.csproj", "{D01F180C-93C8-4505-BA83-B1B833B8E90E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Chat", "Dwellers.Chat\Dwellers.Chat.csproj", "{D01F180C-93C8-4505-BA83-B1B833B8E90E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{E34286BA-A403-45EF-B5A2-18E14BA9C818}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Authentication", "Dwellers.Authentication\Dwellers.Authentication.csproj", "{84380750-A980-46C0-81E8-BCEF602E78C2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Authentication.Contracts", "Dwellers.Authentication.Contracts\Dwellers.Authentication.Contracts.csproj", "{C0A50D3D-DF15-4214-A399-805EA7EB8754}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Authentication.Infrastructure", "Dwellers.Authentication.Infrastructure\Dwellers.Authentication.Infrastructure.csproj", "{19281976-B8A0-41D0-9533-99F25688636C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +67,18 @@ Global
 		{D01F180C-93C8-4505-BA83-B1B833B8E90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D01F180C-93C8-4505-BA83-B1B833B8E90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D01F180C-93C8-4505-BA83-B1B833B8E90E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84380750-A980-46C0-81E8-BCEF602E78C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84380750-A980-46C0-81E8-BCEF602E78C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84380750-A980-46C0-81E8-BCEF602E78C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84380750-A980-46C0-81E8-BCEF602E78C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0A50D3D-DF15-4214-A399-805EA7EB8754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0A50D3D-DF15-4214-A399-805EA7EB8754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0A50D3D-DF15-4214-A399-805EA7EB8754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0A50D3D-DF15-4214-A399-805EA7EB8754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19281976-B8A0-41D0-9533-99F25688636C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19281976-B8A0-41D0-9533-99F25688636C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19281976-B8A0-41D0-9533-99F25688636C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19281976-B8A0-41D0-9533-99F25688636C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,6 +91,10 @@ Global
 		{2C776FDF-A62E-4D49-B3EF-20CB30CE3923} = {500FE27F-380B-4F9C-9077-7CB124CE022C}
 		{AF85C0F0-B04E-4BFC-81DD-0E8062335DAB} = {AB869E0A-360E-44AF-B2CC-D5DFCC77F278}
 		{D01F180C-93C8-4505-BA83-B1B833B8E90E} = {AF85C0F0-B04E-4BFC-81DD-0E8062335DAB}
+		{E34286BA-A403-45EF-B5A2-18E14BA9C818} = {AB869E0A-360E-44AF-B2CC-D5DFCC77F278}
+		{84380750-A980-46C0-81E8-BCEF602E78C2} = {E34286BA-A403-45EF-B5A2-18E14BA9C818}
+		{C0A50D3D-DF15-4214-A399-805EA7EB8754} = {E34286BA-A403-45EF-B5A2-18E14BA9C818}
+		{19281976-B8A0-41D0-9533-99F25688636C} = {E34286BA-A403-45EF-B5A2-18E14BA9C818}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03F7727D-0D30-44F6-8909-DD8FFA13ADC5}

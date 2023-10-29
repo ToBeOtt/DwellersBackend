@@ -4,17 +4,17 @@
     {
         public Guid Id { get; set; }
 
-        public Guid HouseID { get; set; }
-
-        public Guid DwellerConversationID { get; set; }
+        public Guid HouseId { get; set; }
+        
         public DwellerConversation DwellerConversation { get; set; }
+        public Guid DwellerConversationId { get; set; }
 
 
         public HouseConversation() { }
-        public HouseConversation(Guid houseID, Guid dwellerConversationID)
+        public HouseConversation(Guid houseID, Guid dwellerConversationId)
         {
-            HouseID = houseID;
-            DwellerConversationID = dwellerConversationID;
+            HouseId = houseID;
+            DwellerConversationId = dwellerConversationId;
         }
     }
 }

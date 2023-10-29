@@ -1,10 +1,13 @@
-﻿using Dwellers.Household.Application.Authentication.Commands.RegisterHouse;
+﻿using Dwellers.Authentication.Contracts.Interfaces;
+using Dwellers.Authentication.Contracts.Requests;
+using Dwellers.Chat.Application.Services;
+using Dwellers.Household.Application.Authentication.Commands.RegisterHouse;
 using Dwellers.Household.Application.Authentication.Commands.RegisterMemberToHouse;
 using Dwellers.Household.Application.Authentication.Queries.Login;
 using Dwellers.Household.Application.Features.Authentication.Commands.Register;
-using Dwellers.Household.Contracts.Requests;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DwellersApi.Controllers.Authentication
@@ -14,25 +17,33 @@ namespace DwellersApi.Controllers.Authentication
     public class AuthenticationController : ControllerBase
     {
         private readonly ISender _mediator;
+        private readonly ChatCommandServices _chatCommandServices;
+        private readonly IAuthenticationModuleService _authService;
 
         public AuthenticationController(
             ISender mediator, 
-            IMapper mapper)
+            IMapper mapper,
+            ChatCommandServices chatCommandServices,
+            IAuthenticationModuleService authService
+           )
         {
             _mediator = mediator;
+            _chatCommandServices = chatCommandServices;
+            _authService = authService;
         }
 
     // REGISTRATION
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var cmd = new RegisterCommand(
-                Email: request.Email,
-                Alias: request.Alias,
-                Password: request.Password);
-            
-            var authResult = await _mediator.Send(cmd);
-            return Ok(authResult);
+            var result = await _authService.RegistrationService.Register
+                (request.Email, request.Alias, request.Password);
+
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+            return Ok(result.Data);
         }
 
         [HttpPost("RegisterHouse")]
@@ -44,6 +55,16 @@ namespace DwellersApi.Controllers.Authentication
                 Email: request.Email);
 
             var registerHouseResult = await _mediator.Send(cmd);
+
+            var result = await _chatCommandServices.EstablishConversation
+                (registerHouseResult.House.HouseId,
+                 registerHouseResult.House.Name);
+            
+            if(!result.IsSuccess)
+            {
+                return BadRequest(result.ValidationMessage);
+            }
+
             return Ok(registerHouseResult);
         }
 

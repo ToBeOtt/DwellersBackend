@@ -1,4 +1,5 @@
 ﻿using Dwellers.Chat.Application.Interfaces;
+using Dwellers.Chat.Application.Services;
 using Dwellers.Chat.Infrastructure.Data;
 using Dwellers.Chat.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,10 @@ namespace Dwellers.Chat
 
             services.AddTransient<IChatCommandRepository, ChatCommandRepository>();
             services.AddTransient<IChatQueryRepository, ChatQueryRepository>();
-  
+
+            services.AddTransient<ChatCommandServices>();
+            services.AddTransient<ChatQueryServices>();
+
             // SignalR
             services.AddSignalRCore();
 

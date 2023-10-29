@@ -1,9 +1,21 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿
+using Microsoft.AspNetCore.SignalR;
 
 namespace Dwellers.Chat.Application.Hubs
 {
     public class HouseholdHub : Hub
     {
+        public override async Task OnConnectedAsync()
+        {
+            await base.OnConnectedAsync();
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await base.OnDisconnectedAsync(exception);
+        }
+
+
         public async Task JoinConversationGroup(string conversationId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, conversationId);

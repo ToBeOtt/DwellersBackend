@@ -18,62 +18,10 @@ namespace Dwellers.Household.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("HouseholdSchema")
-                .HasAnnotation("ProductVersion", "7.0.9")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Dwellers.Household.Domain.Entities.Chat.DwellerMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ConversationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MessageText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DwellerMessages", "HouseholdSchema");
-                });
-
-            modelBuilder.Entity("Dwellers.Household.Domain.Entities.Chat.HouseConversation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DwellerConversationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HouseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DwellerConversationId");
-
-                    b.HasIndex("HouseId");
-
-                    b.ToTable("HouseConversations", "HouseholdSchema");
-                });
 
             modelBuilder.Entity("Dwellers.Household.Domain.Entities.DwellerEvents.DwellerEvent", b =>
                 {
@@ -496,24 +444,6 @@ namespace Dwellers.Household.Migrations
                     b.ToTable("NoteholderNotes", "HouseholdSchema");
                 });
 
-            modelBuilder.Entity("Dwellers.Household.Domain.ValueObjects.DwellerConversation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DwellerConversations", "HouseholdSchema");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -645,42 +575,6 @@ namespace Dwellers.Household.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", "HouseholdSchema");
-                });
-
-            modelBuilder.Entity("Dwellers.Household.Domain.Entities.Chat.DwellerMessage", b =>
-                {
-                    b.HasOne("Dwellers.Household.Domain.ValueObjects.DwellerConversation", "Conversation")
-                        .WithMany()
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Dwellers.Household.Domain.Entities.DwellerUser", "User")
-                        .WithMany("DwellerMessages")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Conversation");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Dwellers.Household.Domain.Entities.Chat.HouseConversation", b =>
-                {
-                    b.HasOne("Dwellers.Household.Domain.ValueObjects.DwellerConversation", "DwellerConversation")
-                        .WithMany("HouseConversations")
-                        .HasForeignKey("DwellerConversationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Dwellers.Household.Domain.Entities.DwellerHouse.House", "House")
-                        .WithMany("HouseConversations")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DwellerConversation");
-
-                    b.Navigation("House");
                 });
 
             modelBuilder.Entity("Dwellers.Household.Domain.Entities.DwellerEvents.DwellerEvent", b =>
@@ -867,8 +761,6 @@ namespace Dwellers.Household.Migrations
                 {
                     b.Navigation("BorrowedItems");
 
-                    b.Navigation("HouseConversations");
-
                     b.Navigation("HouseNoteholders");
 
                     b.Navigation("HouseUsers");
@@ -890,8 +782,6 @@ namespace Dwellers.Household.Migrations
 
             modelBuilder.Entity("Dwellers.Household.Domain.Entities.DwellerUser", b =>
                 {
-                    b.Navigation("DwellerMessages");
-
                     b.Navigation("HouseUsers");
 
                     b.Navigation("Notes");
@@ -907,11 +797,6 @@ namespace Dwellers.Household.Migrations
                     b.Navigation("HouseNoteholders");
 
                     b.Navigation("NoteholderNotes");
-                });
-
-            modelBuilder.Entity("Dwellers.Household.Domain.ValueObjects.DwellerConversation", b =>
-                {
-                    b.Navigation("HouseConversations");
                 });
 #pragma warning restore 612, 618
         }

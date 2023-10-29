@@ -21,12 +21,11 @@ namespace Dwellers.Chat.Infrastructure.Data
                 .HasKey(hc => hc.Id);
 
             builder.Entity<HouseConversation>()
-                .HasOne(hc => hc.DwellerConversation)
-                .WithMany()
-                .HasForeignKey(hc => hc.DwellerConversationID);
+                .Property(hc => hc.HouseId);
 
             builder.Entity<HouseConversation>()
-                .Property(hc => hc.HouseID); 
+                .Property(hc => hc.DwellerConversationId);
+
         }
     }
 }

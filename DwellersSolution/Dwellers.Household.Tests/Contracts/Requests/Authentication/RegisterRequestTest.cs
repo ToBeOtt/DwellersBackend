@@ -1,8 +1,4 @@
-﻿using Dwellers.Household.Application.Features.Authentication.Commands.Register;
-using Dwellers.Household.Contracts.Requests;
-using System.Text.Json;
-
-namespace Dwellers.Household.Tests.Contracts.Requests.Authentication
+﻿namespace Dwellers.Household.Tests.Contracts.Requests.Authentication
 {
     //public class RegisterRequestTest
     //{

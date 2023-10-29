@@ -1,5 +1,4 @@
-﻿using Dwellers.Household.Domain.Entities.Chat;
-using Dwellers.Household.Domain.Entities.DwellerItems;
+﻿using Dwellers.Household.Domain.Entities.DwellerItems;
 using Dwellers.Household.Domain.Entities.DwellerServices;
 using Dwellers.Household.Domain.Entities.Notes;
 
@@ -20,7 +19,6 @@ namespace Dwellers.Household.Domain.Entities.DwellerHouse
         public ICollection<HouseUser> HouseUsers { get; private set; }
         public ICollection<Note> Notes { get; set; }
         public ICollection<HouseNoteholder> HouseNoteholders { get; private set; }
-        public ICollection<HouseConversation> HouseConversations { get; set; }
 
         public ICollection<BorrowedItem> BorrowedItems { get; set; }
         public ICollection<ProvidedService> ProvidedServices { get; set; }

@@ -1,11 +1,8 @@
 ﻿using Dwellers.Household.Application.Authentication.Commands.RegisterHouse;
 using Dwellers.Household.Application.Exceptions;
-using Dwellers.Household.Application.Interfaces.Household.Chat;
 using Dwellers.Household.Application.Interfaces.Houses;
 using Dwellers.Household.Application.Interfaces.Users;
-using Dwellers.Household.Domain.Entities.Chat;
 using Dwellers.Household.Domain.Entities.DwellerHouse;
-using Dwellers.Household.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -17,18 +14,15 @@ namespace Dwellers.Household.Application.Features.Authentication.Commands.Regist
         private readonly ILogger<RegisterHouseCommandHandler> _logger;
         private readonly IUserQueryRepository _userQueryRepository;
         private readonly IHouseCommandRepository _houseCommandRepository;
-        private readonly IChatCommandRepository _chatCommandRepository;
 
         public RegisterHouseCommandHandler(
             ILogger<RegisterHouseCommandHandler> logger,
             IUserQueryRepository userQueryRepository,
-            IHouseCommandRepository houseCommandRepository,
-            IChatCommandRepository chatCommandRepository)
+            IHouseCommandRepository houseCommandRepository)
         {
             _logger = logger;
             _userQueryRepository = userQueryRepository;
             _houseCommandRepository = houseCommandRepository;
-            _chatCommandRepository = chatCommandRepository;
         }
 
         public async Task<RegisterHouseResult> Handle(RegisterHouseCommand command, CancellationToken cancellationToken)
@@ -52,20 +46,6 @@ namespace Dwellers.Household.Application.Features.Authentication.Commands.Regist
             {
                 _logger.LogInformation("User attachment to house could not be persisted");
                 throw new RegisterFailedException("Persistance failed");
-            }
-
-            DwellerConversation dwellerConversation = new DwellerConversation(house.Name);
-            if(!await _chatCommandRepository.PersistConversation(dwellerConversation))
-            {
-                _logger.LogInformation("Conversation could not be implemented");
-                throw new PersistanceFailedException("Persistance failed");
-            }
-
-            HouseConversation houseConversation = new HouseConversation(house, dwellerConversation);
-            if (!await _chatCommandRepository.PersistHouseConversation(houseConversation))
-            {
-                _logger.LogInformation("Conversation could not be linked to household");
-                throw new PersistanceFailedException("Persistance failed");
             }
 
             return new RegisterHouseResult(user, house);
