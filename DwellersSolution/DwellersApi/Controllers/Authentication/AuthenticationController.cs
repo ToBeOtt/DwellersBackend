@@ -4,6 +4,8 @@ using Dwellers.Chat.Application.Services;
 using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterHouse;
 using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterMemberToHouse;
 using Dwellers.Household.Application.Services;
+using Dwellers.Household.Contracts.Commands;
+using Dwellers.Household.Contracts.Requests;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

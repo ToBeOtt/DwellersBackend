@@ -30,12 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.DAL\Dwellers.Common.DAL.csproj" />
+    <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Features\Household\Dashboard\Commands\" />
-    <Folder Include="Infrastructure\Data\" />
   </ItemGroup>
 
 </Project>

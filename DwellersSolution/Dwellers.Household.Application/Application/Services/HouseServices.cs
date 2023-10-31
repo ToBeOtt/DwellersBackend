@@ -1,10 +1,5 @@
 ﻿using Dwellers.Household.Application.Interfaces.Houses;
 using Dwellers.Household.Application.Services.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dwellers.Household.Application.Services
 {
@@ -17,9 +12,9 @@ namespace Dwellers.Household.Application.Services
             _houseQueryRepository = houseQueryRepository;
         }
 
-        public async Task<HouseholdServiceResponse<Guid>> ServeGuidToAuthentication(string email)
+        public async Task<HouseServiceResponse<Guid>> ServeGuidToAuthentication(string email)
         {
-            HouseholdServiceResponse<Guid> response = new();
+            HouseServiceResponse<Guid> response = new();
 
             var houseId = await _houseQueryRepository.GetHouseIdByEmail(email);
 

@@ -1,5 +1,4 @@
 ﻿using Dwellers.Common.DAL.Models.Household;
-using Dwellers.Household.Application.Exceptions;
 using Dwellers.Household.Application.Interfaces.Houses;
 using Dwellers.Household.Application.Interfaces.Users;
 using MediatR;

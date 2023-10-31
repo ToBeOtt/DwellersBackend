@@ -3,7 +3,6 @@ using Dwellers.Household.Application.Features.User;
 using Dwellers.Household.Application.Interfaces.Houses;
 using Dwellers.Household.Application.Interfaces.Users;
 using Dwellers.Household.Domain.Entities;
-using Dwellers.Household.Domain.Entities.DwellerHouse;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -24,7 +23,7 @@ namespace Dwellers.Household.Tests.Features.Authentication.Queries
                 var testuser = new DwellerUser();
                 testuser.Id = query.UserId;
 
-                var testhouse = new DwellerHouse();
+                var testhouse = new DomainDwellerHouse();
                 testhouse.HouseId = query.HouseId;
 
                 mockUserQueryRepository.Setup(repo => repo.GetUserById(testuser.Id)).ReturnsAsync(testuser);
@@ -58,12 +57,12 @@ namespace Dwellers.Household.Tests.Features.Authentication.Queries
             var testuser = new DwellerUser();
             testuser.Id = query.UserId;
 
-            var testhouse = new DwellerHouse();
+            var testhouse = new DomainDwellerHouse();
             testhouse.HouseId = query.HouseId;
 
             mockUserQueryRepository.Setup(repo => repo.GetUserById(It.IsAny<string>())).ReturnsAsync((DwellerUser)null);
 
-            mockHouseQueryRepository.Setup(repo => repo.GetHouseById(It.IsAny<Guid>())).ReturnsAsync((DwellerHouse)null);
+            mockHouseQueryRepository.Setup(repo => repo.GetHouseById(It.IsAny<Guid>())).ReturnsAsync((DomainDwellerHouse)null);
 
 
             var handler = new GetUserDetails(

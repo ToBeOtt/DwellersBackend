@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.DAL\Dwellers.Common.DAL.csproj" />
+    <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

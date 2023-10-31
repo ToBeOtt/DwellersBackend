@@ -1,6 +1,9 @@
 ﻿using Dwellers.Common.DAL.Models.Household;
-using Dwellers.Household.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Dwellers.Household.Application.Interfaces.Users
 {
@@ -8,8 +11,5 @@ namespace Dwellers.Household.Application.Interfaces.Users
     {
         Task<bool> AddUser(DwellerUserEntity User);
         Task<bool> UpdateUser(DwellerUserEntity User);
-        
-
-
     }
 }

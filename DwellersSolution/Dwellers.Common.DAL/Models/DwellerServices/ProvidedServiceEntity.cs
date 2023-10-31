@@ -1,4 +1,5 @@
 ﻿using Dwellers.Common.DAL.Models.Household;
+using System.Globalization;
 
 namespace Dwellers.Common.DAL.Models.DwellerServices
 {
@@ -20,5 +21,13 @@ namespace Dwellers.Common.DAL.Models.DwellerServices
         public bool? ServiceReturned { get; set; }
 
         public ProvidedServiceEntity() { }
+
+        public ProvidedServiceEntity(HouseEntity house, DwellerServiceEntity service, bool isProvider)
+        {
+            House = house;
+            Service = service;
+            IsProvider = isProvider;
+            Created = DateTime.Now;
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.Dashboard.Queries;
-using Dwellers.Household.Contracts.Requests.Household.Dashboard;
-using Dwellers.Household.Contracts.Responses.Household.Dashboard;
+﻿using Dwellers.Household.Application.Features.Dashboard.Queries;
+using Dwellers.Household.Contracts.Requests.Dashboard;
+using Dwellers.Household.Contracts.Responses.Dashboard;
 using Mapster;
 
 namespace DwellersApi.Common.Mapping.Household.Dashboard

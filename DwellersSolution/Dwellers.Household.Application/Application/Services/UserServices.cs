@@ -1,14 +1,7 @@
 ﻿using Dwellers.Common.DAL.Models.Household;
 using Dwellers.Household.Application.Interfaces.Users;
 using Dwellers.Household.Application.Services.Responses;
-using Dwellers.Household.Domain.Entities;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dwellers.Household.Application.Services
 {
@@ -25,10 +18,10 @@ namespace Dwellers.Household.Application.Services
             _logger = logger;
         }
 
-        public async Task<HouseholdServiceResponse<bool>> CreateDwellerUser
+        public async Task<HouseServiceResponse<bool>> CreateDwellerUser
             (string dbUserId, string dbUserEmail, string dbUserAlias)
         {
-            HouseholdServiceResponse<bool> response = new();
+            HouseServiceResponse<bool> response = new();
 
             DwellerUserEntity dwellerUser = new();
             dwellerUser.Id = dbUserId;

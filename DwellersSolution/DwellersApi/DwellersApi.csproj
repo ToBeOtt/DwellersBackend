@@ -24,9 +24,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dwellers.Authentication\Dwellers.Authentication.csproj" />
+    <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Calendar\Dwellers.Calendar.csproj" />
+    <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Application\Dwellers.Household.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Notes\Dwellers.Notes.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings\Dwellers.Offerings.csproj" />
   </ItemGroup>

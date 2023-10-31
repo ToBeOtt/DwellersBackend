@@ -26,6 +26,7 @@ namespace Dwellers.Common.DAL.Models.DwellerItems
             House = house;
             Item = item;
             IsOwner = isOwner;
+            Created = DateTime.Now;
         }
         
     }

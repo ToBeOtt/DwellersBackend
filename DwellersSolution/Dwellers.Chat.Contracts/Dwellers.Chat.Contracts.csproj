@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.DAL\Dwellers.Common.DAL.csproj" />
   </ItemGroup>
 
 </Project>
