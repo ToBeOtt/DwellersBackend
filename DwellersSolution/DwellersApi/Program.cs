@@ -1,3 +1,4 @@
+using Dwellers.Authentication;
 using Dwellers.Authentication.Contracts.Config;
 using Dwellers.Chat;
 using Dwellers.Chat.Application.Hubs;
@@ -9,12 +10,11 @@ using SharedKernel.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Other services
 builder.Services.AddCoreServices();
 builder.Services.AddHouseholdModuleServices(builder.Configuration);
 builder.Services.AddChatModuleServices(builder.Configuration);
-builder.Services.AddAuthModuleServices(builder.Configuration);
+builder.Services.AddAuthenticationServices(builder.Configuration);
 
 
 // DEVELOPMENT -- for authentication testing 

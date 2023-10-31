@@ -1,10 +1,9 @@
-﻿using Dwellers.Household.Domain.Entities.DwellerItems;
-using Dwellers.Household.Domain.Entities.DwellerEvents;
+﻿using Dwellers.Common.DAL.Models.DwellerEvents;
 
 namespace Dwellers.Household.Application.Interfaces.Household.DwellerEvents
 {
     public interface IDwellerEventsCommandRepository
     {
-        Task<bool> AddEvent(DwellerEvent dwellerEvent);
+        Task<bool> AddEvent(DwellerEventEntity dwellerEvent);
     }
 }

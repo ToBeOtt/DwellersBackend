@@ -1,19 +1,20 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.Meetings;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.Notes;
+using Dwellers.Household.Application.Interfaces.Household.Meetings;
 using Dwellers.Household.Domain.Entities.Notes;
-using Dwellers.Household.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
 {
     public class NoteQueryRepository : INoteQueryRepository
     {
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
 
-        public NoteQueryRepository(HouseholdDbContext context)
+        public NoteQueryRepository(DwellerDbContext context)
         {
             _context = context;
         }
-        public async Task<ICollection<Note>> GetNotes(Guid houseId)
+        public async Task<ICollection<NoteEntity>> GetNotes(Guid houseId)
         {
             return await _context.Notes
                          .Include(mp => mp.User)
@@ -23,18 +24,18 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
                          .ToListAsync();
         }
 
-        public async Task<ICollection<Note>> SortNotesByCategory(Guid houseId, int? noteCategory)
+        public async Task<ICollection<NoteEntity>> SortNotesByCategory(Guid houseId, int? noteCategory)
         {
             return await _context.Notes
                             .Include(mp => mp.User)
                                 .ThenInclude(u => u.HouseUsers)
                                     .ThenInclude(hu => hu.House)
-                            .Where(mp => mp.User.HouseUsers.Any(hu => hu.HouseId == houseId)
-                                       && (noteCategory == null || (int)mp.Category == noteCategory))
-                            .ToListAsync();
+                                .Where(mp => mp.User.HouseUsers.Any(hu => hu.HouseId == houseId)
+                                    && (noteCategory == null || (int)mp.Category == noteCategory))
+                                .ToListAsync();
         }
 
-        public async Task<ICollection<Noteholder>> GetNoteholders(Guid houseId)
+        public async Task<ICollection<NoteholderEntity>> GetNoteholders(Guid houseId)
         {
             return await _context.Noteholders
                             .Include(nh => nh.NoteholderNotes)
@@ -45,24 +46,24 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
                             .ToListAsync();
         }
 
-        public async Task<Noteholder> GetFullNoteholderById(Guid noteholderId, Guid houseId)
+        public async Task<NoteholderEntity> GetFullNoteholderById(Guid noteholderId, Guid houseId)
         {
             return await _context.Noteholders
                         .Include(nh => nh.HouseNoteholders)
                         .Where(nh => nh.HouseNoteholders.Any(hn => hn.HouseId == houseId && hn.NoteholderId == noteholderId))
                         .SingleOrDefaultAsync();
         }
-        Task<Noteholder> INoteQueryRepository.GetNoteholderById(Guid noteholderId)
+        public async Task<NoteholderEntity> GetNoteholderById(Guid noteholderId)
         {
-            return _context.Noteholders.Where(n => n.NoteholderId == noteholderId).FirstOrDefaultAsync();
+            return await _context.Noteholders.Where(n => n.Id == noteholderId).FirstOrDefaultAsync();
         }
 
-        public async Task<Note> GetNoteById(Guid noteId)
+        public async Task<NoteEntity> GetNoteById(Guid noteId)
         {
-            return await _context.Notes.Where(n => n.NoteId == noteId).FirstOrDefaultAsync();
+            return await _context.Notes.Where(n => n.Id == noteId).FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Note>> GetNotesForNoteholder(Guid noteholderId)
+        public async Task<ICollection<NoteEntity>> GetNotesForNoteholder(Guid noteholderId)
         {
             return await _context.Notes
                       .Where(n => n.NoteholderNotes
@@ -70,7 +71,7 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
                       .ToListAsync();
         }
 
-        public async Task<ICollection<Note>> GetNewOrUpdatedNotes(Guid houseId)
+        public async Task<ICollection<NoteEntity>> GetNewOrUpdatedNotes(Guid houseId)
         {
             return await _context.Notes
                 .Include(n => n.User)
@@ -83,7 +84,7 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
                 .ToListAsync();
         }
 
-        public async Task<ICollection<Noteholder>> GetNewOrUpdatedNoteholders(Guid houseId)
+        public async Task<ICollection<NoteholderEntity>> GetNewOrUpdatedNoteholders(Guid houseId)
         {
             return await _context.Noteholders
                 .Include(nh => nh.HouseNoteholders)

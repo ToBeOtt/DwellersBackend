@@ -6,6 +6,6 @@ namespace Dwellers.Authentication.Application.Interfaces
     public interface IRegistrationRepository
     {
         Task<bool> CheckNoUserExist(string email);
-        Task<IdentityResult> AddUser(DwellerUser user, string password);
+        Task<IdentityResult> AddUser(DbUser user, string password);
     }
 }

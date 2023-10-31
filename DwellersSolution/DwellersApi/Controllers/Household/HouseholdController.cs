@@ -1,4 +1,4 @@
-﻿using Dwellers.Household.Application.Authentication.Queries.GetUserDetails;
+﻿using Dwellers.Household.Application.Features.User;
 using Dwellers.Household.Contracts.Requests;
 using MapsterMapper;
 using MediatR;

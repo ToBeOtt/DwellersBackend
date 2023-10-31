@@ -1,6 +1,5 @@
-﻿using Dwellers.Household.Application.Authentication.Commands.RegisterMemberToHouse;
-using Dwellers.Household.Application.Exceptions;
-using Dwellers.Household.Application.Features.Authentication.Commands.RegisterMemberToHouse;
+﻿using Dwellers.Household.Application.Exceptions;
+using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterMemberToHouse;
 using Dwellers.Household.Application.Interfaces.Houses;
 using Dwellers.Household.Application.Interfaces.Users;
 using Dwellers.Household.Domain.Entities;
@@ -27,12 +26,12 @@ namespace Dwellers.Household.Tests.Features.Authentication.Commands
                 var testuser = new DwellerUser();
                 testuser.Email = "test@mail.com";
 
-                var testhouse = new House();
+                var testhouse = new DwellerHouse();
                 testhouse.HouseId = new Guid("2edad9f4-9d45-4b97-b7c8-9abf1d5455b7");
 
                 mockUserQueryRepository.Setup(repo => repo.GetUserByEmail(testuser.Email)).ReturnsAsync(new DwellerUser());
 
-                mockHouseQueryRepository.Setup(repo => repo.GetHouseByInvite(command.Invitation)).ReturnsAsync(new House());
+                mockHouseQueryRepository.Setup(repo => repo.GetHouseByInvite(command.Invitation)).ReturnsAsync(new DwellerHouse());
 
                 mockHouseCommandRepository.Setup(repo => repo.AddHouseUser(It.IsAny<HouseUser>())).ReturnsAsync(true);
 
@@ -91,7 +90,7 @@ namespace Dwellers.Household.Tests.Features.Authentication.Commands
 
             mockUserQueryRepository.Setup(repo => repo.GetUserByEmail(It.IsAny<string>())).ReturnsAsync(new DwellerUser());
 
-            mockHouseQueryRepository.Setup(repo => repo.GetHouseByInvite(command.Invitation)).ReturnsAsync((House)null);
+            mockHouseQueryRepository.Setup(repo => repo.GetHouseByInvite(command.Invitation)).ReturnsAsync((DwellerHouse)null);
 
             mockHouseCommandRepository.Setup(repo => repo.AddHouseUser(It.IsAny<HouseUser>())).ReturnsAsync(false);
 

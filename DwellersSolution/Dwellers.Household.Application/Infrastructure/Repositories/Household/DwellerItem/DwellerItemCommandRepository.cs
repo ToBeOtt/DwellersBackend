@@ -1,8 +1,7 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.DwellerItems;
-using Dwellers.Household.Domain.Entities.DwellerEvents;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.DwellerItems;
+using Dwellers.Household.Application.Interfaces.Household.DwellerItems;
 using Dwellers.Household.Domain.Entities.DwellerItems;
-using Dwellers.Household.Domain.Entities.Notes;
-using Dwellers.Household.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -11,11 +10,11 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
     public class DwellerItemCommandRepository : IDwellerItemCommandRepository
     {
         private readonly ILogger<DwellerItemCommandRepository> _logger;
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
 
         public DwellerItemCommandRepository(
             ILogger<DwellerItemCommandRepository> logger,
-            HouseholdDbContext context)
+            DwellerDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -42,7 +41,7 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
                 return 0;
             }
         }
-        public async Task<bool> AddDwellerItem(Domain.Entities.DwellerItems.DwellerItem item)
+        public async Task<bool> AddDwellerItem(DwellerItemEntity item)
         {
             try
             {
@@ -57,7 +56,7 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
             }
         }
 
-        public async Task<bool> RemoveDwellerItem (Domain.Entities.DwellerItems.DwellerItem dwellerItem)
+        public async Task<bool> RemoveDwellerItem (DwellerItemEntity dwellerItem)
         {
             try
             {
@@ -72,7 +71,7 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
             }
         }
 
-        public async Task<bool> RegisterItemStatus(BorrowedItem borrowedItem)
+        public async Task<bool> RegisterItemStatus(BorrowedItemEntity borrowedItem)
         {
             try
             {
@@ -87,6 +86,5 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
             }
             
         }
-
     }
 }

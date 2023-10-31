@@ -1,7 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.DwellerEvents.Commands;
-using Dwellers.Household.Domain.Entities.DwellerHouse;
+﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
+using Dwellers.Household.Application.Features.Household.DwellerEvents.Commands;
 using Dwellers.Household.Domain.Exceptions;
-using Dwellers.Household.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dwellers.Household.Domain.Entities.DwellerEvents
@@ -21,8 +20,8 @@ namespace Dwellers.Household.Domain.Entities.DwellerEvents
         public DateTime EventCreated { get; private set; }
         public DateTime? EventModified { get; private set; }
 
-        public Entities.DwellerUser User { get; set; }
-        public House House { get; set; }
+        public Entities.DomainDwellerUser User { get; set; }
+        public DwellerHouse.DwellerHouse House { get; set; }
 
 
 

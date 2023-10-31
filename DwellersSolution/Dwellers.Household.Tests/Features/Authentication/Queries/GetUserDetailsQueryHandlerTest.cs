@@ -1,6 +1,5 @@
-﻿using Dwellers.Household.Application.Authentication.Queries.GetUserDetails;
-using Dwellers.Household.Application.Exceptions;
-using Dwellers.Household.Application.Features.Authentication.Queries.GetUserDetails;
+﻿using Dwellers.Household.Application.Exceptions;
+using Dwellers.Household.Application.Features.User;
 using Dwellers.Household.Application.Interfaces.Houses;
 using Dwellers.Household.Application.Interfaces.Users;
 using Dwellers.Household.Domain.Entities;
@@ -18,14 +17,14 @@ namespace Dwellers.Household.Tests.Features.Authentication.Queries
             {
                 var query = new GetUserDetailsQuery("userid123", new Guid("2edaf9f4-8d45-4b97-b7c8-9abf1d7755b7"));
 
-                var mockLogger = new Mock<ILogger<GetUserDetailsHandler>>();
+                var mockLogger = new Mock<ILogger<GetUserDetails>>();
                 var mockUserQueryRepository = new Mock<IUserQueryRepository>();
                 var mockHouseQueryRepository = new Mock<IHouseQueryRepository>();
 
                 var testuser = new DwellerUser();
                 testuser.Id = query.UserId;
 
-                var testhouse = new House();
+                var testhouse = new DwellerHouse();
                 testhouse.HouseId = query.HouseId;
 
                 mockUserQueryRepository.Setup(repo => repo.GetUserById(testuser.Id)).ReturnsAsync(testuser);
@@ -33,7 +32,7 @@ namespace Dwellers.Household.Tests.Features.Authentication.Queries
                 mockHouseQueryRepository.Setup(repo => repo.GetHouseById(testhouse.HouseId)).ReturnsAsync(testhouse);
 
 
-                var handler = new GetUserDetailsHandler(
+                var handler = new GetUserDetails(
                     mockLogger.Object,
                     mockUserQueryRepository.Object,
                     mockHouseQueryRepository.Object
@@ -52,22 +51,22 @@ namespace Dwellers.Household.Tests.Features.Authentication.Queries
         {
             var query = new GetUserDetailsQuery("userid123", new Guid("2edaf9f4-8d45-4b97-b7c8-9abf1d7755b7"));
 
-            var mockLogger = new Mock<ILogger<GetUserDetailsHandler>>();
+            var mockLogger = new Mock<ILogger<GetUserDetails>>();
             var mockUserQueryRepository = new Mock<IUserQueryRepository>();
             var mockHouseQueryRepository = new Mock<IHouseQueryRepository>();
 
             var testuser = new DwellerUser();
             testuser.Id = query.UserId;
 
-            var testhouse = new House();
+            var testhouse = new DwellerHouse();
             testhouse.HouseId = query.HouseId;
 
             mockUserQueryRepository.Setup(repo => repo.GetUserById(It.IsAny<string>())).ReturnsAsync((DwellerUser)null);
 
-            mockHouseQueryRepository.Setup(repo => repo.GetHouseById(It.IsAny<Guid>())).ReturnsAsync((House)null);
+            mockHouseQueryRepository.Setup(repo => repo.GetHouseById(It.IsAny<Guid>())).ReturnsAsync((DwellerHouse)null);
 
 
-            var handler = new GetUserDetailsHandler(
+            var handler = new GetUserDetails(
                     mockLogger.Object,
                     mockUserQueryRepository.Object,
                     mockHouseQueryRepository.Object

@@ -1,7 +1,4 @@
-﻿using Dwellers.Household.Domain.Entities.DwellerHouse;
-using Dwellers.Household.Domain.Exceptions;
-using Dwellers.Household.Domain.ValueObjects;
-using System.Globalization;
+﻿using Dwellers.Household.Domain.Exceptions;
 
 namespace Dwellers.Household.Domain.Entities.DwellerServices
 {
@@ -9,7 +6,7 @@ namespace Dwellers.Household.Domain.Entities.DwellerServices
     {
         public Guid Id { get; set; }
 
-        public House House { get; set; }
+        public DwellerHouse.DwellerHouse House { get; set; }
         public Guid HouseId { get; set; }
 
         public DwellerService DwellerService { get; set; }
@@ -24,7 +21,7 @@ namespace Dwellers.Household.Domain.Entities.DwellerServices
 
         public ProvidedService() { }
         public ProvidedService(
-            House house,
+            DwellerHouse.DwellerHouse house,
             DwellerService service,
             string? note)
         {

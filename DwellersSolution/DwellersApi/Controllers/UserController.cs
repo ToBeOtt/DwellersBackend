@@ -13,11 +13,11 @@ namespace DwellersApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly ISender _mediator;
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
 
         public UserController(
             ISender mediator,
-            HouseholdDbContext context
+            DwellerDbContext context
             )
         {
             _mediator = mediator;

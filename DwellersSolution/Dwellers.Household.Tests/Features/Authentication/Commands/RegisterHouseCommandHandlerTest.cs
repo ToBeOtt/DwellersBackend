@@ -1,14 +1,4 @@
-﻿using Dwellers.Household.Application.Authentication.Commands.RegisterHouse;
-using Dwellers.Household.Application.Exceptions;
-using Dwellers.Household.Application.Features.Authentication.Commands.RegisterHouse;
-using Dwellers.Household.Application.Interfaces.Houses;
-using Dwellers.Household.Application.Interfaces.Users;
-using Dwellers.Household.Domain.Entities;
-using Dwellers.Household.Domain.Entities.DwellerHouse;
-using Microsoft.Extensions.Logging;
-using Moq;
-
-namespace Dwellers.Household.Tests.Features.Authentication.Commands
+﻿namespace Dwellers.Household.Tests.Features.Authentication.Commands
 {
     public class RegisterHouseCommandHandlerTest
     {

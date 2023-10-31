@@ -1,5 +1,4 @@
-﻿using Dwellers.Household.Domain.ValueObjects;
-using MediatR;
+﻿using MediatR;
 
 namespace Dwellers.Household.Application.Features.Household.Notes.Commands.AddNote
 {

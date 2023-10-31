@@ -1,25 +1,21 @@
 ﻿using Dwellers.Chat.Application.Interfaces;
-using Dwellers.Chat.Domain.Entities;
-using Dwellers.Chat.Infrastructure.Data;
+using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.DwellerChat;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Chat.Infrastructure.Repositories
 {
     public class ChatQueryRepository : IChatQueryRepository
-    {  
-        private readonly ChatDbContext _context;
-        private readonly ILogger<ChatQueryRepository> _logger;
+    {
+        private readonly DwellerDbContext _context;
 
         public ChatQueryRepository(
-            ChatDbContext context,
-            ILogger<ChatQueryRepository> logger)
+            DwellerDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
-        public async Task<DwellerConversation> GetConversation(Guid conversationId)
+        public async Task<DwellerConversationEntity> GetConversation(Guid conversationId)
         {
             return 
                 await _context.DwellerConversations
@@ -27,7 +23,7 @@ namespace Dwellers.Chat.Infrastructure.Repositories
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<ICollection<DwellerMessage>> GetConversationMessages(Guid conversationId)
+        public async Task<ICollection<DwellerMessageEntity>> GetConversationMessages(Guid conversationId)
         {
             return 
                 await _context.DwellerMessages
@@ -35,7 +31,7 @@ namespace Dwellers.Chat.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<DwellerConversation> GetHouseholdConversation(Guid houseId)
+        public async Task<DwellerConversationEntity> GetHouseholdConversation(Guid houseId)
         {
             return 
                 await _context.DwellerConversations

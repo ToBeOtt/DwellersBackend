@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using SharedKernel.Exceptions.Common;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using Serilog.Events;
+using SharedKernel.Exceptions.Common;
 using System.Net;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
 
 namespace SharedKernel.Exceptions
 {

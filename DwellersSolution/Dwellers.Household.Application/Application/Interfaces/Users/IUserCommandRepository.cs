@@ -1,12 +1,13 @@
-﻿using Dwellers.Household.Domain.Entities;
+﻿using Dwellers.Common.DAL.Models.Household;
+using Dwellers.Household.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Dwellers.Household.Application.Interfaces.Users
 {
     public interface IUserCommandRepository
     {
-        Task<IdentityResult> AddUser(DwellerUser User, string password);
-        Task<bool> UpdateUser(DwellerUser User);
+        Task<bool> AddUser(DwellerUserEntity User);
+        Task<bool> UpdateUser(DwellerUserEntity User);
         
 
 

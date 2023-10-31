@@ -1,13 +1,11 @@
-﻿using Dwellers.Authentication.Contracts.Interfaces;
+﻿using Dwellers.Authentication.Application.Services;
 using Dwellers.Authentication.Contracts.Requests;
 using Dwellers.Chat.Application.Services;
-using Dwellers.Household.Application.Authentication.Commands.RegisterHouse;
-using Dwellers.Household.Application.Authentication.Commands.RegisterMemberToHouse;
-using Dwellers.Household.Application.Authentication.Queries.Login;
-using Dwellers.Household.Application.Features.Authentication.Commands.Register;
+using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterHouse;
+using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterMemberToHouse;
+using Dwellers.Household.Application.Services;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DwellersApi.Controllers.Authentication
@@ -18,32 +16,43 @@ namespace DwellersApi.Controllers.Authentication
     {
         private readonly ISender _mediator;
         private readonly ChatCommandServices _chatCommandServices;
-        private readonly IAuthenticationModuleService _authService;
+        private readonly RegistrationService _registrationService;
+        private readonly AuthenticationService _authenticationService;
+        private readonly HouseServices _houseServices;
+        private readonly UserServices _userServices;
 
         public AuthenticationController(
             ISender mediator, 
-            IMapper mapper,
             ChatCommandServices chatCommandServices,
-            IAuthenticationModuleService authService
+            RegistrationService registrationService,
+            AuthenticationService authenticationService,
+            HouseServices houseServices,
+            UserServices userServices
            )
         {
             _mediator = mediator;
             _chatCommandServices = chatCommandServices;
-            _authService = authService;
+            _registrationService = registrationService;
+            _authenticationService = authenticationService;
+            _houseServices = houseServices;
+            _userServices = userServices;
         }
 
     // REGISTRATION
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var result = await _authService.RegistrationService.Register
+            var identityUser = await _registrationService.Register
                 (request.Email, request.Alias, request.Password);
 
-            if(!result.IsSuccess)
-            {
-                return BadRequest(result.ErrorMessage);
-            }
-            return Ok(result.Data);
+            if (!identityUser.IsSuccess) return BadRequest(identityUser.ErrorMessage);
+
+            var dwellerUser = await _userServices.CreateDwellerUser
+                (identityUser.Data.Id, request.Email, request.Alias);
+
+            if (!dwellerUser.IsSuccess) return BadRequest(dwellerUser.ErrorMessage);
+
+            return Ok(identityUser.Data);
         }
 
         [HttpPost("RegisterHouse")]
@@ -79,16 +88,24 @@ namespace DwellersApi.Controllers.Authentication
             return Ok(registerMemberToHouseResult);
         }
 
-    // REGISTRATION
+    // LOGIN
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login(string email, string password)
         {
-            var loginQuery = new LoginQuery(
-                Email: request.Email,
-                Password: request.Password);
+            var idResult = await _houseServices.ServeGuidToAuthentication(email);
+            if (!idResult.IsSuccess)
+            {
+                return BadRequest();
+            }
 
-            var loginResult = await _mediator.Send(loginQuery);
-            return Ok(loginResult);
+            var result = await _authenticationService.Login
+                (email, password, idResult.Data); // pass along houseID to pass it token-generation.
+            if(!result.IsSuccess)
+            {
+                return Unauthorized(result.ErrorMessage);
+            }
+
+            return Ok(result.Data);
         }
     }
 }

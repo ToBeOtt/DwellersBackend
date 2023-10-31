@@ -1,25 +1,19 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.DwellerService;
-using Dwellers.Household.Domain.Entities.DwellerServices;
-using Dwellers.Household.Infrastructure.Data;
-using Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.DwellerServices;
+using Dwellers.Household.Application.Interfaces.Household.DwellerService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerService
 {
     internal class DwellerServiceCommandRepository : IDwellerServiceCommandRepository
     {
         private readonly ILogger<DwellerServiceCommandRepository> _logger;
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
 
         public DwellerServiceCommandRepository(
             ILogger<DwellerServiceCommandRepository> logger,
-            HouseholdDbContext context)
+            DwellerDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -46,19 +40,19 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerServic
                 return 0;
             }
         }
-        public async Task<bool> AddDwellerService(Domain.Entities.DwellerServices.DwellerService service)
+        public async Task<bool> AddDwellerService(DwellerServiceEntity service)
         {
             await _context.DwellerServices.AddAsync(service);
             int result = await SaveActions();
             return result > 0;
         }
 
-        public Task<bool> RegisterProvidedService(ProvidedService service)
+        public Task<bool> RegisterProvidedService(ProvidedServiceEntity service)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveDwellerService(Domain.Entities.DwellerServices.DwellerService service)
+        public Task<bool> RemoveDwellerService(DwellerServiceEntity service)
         {
             throw new NotImplementedException();
         }

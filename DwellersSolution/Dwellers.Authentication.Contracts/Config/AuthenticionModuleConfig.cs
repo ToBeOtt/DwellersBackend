@@ -1,15 +1,13 @@
-﻿using Dwellers.Authentication.Infrastructure;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dwellers.Authentication.Contracts.Config
 {
     public static class AuthenticionModuleConfig
     {
-        public static IServiceCollection AddAuthModuleServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAuthenticationModuleServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthenticationApplicationServices(configuration);
-            services.AddAuthenticationInfrastructureServices(configuration);
+            services.AddAuthenticationServices(configuration);
             return services;
         }
     }

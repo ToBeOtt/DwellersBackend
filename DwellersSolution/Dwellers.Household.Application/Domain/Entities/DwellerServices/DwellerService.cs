@@ -1,6 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.DwellerServices.Commands;
+﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
+using Dwellers.Household.Application.Features.Household.DwellerServices.Commands;
 using Dwellers.Household.Domain.Exceptions;
-using Dwellers.Household.Domain.ValueObjects;
 
 namespace Dwellers.Household.Domain.Entities.DwellerServices
 {

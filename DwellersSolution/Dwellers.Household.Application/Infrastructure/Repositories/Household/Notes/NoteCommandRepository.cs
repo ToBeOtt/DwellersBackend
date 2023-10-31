@@ -1,19 +1,19 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.Meetings;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.Notes;
+using Dwellers.Household.Application.Interfaces.Household.Meetings;
 using Dwellers.Household.Domain.Entities.Notes;
-using Dwellers.Household.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
 {
     public class NoteCommandRepository : INoteCommandRepository
     {
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
         private readonly ILogger<NoteCommandRepository> _logger;
 
         public NoteCommandRepository(
-            HouseholdDbContext context,
+            DwellerDbContext context,
             ILogger<NoteCommandRepository> logger)
         {
             _context = context;
@@ -42,13 +42,13 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
                 return 0;
             }
         }
-        public async Task<bool> AddNoteholder(Noteholder noteholder)
+        public async Task<bool> AddNoteholder(NoteholderEntity noteholder)
         {
             await _context.Noteholders.AddAsync(noteholder);
             int result = await SaveActions();
             return result > 0;
         }
-        public async Task<bool> AddNote(Note note)
+        public async Task<bool> AddNote(NoteEntity note)
         {
             using (var transaction = _context.Database.BeginTransaction())
             {
@@ -68,28 +68,28 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.Meetings
             }
         }
 
-        public async Task<bool> AddHouseNoteholder(HouseNoteholder HouseNoteholder)
+        public async Task<bool> AddHouseNoteholder(HouseNoteholderEntity HouseNoteholder)
         {
             await _context.HouseNoteholders.AddAsync(HouseNoteholder);
             int result = await SaveActions();
             return result > 0;
         }
 
-        public async Task<bool> RemoveNote(Note Note)
+        public async Task<bool> RemoveNote(NoteEntity Note)
         {
             _context.Notes.Remove(Note);
             int result = await SaveActions();
             return result > 0;
         }
 
-        public async Task<bool> RemoveNoteholder(Noteholder Noteholder)
+        public async Task<bool> RemoveNoteholder(NoteholderEntity Noteholder)
         {
             _context.Noteholders.Remove(Noteholder);
             int result = await SaveActions();
             return result > 0;
         }
 
-        public async Task<bool> AddNoteholderNote(NoteholderNotes noteholderNotes)
+        public async Task<bool> AddNoteholderNote(NoteholderNotesEntity noteholderNotes)
         {
             await _context.NoteholderNotes.AddAsync(noteholderNotes);
             int result = await SaveActions();

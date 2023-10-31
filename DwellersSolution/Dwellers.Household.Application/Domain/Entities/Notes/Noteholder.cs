@@ -1,5 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.Notes.Commands.AddNoteholder;
-using Dwellers.Household.Domain.ValueObjects;
+﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
+using Dwellers.Common.DAL.Models.DwellerChat.ValueObjects;
+using Dwellers.Household.Application.Features.Household.Notes.Commands.AddNoteholder;
 
 namespace Dwellers.Household.Domain.Entities.Notes
 {
@@ -13,10 +14,6 @@ namespace Dwellers.Household.Domain.Entities.Notes
         public bool Archived { get; private set; }
         public DateTime DateCreated { get; private set; }
         public DateTime? DateUpdated { get; private set; }
-
-        public ICollection<HouseNoteholder>? HouseNoteholders { get; set; }
-        public ICollection<NoteholderNotes>? NoteholderNotes { get; set; }
-
 
 
         public Noteholder() { }

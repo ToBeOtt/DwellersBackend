@@ -8,24 +8,19 @@
         public bool IsRead { get; set; }
         public string UserId { get; set; }
 
-        public Guid DwellerConversationId { get; set; }
-        public DwellerConversation Conversation { get; set; }
-
         public DwellerMessage()
         {
         }
 
         public DwellerMessage(
             string userID,
-            string messageText,
-            DwellerConversation conversation)
+            string messageText)
         {
             Id = Guid.NewGuid();
             UserId = userID;
             MessageText = messageText;
             Timestamp = DateTime.Now;
             IsRead = false;
-            Conversation = conversation;
         }
     }
 }

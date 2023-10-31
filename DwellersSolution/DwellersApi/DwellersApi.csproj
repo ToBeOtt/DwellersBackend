@@ -23,10 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dwellers.Authentication.Contracts\Dwellers.Authentication.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Authentication\Dwellers.Authentication.csproj" />
     <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Application\Dwellers.Household.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Offerings\Dwellers.Offerings.csproj" />
   </ItemGroup>
 
 </Project>

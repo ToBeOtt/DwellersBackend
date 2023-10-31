@@ -1,6 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.DwellerItems.Commands;
+﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
+using Dwellers.Household.Application.Features.Household.DwellerItems.Commands;
 using Dwellers.Household.Domain.Exceptions;
-using Dwellers.Household.Domain.ValueObjects;
 
 namespace Dwellers.Household.Domain.Entities.DwellerItems
 {
@@ -15,7 +15,6 @@ namespace Dwellers.Household.Domain.Entities.DwellerItems
         public bool ItemStatus { get; private set; }
         public DateTime? DateAdded { get; private set; }
 
-        public ICollection<BorrowedItem> BorrowedItems { get; set; }
 
         public DwellerItem() { }
 

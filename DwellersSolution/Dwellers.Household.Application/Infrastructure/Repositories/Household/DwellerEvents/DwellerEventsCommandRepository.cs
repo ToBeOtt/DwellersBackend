@@ -1,6 +1,7 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.DwellerEvents;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.DwellerEvents;
+using Dwellers.Household.Application.Interfaces.Household.DwellerEvents;
 using Dwellers.Household.Domain.Entities.DwellerEvents;
-using Dwellers.Household.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -8,11 +9,11 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerEvents
 {
     public class DwellerEventsCommandRepository : IDwellerEventsCommandRepository
     {
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
         private readonly ILogger<DwellerEventsCommandRepository> _logger;
 
         public DwellerEventsCommandRepository(
-            HouseholdDbContext context,
+            DwellerDbContext context,
             ILogger<DwellerEventsCommandRepository> logger)
         {
             _context = context;
@@ -42,9 +43,9 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerEvents
             }
         }
 
-        public async Task<bool> AddEvent(DwellerEvent dwellerEvent)
+        public async Task<bool> AddEvent(DwellerEventEntity dwellerEvent)
         {
-            await _context.Events.AddAsync(dwellerEvent);
+            await _context.DwellerEvents.AddAsync(dwellerEvent);
             int result = await SaveActions();
             return result > 0;
 

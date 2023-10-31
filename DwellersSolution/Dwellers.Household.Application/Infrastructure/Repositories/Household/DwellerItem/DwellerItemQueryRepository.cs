@@ -1,21 +1,19 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.DwellerItems;
-using Dwellers.Household.Domain.Entities.DwellerItems;
-using Dwellers.Household.Infrastructure.Data;
-using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.DwellerItems;
+using Dwellers.Household.Application.Interfaces.Household.DwellerItems;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
 
 namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
 {
     public class DwellerItemQueryRepository : IDwellerItemQueryRepository
     {
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
 
-        public DwellerItemQueryRepository(HouseholdDbContext context)
+        public DwellerItemQueryRepository(DwellerDbContext context)
         {
             _context = context;
         }
-        public async Task<ICollection<Domain.Entities.DwellerItems.DwellerItem>> GetAllDwellerItems(Guid houseId)
+        public async Task<ICollection<DwellerItemEntity>> GetAllDwellerItems(Guid houseId)
         {
             return await _context.DwellerItems
                                 .Include(di => di.BorrowedItems)
@@ -23,7 +21,7 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerItem
                                 .ToListAsync();
         }
 
-        public async Task<Domain.Entities.DwellerItems.DwellerItem> GetDwellerItem(Guid ItemId)
+        public async Task<DwellerItemEntity> GetDwellerItem(Guid ItemId)
         {
             return await _context.DwellerItems
                             .Include(di => di.BorrowedItems)

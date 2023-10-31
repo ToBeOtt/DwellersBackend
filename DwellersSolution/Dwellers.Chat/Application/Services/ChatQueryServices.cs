@@ -1,5 +1,5 @@
 ﻿using Dwellers.Chat.Application.Interfaces;
-using Dwellers.Chat.Domain.Entities;
+using Dwellers.Common.DAL.Models.DwellerChat;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Chat.Application.Services
@@ -18,10 +18,10 @@ namespace Dwellers.Chat.Application.Services
             _chatQueryRepository = chatQueryRepository;
         }
 
-        public async Task<ChatServiceResponse<ICollection<DwellerMessage>>> GetConversations(Guid HouseID)
+        public async Task<ChatServiceResponse<ICollection<DwellerMessageEntity>>> GetConversations(Guid HouseID)
         {
-            ChatServiceResponse<ICollection<DwellerMessage>> response = 
-                new ChatServiceResponse<ICollection<DwellerMessage>>();
+            ChatServiceResponse<ICollection<DwellerMessageEntity>> response = 
+                new ChatServiceResponse<ICollection<DwellerMessageEntity>>();
 
             var conversation = await _chatQueryRepository.GetHouseholdConversation(HouseID);
             if (conversation == null)

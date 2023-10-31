@@ -1,8 +1,7 @@
-﻿using Dwellers.Household.Application.Exceptions;
+﻿using Dwellers.Common.DAL.Models.DwellerEvents;
+using Dwellers.Household.Application.Exceptions;
 using Dwellers.Household.Application.Interfaces.Household.DwellerEvents;
 using Dwellers.Household.Domain.Entities.DwellerEvents;
-using Dwellers.Household.Domain.Entities.DwellerItems;
-using Dwellers.Household.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -11,7 +10,7 @@ namespace Dwellers.Household.Application.Features.Household.DwellerEvents.Querie
     public record GetEventQuery(
         Guid EventId) : IRequest<GetEventResult>;
     public record GetEventResult(
-    DwellerEvent Event,
+    DwellerEventEntity Event,
     string EventScope);
 
     public class GetEventQueryHandler : IRequestHandler<GetEventQuery, GetEventResult>

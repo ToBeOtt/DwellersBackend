@@ -1,6 +1,7 @@
-﻿using Dwellers.Household.Application.Features.Household.Notes.Commands.AddNote;
-using Dwellers.Household.Domain.Entities.DwellerHouse;
-using Dwellers.Household.Domain.ValueObjects;
+﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
+using Dwellers.Common.DAL.Models.DwellerChat.ValueObjects;
+using Dwellers.Common.DAL.Models.Notes.ValueObjects;
+using Dwellers.Household.Application.Features.Household.Notes.Commands.AddNote;
 
 namespace Dwellers.Household.Domain.Entities.Notes
 {
@@ -19,9 +20,8 @@ namespace Dwellers.Household.Domain.Entities.Notes
         public DateTime NoteCreated { get; private set; }
         public DateTime? NoteModified { get; private set; }
 
-        public DwellerUser User { get; set; }
-        public House House { get; set; }
-        public ICollection<NoteholderNotes>? NoteholderNotes { get; set; }
+        public DomainDwellerUser User { get; set; }
+        public DwellerHouse.DwellerHouse House { get; set; }
 
 
         public Note() { }

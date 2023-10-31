@@ -1,30 +1,30 @@
-﻿using Dwellers.Household.Application.Interfaces.Household.DwellerEvents;
-using Dwellers.Household.Domain.Entities.DwellerEvents;
-using Dwellers.Household.Infrastructure.Data;
+﻿using Dwellers.Common.DAL.Context;
+using Dwellers.Common.DAL.Models.DwellerEvents;
+using Dwellers.Household.Application.Interfaces.Household.DwellerEvents;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerEvents
 {
     internal class DwellerEventsQueryRepository : IDwellerEventsQueryRepository
     {
-        private readonly HouseholdDbContext _context;
+        private readonly DwellerDbContext _context;
 
-        public DwellerEventsQueryRepository(HouseholdDbContext context)
+        public DwellerEventsQueryRepository(DwellerDbContext context)
         {
             _context = context;
         }
-        public async Task<ICollection<DwellerEvent>> GetAllEvents(Guid houseId)
+        public async Task<ICollection<DwellerEventEntity>> GetAllEvents(Guid houseId)
         {
-            return await _context.Events
+            return await _context.DwellerEvents
                     .Include(e => e.House)
                     .Include(e => e.User)
                     .Where(e => e.House.HouseId == houseId)
                     .ToListAsync();
         }
 
-        public async Task<ICollection<DwellerEvent>> GetUpcomingEvents(Guid houseId)
+        public async Task<ICollection<DwellerEventEntity>> GetUpcomingEvents(Guid houseId)
         {
-             return await _context.Events
+             return await _context.DwellerEvents
                 .Include(e => e.User)
                 .Where(e => e.House != null && e.House.HouseId == houseId)
                 .Where(e => !e.Archived)
@@ -33,9 +33,9 @@ namespace Dwellers.Household.Infrastructure.Repositories.Household.DwellerEvents
                 .ToListAsync();
         }
 
-        public async Task<DwellerEvent> GetEvent(Guid eventId)
+        public async Task<DwellerEventEntity> GetEvent(Guid eventId)
         {
-            return await _context.Events.Where(e => e.Id == eventId).SingleOrDefaultAsync();
+            return await _context.DwellerEvents.Where(e => e.Id == eventId).SingleOrDefaultAsync();
         }
     }
 }

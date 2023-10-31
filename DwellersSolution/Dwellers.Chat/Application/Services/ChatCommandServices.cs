@@ -1,7 +1,6 @@
 ﻿using Dwellers.Chat.Application.Interfaces;
-using Dwellers.Chat.Domain.Entities;
-using Dwellers.Chat.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Dwellers.Common.DAL.Models.DwellerChat;
+using Dwellers.Common.DAL.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Chat.Application.Services
@@ -12,19 +11,24 @@ namespace Dwellers.Chat.Application.Services
             private readonly ILogger<ChatCommandServices> _logger;
             private readonly IChatCommandRepository _chatCommandRepository;
             private readonly IChatQueryRepository _chatQueryRepository;
+        private readonly ICommonUserServices _commonUserServices;
+        private readonly ICommonHouseServices _commonHouseServices;
 
-            public ChatCommandServices(
+        public ChatCommandServices(
             ILogger<ChatCommandServices> logger,
             IChatCommandRepository chatCommandRepository,
-            IChatQueryRepository chatQueryRepository
-            )
+            IChatQueryRepository chatQueryRepository,
+            ICommonUserServices commonUserServices,
+            ICommonHouseServices commonHouseServices)
             {
             _logger = logger;
             _chatCommandRepository = chatCommandRepository;
             _chatQueryRepository = chatQueryRepository;
-            }
+            _commonUserServices = commonUserServices;
+            _commonHouseServices = commonHouseServices;
+        }
 
-        public async Task<ChatServiceResponse<bool>> SaveMessage(string message, string userId, Guid conversationId)
+        public async Task<ChatServiceResponse<bool>> SaveMessage(string messageText, string userId, Guid conversationId)
             {
             ChatServiceResponse<bool> response =
                new ChatServiceResponse<bool>();
@@ -38,9 +42,19 @@ namespace Dwellers.Chat.Application.Services
                 return response;
             }
 
-            DwellerMessage dm = new DwellerMessage(userId, message, conversation);
 
-            if (!await _chatCommandRepository.PersistMessage(dm))
+            var user = await _commonUserServices.GetUserForOtherServicesById(userId);
+            if (user is null)
+            {
+                response.IsSuccess = false;
+                response.ErrorMessage = "No user tied to message";
+                _logger.LogInformation("Unable to persist message");
+                return response;
+            }
+
+            DwellerMessageEntity message = new DwellerMessageEntity(messageText, user, conversation);
+
+            if (!await _chatCommandRepository.PersistMessage(message))
             {
                 response.IsSuccess = false;
                 response.ErrorMessage = "Unable to persist message in database.";
@@ -58,18 +72,32 @@ namespace Dwellers.Chat.Application.Services
             ChatServiceResponse<bool> response =
                new ChatServiceResponse<bool>();
 
-            DwellerConversation dwellerConversation = new DwellerConversation(houseName);
-            if (!await _chatCommandRepository.PersistConversation(dwellerConversation))
+            DwellerConversationEntity conversation = new DwellerConversationEntity(houseName);
+            if (!await _chatCommandRepository.PersistConversation(conversation))
             {
                 _logger.LogInformation("Conversation could not be implemented");
-                throw new Exception("Persistance failed");
+                response.IsSuccess = false;
+                response.ErrorMessage = "Conversation could not be created";
+                return response;
             }
 
-            HouseConversation houseConversation = new HouseConversation(houseId, dwellerConversation.Id);
+            var house = await _commonHouseServices.GetHouseForOtherServicesById(houseId);
+            if (house == null)
+            {
+                _logger.LogInformation("Related household could not be found");
+                response.IsSuccess = false;
+                response.ErrorMessage = "Related household could not be found";
+                return response;
+            }
+
+
+            HouseConversationEntity houseConversation = new HouseConversationEntity(house, conversation);
             if (!await _chatCommandRepository.PersistHouseConversation(houseConversation))
             {
                 _logger.LogInformation("Conversation could not be linked to household");
-                throw new Exception("Persistance failed");
+                response.IsSuccess = false;
+                response.ErrorMessage = "Could not establish a conversation";
+                return response;
             }
 
             response.IsSuccess = true;
