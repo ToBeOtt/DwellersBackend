@@ -1,6 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.DwellerEvents.Commands;
-using Dwellers.Household.Application.Features.Household.DwellerEvents.Queries;
-using Dwellers.Household.Contracts.Requests.Household.DwellerEvents;
+﻿using Dwellers.Calendar.Contracts.Commands;
+using Dwellers.Calendar.Contracts.Queries;
+using Dwellers.Calendar.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

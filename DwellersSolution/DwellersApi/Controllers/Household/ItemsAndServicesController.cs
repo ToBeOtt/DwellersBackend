@@ -1,9 +1,7 @@
-﻿using Dwellers.Household.Application.Features.Household.DwellerItems.Commands;
-using Dwellers.Household.Application.Features.Household.DwellerItems.Queries;
-using Dwellers.Household.Application.Features.Household.DwellerServices.Commands;
-using Dwellers.Household.Application.Features.Household.DwellerServices.Queries;
-using Dwellers.Household.Contracts.Requests.Household.DwellerItems;
-using Dwellers.Household.Contracts.Requests.Household.DwellerServices;
+﻿using Dwellers.Offerings.Application.Services.DwellerItems;
+using Dwellers.Offerings.Contracts.Commands;
+using Dwellers.Offerings.Contracts.Queries;
+using Dwellers.Offerings.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +16,12 @@ namespace DwellersApi.Controllers.Household
     public class ItemsAndServicesController : ControllerBase
     {
         private readonly ISender _mediator;
+        private readonly DwellerItemCommandService _dwellerItemCommandService;
 
         public ItemsAndServicesController(
-            ISender mediator)
+            DwellerItemCommandService dwellerItemCommandService)
         {
-            _mediator = mediator;
+            _dwellerItemCommandService = dwellerItemCommandService;
         }
 
         // DWELLER-ITEMS
@@ -33,7 +32,7 @@ namespace DwellersApi.Controllers.Household
 
             if (houseIdClaim is null)
             {
-                throw new InvalidCredentialException();
+                return BadRequest("Invalid house-details");
             }
 
             var cmd = new AddDwellerItemCommand(
@@ -43,14 +42,17 @@ namespace DwellersApi.Controllers.Household
                 ItemScope: Request.Form["itemScope"],
                 ItemPhoto: itemPhoto);
 
-            var addDwellerItemResult = await _mediator.Send(cmd);
-            return Ok(addDwellerItemResult);
+            var result = await _dwellerItemCommandService.CreateAndPersistItem(cmd);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.ErrorMessage); 
+            }
+            return Ok(result.Data);
         }
 
         [HttpPost("RemoveDwellerItem")]
         public async Task<IActionResult> RemoveDwellerItem(RemoveDwellerItemRequest request)
         {
-            
             var cmd = new RemoveDwellerItemCommand(
                 ItemId: request.ItemId);
 
@@ -64,7 +66,6 @@ namespace DwellersApi.Controllers.Household
             var cmd = new GetDwellerItemQuery(
                 ItemId: itemId);
     
-
             var getAllDwellerItemsResult = await _mediator.Send(cmd);
             return Ok(getAllDwellerItemsResult);
         }

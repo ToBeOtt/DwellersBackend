@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,12 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dwellers.Authentication.Contracts\Dwellers.Household.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Household.Domain\Dwellers.Household.Domain.csproj" />
+    <ProjectReference Include="..\Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Application\Features\Household\Dashboard\Commands\" />
   </ItemGroup>
 
 </Project>

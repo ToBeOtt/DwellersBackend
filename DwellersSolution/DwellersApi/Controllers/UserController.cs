@@ -1,5 +1,4 @@
-﻿using Dwellers.Household.Application.Features.User;
-using Dwellers.Household.Infrastructure.Data;
+﻿using Dwellers.Household.Contracts.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +12,12 @@ namespace DwellersApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly ISender _mediator;
-        private readonly HouseholdDbContext _context;
 
         public UserController(
-            ISender mediator,
-            HouseholdDbContext context
+            ISender mediator
             )
         {
             _mediator = mediator;
-            _context = context;
         }
 
 
@@ -41,8 +37,5 @@ namespace DwellersApi.Controllers
             var UpdateUserResult = await _mediator.Send(cmd);
             return Ok(UpdateUserResult);
         }
-
-       
-
     }
 }

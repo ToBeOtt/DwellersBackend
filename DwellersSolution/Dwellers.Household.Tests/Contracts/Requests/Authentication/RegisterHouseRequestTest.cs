@@ -1,13 +1,4 @@
-﻿using Dwellers.Household.Contracts.Requests;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace Dwellers.Household.Tests.Contracts.Requests.Authentication
+﻿namespace Dwellers.Household.Tests.Contracts.Requests.Authentication
 {
     public class RegisterHouseRequestTest
     {

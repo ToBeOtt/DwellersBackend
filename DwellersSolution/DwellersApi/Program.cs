@@ -1,15 +1,37 @@
+using Dwellers.Authentication;
+using Dwellers.Calendar;
+using Dwellers.Chat;
+using Dwellers.Chat.Application.Hubs;
+using Dwellers.Common.Data;
+using Dwellers.Common.Persistance;
 using Dwellers.Household.Application;
-using Dwellers.Household.Application.Features.Household.Chat.Hubs;
+using Dwellers.Notes;
+using Dwellers.Offerings;
 using DwellersApi;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.OpenApi.Models;
 using SharedKernel.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Other services
 builder.Services.AddCoreServices();
+
+// Persistence and DA
+builder.Services.AddDataServices(builder.Configuration);
+builder.Services.AddPersistenceServices(builder.Configuration);
+
+// Auth
+builder.Services.AddAuthenticationServices(builder.Configuration);
+
+// Modules
 builder.Services.AddHouseholdModuleServices(builder.Configuration);
+builder.Services.AddOfferingsModuleServices(builder.Configuration);
+builder.Services.AddChatModuleServices(builder.Configuration);
+builder.Services.AddNotesModuleServices(builder.Configuration);
+builder.Services.AddCalendarModuleServices(builder.Configuration);
+
+
 
 // DEVELOPMENT -- for authentication testing 
 builder.Services.AddSwaggerGen(c => {
@@ -59,8 +81,14 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<HouseholdHub>("/householdHub");
+    endpoints.MapHub<HouseholdHub>("/householdHub", options =>
+    {
+        options.TransportMaxBufferSize = 1024;
+        options.LongPolling.PollTimeout = TimeSpan.FromSeconds(30);
+        options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+    });
 });
+
 app.MapControllers();
 
 

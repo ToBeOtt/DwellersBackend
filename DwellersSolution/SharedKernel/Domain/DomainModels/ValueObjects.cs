@@ -1,11 +1,4 @@
-﻿using Microsoft.Graph.Identity.B2xUserFlows.Item.Languages.Item.OverridesPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SharedKernel.Domain.DomainModels
+﻿namespace SharedKernel.Domain.DomainModels
 {
     public abstract class ValueObject : IEquatable<ValueObject>
     {

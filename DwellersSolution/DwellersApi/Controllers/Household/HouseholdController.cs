@@ -1,11 +1,14 @@
-﻿using Dwellers.Household.Application.Authentication.Queries.GetUserDetails;
+﻿using Dwellers.Calendar.Contracts.Commands;
+using Dwellers.Household.Contracts.Queries;
 using Dwellers.Household.Contracts.Requests;
+using Dwellers.Household.Services;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using System.Security.Authentication;
-using System.Security.Claims;
+using Tavis.UriTemplates;
 
 namespace DwellersApi.Controllers.Household
 {
@@ -15,19 +18,19 @@ namespace DwellersApi.Controllers.Household
     public class HouseholdController : ControllerBase
     {
         private readonly ISender _mediator;
-        private readonly IMapper _mapper;
+        private readonly UserServices _userServices;
 
         public HouseholdController(
             ISender mediator,
-            IMapper mapper)
+            UserServices userServices)
         {
             _mediator = mediator;
-            _mapper = mapper;
+            _userServices = userServices;
         }
 
 
         [HttpGet("GetUserDetails")]
-        public async Task<IActionResult> GetUserDetails()
+        public async Task<IActionResult> GetUserDetails(FetchUserDetailsRequest request)
         {
             {
                 var userIdClaim = User.FindFirst("UserId");
@@ -35,16 +38,19 @@ namespace DwellersApi.Controllers.Household
 
                 if (userIdClaim is null || houseIdClaim is null)
                 {
-                    throw new InvalidCredentialException();
+                    return BadRequest();
                 }
 
-                var request = new GetUserDetailsRequest(userIdClaim.Value, Guid.Parse(houseIdClaim.Value));
+                var query = new FetchUserDataQuery(
+                    UserId : userIdClaim.Value,
+                    HouseId: new Guid(houseIdClaim.Value));
 
-                var query = _mapper.Map<GetUserDetailsQuery>(request);
-
-                var GetUserDetailsResult = await _mediator.Send(query);
-
-                return Ok(GetUserDetailsResult);
+                var result = await _userServices.FetchUserDetails(query);
+                if(!result.IsSuccess)
+                {
+                    return BadRequest(result.ErrorResponse);
+                }
+                return Ok(result);
             }
         }
     }

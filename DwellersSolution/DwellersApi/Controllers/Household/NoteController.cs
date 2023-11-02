@@ -1,11 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.Notes.Commands.AddNote;
-using Dwellers.Household.Application.Features.Household.Notes.Commands.AddNoteholder;
-using Dwellers.Household.Application.Features.Household.Notes.Commands.RemoveNote;
-using Dwellers.Household.Application.Features.Household.Notes.Queries.GetNote;
-using Dwellers.Household.Application.Features.Household.Notes.Queries.GetNoteholder;
-using Dwellers.Household.Application.Features.Household.Notes.Queries.GetNoteholders;
-using Dwellers.Household.Application.Features.Household.Notes.Queries.GetNotes;
-using Dwellers.Household.Contracts.Requests.Household.Notes;
+﻿using Dwellers.Notes.Application.Feature.Notes.Commands;
+using Dwellers.Notes.Application.Feature.Notes.Queries;
+using Dwellers.Notes.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,26 +22,26 @@ namespace DwellersApi.Controllers.Household
         }
 
 
-        [HttpPost("AddNoteholder")]
-        public async Task<IActionResult> AddNoteholder(AddNoteholderRequest request)
-        {
-            var houseIdClaim = User.FindFirst("HouseId");
+        //[HttpPost("AddNoteholder")]
+        //public async Task<IActionResult> AddNoteholder(AddNoteholderRequest request)
+        //{
+        //    var houseIdClaim = User.FindFirst("HouseId");
 
-            if (houseIdClaim is null)
-            {
-                throw new InvalidCredentialException();
-            }
+        //    if (houseIdClaim is null)
+        //    {
+        //        throw new InvalidCredentialException();
+        //    }
 
-            var cmd = new AddNoteholderCommand(
-                houseID: new Guid(houseIdClaim.Value),
-                Category: request.Category,
-                Name: request.Name,
-                NoteholderScope: request.NoteholderScope);
+        //    var cmd = new AddNoteholderCommand(
+        //        houseID: new Guid(houseIdClaim.Value),
+        //        Category: request.Category,
+        //        Name: request.Name,
+        //        NoteholderScope: request.NoteholderScope);
 
-            var addNoteholderResult = await _mediator.Send(cmd);
-            return Ok(addNoteholderResult);
+        //    var addNoteholderResult = await _mediator.Send(cmd);
+        //    return Ok(addNoteholderResult);
             
-        }
+        //}
 
         [HttpPost("AddNote")]
         public async Task<IActionResult> AddNote(AddNoteRequest request)
