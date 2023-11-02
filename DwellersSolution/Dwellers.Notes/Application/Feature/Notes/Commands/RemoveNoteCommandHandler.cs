@@ -1,4 +1,5 @@
-﻿using Dwellers.Notes.Application.Interfaces;
+﻿using Dwellers.Common.Persistance.NotesModule.Interfaces;
+using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

@@ -1,6 +1,6 @@
-﻿using Dwellers.Common.DAL.Models.DwellerServices;
+﻿using Dwellers.Common.Data.Models.DwellerServices;
+using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
 using Dwellers.Offerings.Application.Services.ServiceResponses;
-using Dwellers.Offerings.Contracts.Interfaces.DwellerServices;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Offerings.Application.Services.DwellerServices

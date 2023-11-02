@@ -1,6 +1,7 @@
-﻿using Dwellers.Chat.Application.Interfaces;
-using Dwellers.Common.DAL.Models.DwellerChat;
-using Dwellers.Common.DAL.Services.Interfaces;
+﻿using Dwellers.Common.Data.Models.DwellerChat;
+using Dwellers.Common.Persistance.ChatModule.Interfaces;
+using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
+using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Users;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Chat.Application.Services
@@ -11,21 +12,22 @@ namespace Dwellers.Chat.Application.Services
             private readonly ILogger<ChatCommandServices> _logger;
             private readonly IChatCommandRepository _chatCommandRepository;
             private readonly IChatQueryRepository _chatQueryRepository;
-        private readonly ICommonUserServices _commonUserServices;
-        private readonly ICommonHouseServices _commonHouseServices;
+        private readonly IHouseQueryRepository _houseQueryRepository;
+        private readonly IUserQueryRepository _userQueryRepository;
 
         public ChatCommandServices(
             ILogger<ChatCommandServices> logger,
             IChatCommandRepository chatCommandRepository,
             IChatQueryRepository chatQueryRepository,
-            ICommonUserServices commonUserServices,
-            ICommonHouseServices commonHouseServices)
+            IHouseQueryRepository houseQueryRepository,
+            IUserQueryRepository userQueryRepository
+            )
             {
             _logger = logger;
             _chatCommandRepository = chatCommandRepository;
             _chatQueryRepository = chatQueryRepository;
-            _commonUserServices = commonUserServices;
-            _commonHouseServices = commonHouseServices;
+            _houseQueryRepository = houseQueryRepository;
+            _userQueryRepository = userQueryRepository;
         }
 
         public async Task<ChatServiceResponse<bool>> SaveMessage(string messageText, string userId, Guid conversationId)
@@ -43,7 +45,7 @@ namespace Dwellers.Chat.Application.Services
             }
 
 
-            var user = await _commonUserServices.GetUserForOtherServicesById(userId);
+            var user = await _userQueryRepository.GetUserById(userId);
             if (user is null)
             {
                 response.IsSuccess = false;
@@ -81,7 +83,7 @@ namespace Dwellers.Chat.Application.Services
                 return response;
             }
 
-            var house = await _commonHouseServices.GetHouseForOtherServicesById(houseId);
+            var house = await _houseQueryRepository.GetHouseById(houseId);
             if (house == null)
             {
                 _logger.LogInformation("Related household could not be found");

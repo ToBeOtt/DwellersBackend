@@ -17,12 +17,7 @@
 	</ItemGroup>
 		
 	<ItemGroup>
-	  <ProjectReference Include="..\Dwellers.Common.DAL\Dwellers.Common.DAL.csproj" />
-	</ItemGroup>
-		
-	<ItemGroup>
-	  <Folder Include="Queries\" />
-	  <Folder Include="Requests\House\" />
+	  <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
 	</ItemGroup>
 
 		

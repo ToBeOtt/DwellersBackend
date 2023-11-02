@@ -1,7 +1,5 @@
-﻿using Dwellers.Chat.Application.Interfaces;
-using Dwellers.Chat.Application.Services;
-using Dwellers.Chat.Infrastructure.Repositories;
-using Dwellers.Common.DAL.Context;
+﻿using Dwellers.Chat.Application.Services;
+using Dwellers.Common.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,14 +16,11 @@ namespace Dwellers.Chat
             // Makes sure this modules DbContext is used 
             services.AddDbContext<DwellerDbContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddTransient<IChatCommandRepository, ChatCommandRepository>();
-            services.AddTransient<IChatQueryRepository, ChatQueryRepository>();
-
             services.AddTransient<ChatCommandServices>();
             services.AddTransient<ChatQueryServices>();
 
             // SignalR
-            services.AddSignalRCore();
+            services.AddSignalR();
 
             return services;
         }

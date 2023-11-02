@@ -1,16 +1,9 @@
-﻿using Dwellers.Household.Application.Features.Household.DwellerItems.Commands;
-using Dwellers.Household.Application.Features.Household.DwellerItems.Queries;
-using Dwellers.Household.Application.Features.Household.DwellerServices.Commands;
-using Dwellers.Household.Application.Features.Household.DwellerServices.Queries;
-using Dwellers.Household.Contracts.Requests.Household.DwellerItems;
-using Dwellers.Household.Contracts.Requests.Household.DwellerServices;
-using Dwellers.Offerings.Application.Interfaces.DwellerItems;
-using Dwellers.Offerings.Application.Services.DwellerItems;
-using Dwellers.Offerings.Application.Services.DwellerItems.Commands;
+﻿using Dwellers.Offerings.Application.Services.DwellerItems;
+using Dwellers.Offerings.Contracts.Commands;
+using Dwellers.Offerings.Contracts.Queries;
 using Dwellers.Offerings.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
 
@@ -73,7 +66,6 @@ namespace DwellersApi.Controllers.Household
             var cmd = new GetDwellerItemQuery(
                 ItemId: itemId);
     
-
             var getAllDwellerItemsResult = await _mediator.Send(cmd);
             return Ok(getAllDwellerItemsResult);
         }

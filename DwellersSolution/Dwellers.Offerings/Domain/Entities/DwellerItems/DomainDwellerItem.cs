@@ -1,4 +1,4 @@
-﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
+﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
 using Microsoft.AspNetCore.Http;
 
 namespace Dwellers.Offerings.Domain.Entities.DwellerItems

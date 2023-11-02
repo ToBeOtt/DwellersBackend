@@ -28,6 +28,8 @@
     <ProjectReference Include="..\Dwellers.Calendar\Dwellers.Calendar.csproj" />
     <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.Data\Dwellers.Common.Data.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Application\Dwellers.Household.csproj" />
     <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj" />

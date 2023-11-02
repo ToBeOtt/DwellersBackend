@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Chat", "Dwellers.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Authentication", "Dwellers.Authentication\Dwellers.Authentication.csproj", "{84380750-A980-46C0-81E8-BCEF602E78C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Common.DAL", "Dwellers.Common.DAL\Dwellers.Common.DAL.csproj", "{64AB3C5B-7327-41DD-8FD9-64FC7EC254A2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Offerings", "Dwellers.Offerings\Dwellers.Offerings.csproj", "{376CBC09-8B4F-4FB7-B1D6-837AA8456B53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Calendar", "Dwellers.Calendar\Dwellers.Calendar.csproj", "{559E4F4A-D509-4057-9C92-0B75FCA08AF0}"
@@ -35,13 +33,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Offerings", "Offerings", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Offerings.Contracts", "Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj", "{65E2057E-0520-4B36-A7EE-D22A7E1E8884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Calendar.Contracts", "Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj", "{78B8736D-EBD9-4753-B72F-1BC664BB84AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Calendar.Contracts", "Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj", "{78B8736D-EBD9-4753-B72F-1BC664BB84AF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{95F59F7C-D9D3-4415-B2B9-F9791DC2B6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Authentication.Contracts", "Dwellers.Authentication.Contracts\Dwellers.Authentication.Contracts.csproj", "{E93C6BF8-DE0A-446B-91EE-F33DCD178CEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Authentication.Contracts", "Dwellers.Authentication.Contracts\Dwellers.Authentication.Contracts.csproj", "{E93C6BF8-DE0A-446B-91EE-F33DCD178CEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Chat.Contracts", "Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj", "{31C742FC-AFBC-408F-BE89-48E43470507A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Chat.Contracts", "Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj", "{31C742FC-AFBC-408F-BE89-48E43470507A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{D7CBA853-CF41-4810-AE39-F7329BC85C2E}"
 EndProject
@@ -49,9 +47,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Calendar", "Calendar", "{D5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{E0CF8A52-C794-4456-AB26-117F56F172F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Notes.Contracts", "Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj", "{73BCBED9-9E32-4650-9104-4A848DE1F7B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Notes.Contracts", "Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj", "{73BCBED9-9E32-4650-9104-4A848DE1F7B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Notes", "Dwellers.Notes\Dwellers.Notes.csproj", "{1DA9D2F6-2B3E-4B73-90D7-04325A77FB1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Notes", "Dwellers.Notes\Dwellers.Notes.csproj", "{1DA9D2F6-2B3E-4B73-90D7-04325A77FB1B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Common.Persistance", "Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj", "{42D119E5-F187-4E99-9B17-94F74621ECD5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Common.Data", "Dwellers.Common.Data\Dwellers.Common.Data.csproj", "{A822D1CA-A65B-4C19-AA87-E36C714C6081}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Calendar.Domain", "Dwellers.Calendar.Domain\Dwellers.Calendar.Domain.csproj", "{363486B9-C6AA-4E44-B43E-4C54545B6A22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Chat.Domain", "Dwellers.Chat.Domain\Dwellers.Chat.Domain.csproj", "{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Household.Domain", "Dwellers.Household.Domain\Dwellers.Household.Domain.csproj", "{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,10 +99,6 @@ Global
 		{84380750-A980-46C0-81E8-BCEF602E78C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84380750-A980-46C0-81E8-BCEF602E78C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84380750-A980-46C0-81E8-BCEF602E78C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64AB3C5B-7327-41DD-8FD9-64FC7EC254A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64AB3C5B-7327-41DD-8FD9-64FC7EC254A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64AB3C5B-7327-41DD-8FD9-64FC7EC254A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64AB3C5B-7327-41DD-8FD9-64FC7EC254A2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{376CBC09-8B4F-4FB7-B1D6-837AA8456B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{376CBC09-8B4F-4FB7-B1D6-837AA8456B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{376CBC09-8B4F-4FB7-B1D6-837AA8456B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -127,6 +131,26 @@ Global
 		{1DA9D2F6-2B3E-4B73-90D7-04325A77FB1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DA9D2F6-2B3E-4B73-90D7-04325A77FB1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DA9D2F6-2B3E-4B73-90D7-04325A77FB1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42D119E5-F187-4E99-9B17-94F74621ECD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D119E5-F187-4E99-9B17-94F74621ECD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D119E5-F187-4E99-9B17-94F74621ECD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D119E5-F187-4E99-9B17-94F74621ECD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A822D1CA-A65B-4C19-AA87-E36C714C6081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A822D1CA-A65B-4C19-AA87-E36C714C6081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A822D1CA-A65B-4C19-AA87-E36C714C6081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A822D1CA-A65B-4C19-AA87-E36C714C6081}.Release|Any CPU.Build.0 = Release|Any CPU
+		{363486B9-C6AA-4E44-B43E-4C54545B6A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{363486B9-C6AA-4E44-B43E-4C54545B6A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{363486B9-C6AA-4E44-B43E-4C54545B6A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{363486B9-C6AA-4E44-B43E-4C54545B6A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,6 +176,9 @@ Global
 		{E0CF8A52-C794-4456-AB26-117F56F172F9} = {AB869E0A-360E-44AF-B2CC-D5DFCC77F278}
 		{73BCBED9-9E32-4650-9104-4A848DE1F7B8} = {E0CF8A52-C794-4456-AB26-117F56F172F9}
 		{1DA9D2F6-2B3E-4B73-90D7-04325A77FB1B} = {E0CF8A52-C794-4456-AB26-117F56F172F9}
+		{363486B9-C6AA-4E44-B43E-4C54545B6A22} = {D5B71047-E08B-4FD0-95A9-FA4651F77F81}
+		{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D} = {D7CBA853-CF41-4810-AE39-F7329BC85C2E}
+		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC} = {FC8E9B25-C904-4A10-A9C4-13D6D80CFFAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03F7727D-0D30-44F6-8909-DD8FFA13ADC5}

@@ -1,6 +1,6 @@
-﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
-using Dwellers.Common.DAL.Models.DwellerChat.ValueObjects;
-using Dwellers.Common.DAL.Models.Notes.ValueObjects;
+﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
+using Dwellers.Common.Data.Models.DwellerChat.ValueObjects;
+using Dwellers.Common.Data.Models.Notes.ValueObjects;
 using Dwellers.Notes.Application.Feature.Notes.Commands;
 
 namespace Dwellers.Notes.Domain

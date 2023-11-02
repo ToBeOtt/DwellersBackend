@@ -1,5 +1,5 @@
 ﻿
-using Dwellers.Common.DAL.Models.Notes;
+using Dwellers.Common.Data.Models.Notes;
 
 namespace Dwellers.Notes.Contracts.Responses
 {

@@ -1,5 +1,5 @@
-﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
-using Dwellers.Common.DAL.Models.DwellerServices;
+﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
+using Dwellers.Common.Data.Models.DwellerServices;
 using Dwellers.Offerings.Contracts.Commands;
 
 namespace Dwellers.Offerings.Domain.Entities.DwellerServices

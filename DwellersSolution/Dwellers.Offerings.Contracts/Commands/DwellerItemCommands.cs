@@ -9,4 +9,9 @@ namespace Dwellers.Offerings.Contracts.Commands
            IFormFile ItemPhoto,
            Guid HouseId
            );
+
+    public record RemoveDwellerItemCommand(
+          Guid ItemId
+          );
+
 }

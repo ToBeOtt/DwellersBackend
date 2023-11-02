@@ -1,5 +1,5 @@
-﻿using Dwellers.Chat.Application.Interfaces;
-using Dwellers.Common.DAL.Models.DwellerChat;
+﻿using Dwellers.Common.Data.Models.DwellerChat;
+using Dwellers.Common.Persistance.ChatModule.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Chat.Application.Services

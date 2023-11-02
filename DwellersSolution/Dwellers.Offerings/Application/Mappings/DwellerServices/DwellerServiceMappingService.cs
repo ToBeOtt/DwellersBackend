@@ -1,4 +1,4 @@
-﻿using Dwellers.Common.DAL.Models.DwellerServices;
+﻿using Dwellers.Common.Data.Models.DwellerServices;
 using Dwellers.Offerings.Domain.Entities.DwellerServices;
 using Mapster;
 

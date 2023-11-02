@@ -1,4 +1,4 @@
-﻿using Dwellers.Common.DAL.Models.DwellerItems;
+﻿using Dwellers.Common.Data.Models.DwellerItems;
 using Dwellers.Offerings.Domain.Entities.DwellerItems;
 using Mapster;
 

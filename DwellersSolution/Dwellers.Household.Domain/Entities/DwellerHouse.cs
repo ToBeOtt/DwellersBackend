@@ -1,31 +1,71 @@
-﻿namespace Dwellers.Household.Domain.Entities
+﻿using Microsoft.AspNetCore.Http;
+using SharedKernel.Domain;
+using SharedKernel.Domain.DomainModels;
+
+namespace Dwellers.Household.Domain.Entities
 {
-    public sealed class DwellerHouse
+    public sealed class DwellerHouse: BaseEntity
     {
-        public Guid HouseId { get; set; }
         public Guid HouseholdCode { get; set; }
         public string Name { get; private set; }
         public string? Description { get; private set; }
         public byte[]? HousePhoto { get; set; }
 
-        public DateTime DateCreated { get; private set; }
-        public DateTime? DateUpdated { get; private set; }
 
-        public DwellerHouse() { }
-        public DwellerHouse(
-            string name,
-            string description)
+        public DwellerHouse() 
         {
-            HouseId = Guid.NewGuid();
-            Name = name;
-            Description = description;
-            DateCreated = DateTime.UtcNow;
+            Id = Guid.NewGuid();
+            IsCreated = DateTime.Now;
+            IsArchived = false;
             HouseholdCode = Guid.NewGuid();
         }
-        private void UpdateHouse(DwellerHouse House)
+
+        public DomainResponse<bool> SetName(string name, List<string> existingNames)
         {
-            throw new NotImplementedException();
+            DomainResponse<bool> response = new();
+
+            if (!existingNames.Contains(name))
+            {
+                Name = name;
+                response.IsSuccess = true;
+            }
+            else
+            {
+                response.IsSuccess = false;
+                response.DomainErrorResponse = "Housename must be unique.";
+            }
+
+            return response;
+        }
+
+        public void SetDescription(string desc)
+        {
+            DomainResponse<bool> response = new();
+            Description = desc;
+        }
+
+        protected async Task<DomainResponse<bool>> SetHousePhoto(IFormFile photo)
+        {
+            DomainResponse<bool> response = new();
+
+            try
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await photo.CopyToAsync(memoryStream);
+                    byte[] imageData = memoryStream.ToArray();
+
+                    HousePhoto = imageData;
+                    response.IsSuccess = true;
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.DomainErrorResponse = "Photo could not be added.";
+                return response;
+            }
         }
     }
 }
-    

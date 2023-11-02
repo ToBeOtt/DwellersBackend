@@ -1,11 +1,9 @@
-﻿using Dwellers.Common.DAL.Models.DwellerServices;
-using Dwellers.Common.DAL.Services.Interfaces;
-using Dwellers.Household.Contracts.Interfaces.Houses;
-using Dwellers.Offerings.Application.Mappings.DwellerItems;
+﻿using Dwellers.Common.Data.Models.DwellerServices;
+using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
+using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
 using Dwellers.Offerings.Application.Mappings.DwellerServices;
 using Dwellers.Offerings.Application.Services.ServiceResponses;
 using Dwellers.Offerings.Contracts.Commands;
-using Dwellers.Offerings.Contracts.Interfaces.DwellerServices;
 using Dwellers.Offerings.Domain.Entities.DwellerServices;
 using Microsoft.Extensions.Logging;
 
@@ -16,20 +14,20 @@ namespace Dwellers.Offerings.Application.Services.DwellerServices
         private readonly ILogger<DwellerServiceCommandService> _logger;
         private readonly IDwellerServiceQueryRepository _dwellerServiceQueryRepository;
         private readonly IDwellerServiceCommandRepository _dwellerServiceCommandRepository;
-        private readonly IHouseQueryRepository _houseRepo;
+        private readonly IHouseQueryRepository _houseQueryRepository;
         private readonly DwellerServiceMappingService _mapping;
 
         public DwellerServiceCommandService(
             ILogger<DwellerServiceCommandService> logger,
             IDwellerServiceQueryRepository dwellerServiceQueryRepository,
             IDwellerServiceCommandRepository dwellerServiceCommandRepository,
-            IHouseQueryRepository houseRepo,
+            IHouseQueryRepository houseQueryRepository,
             DwellerServiceMappingService mapping)
         {
             _logger = logger;
             _dwellerServiceQueryRepository = dwellerServiceQueryRepository;
             _dwellerServiceCommandRepository = dwellerServiceCommandRepository;
-            _houseRepo = houseRepo;
+            _houseQueryRepository = houseQueryRepository;
             _mapping = mapping;
         }
 
@@ -38,7 +36,7 @@ namespace Dwellers.Offerings.Application.Services.DwellerServices
         {
             OfferingsServiceResponse<bool> response = new();
 
-            var house = await _houseRepo.GetHouseById(cmd.HouseId);
+            var house = await _houseQueryRepository.GetHouseById(cmd.HouseId);
             if (house is null)
             {
                 _logger.LogInformation("Could not find entity in database");

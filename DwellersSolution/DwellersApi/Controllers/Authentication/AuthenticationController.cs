@@ -1,12 +1,9 @@
 ﻿using Dwellers.Authentication.Application.Services;
 using Dwellers.Authentication.Contracts.Requests;
 using Dwellers.Chat.Application.Services;
-using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterHouse;
-using Dwellers.Household.Application.Features.Household.DwellerHouses.Commands.RegisterMemberToHouse;
-using Dwellers.Household.Application.Services;
 using Dwellers.Household.Contracts.Commands;
 using Dwellers.Household.Contracts.Requests;
-using MapsterMapper;
+using Dwellers.Household.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +19,7 @@ namespace DwellersApi.Controllers.Authentication
         private readonly AuthenticationService _authenticationService;
         private readonly HouseServices _houseServices;
         private readonly UserServices _userServices;
+        private readonly HouseRegisterService _houseRegService;
 
         public AuthenticationController(
             ISender mediator, 
@@ -29,7 +27,8 @@ namespace DwellersApi.Controllers.Authentication
             RegistrationService registrationService,
             AuthenticationService authenticationService,
             HouseServices houseServices,
-            UserServices userServices
+            UserServices userServices,
+            HouseRegisterService houseRegService
            )
         {
             _mediator = mediator;
@@ -38,6 +37,7 @@ namespace DwellersApi.Controllers.Authentication
             _authenticationService = authenticationService;
             _houseServices = houseServices;
             _userServices = userServices;
+            _houseRegService = houseRegService;
         }
 
     // REGISTRATION
@@ -52,7 +52,7 @@ namespace DwellersApi.Controllers.Authentication
             var dwellerUser = await _userServices.CreateDwellerUser
                 (identityUser.Data.Id, request.Email, request.Alias);
 
-            if (!dwellerUser.IsSuccess) return BadRequest(dwellerUser.ErrorMessage);
+            if (!dwellerUser.IsSuccess) return BadRequest(dwellerUser.ErrorResponse);
 
             return Ok(identityUser.Data);
         }
@@ -65,18 +65,20 @@ namespace DwellersApi.Controllers.Authentication
                 Description: request.Description,
                 Email: request.Email);
 
-            var registerHouseResult = await _mediator.Send(cmd);
+            var regResult = await _houseRegService.AttachHouseToUser(cmd);
 
+            // Convert Guid? from registerHouseResponseDTO to a set Guid.
+            Guid houseID = (Guid)regResult.Data.HouseId;
             var result = await _chatCommandServices.EstablishConversation
-                (registerHouseResult.House.HouseId,
-                 registerHouseResult.House.Name);
+                (houseID,
+                 regResult.Data.Name);
             
             if(!result.IsSuccess)
             {
                 return BadRequest(result.ValidationMessage);
             }
 
-            return Ok(registerHouseResult);
+            return Ok(result);
         }
 
         [HttpPost("RegisterMemberToHouse")]
@@ -86,22 +88,22 @@ namespace DwellersApi.Controllers.Authentication
                 Invitation: request.Invitation,
                 Email: request.Email);
 
-            var registerMemberToHouseResult = await _mediator.Send(cmd);
-            return Ok(registerMemberToHouseResult);
+            var memberRegResult = await _houseRegService.AttachMemberToHouse(cmd);
+            return Ok(memberRegResult);
         }
 
     // LOGIN
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var idResult = await _houseServices.ServeGuidToAuthentication(email);
+            var idResult = await _houseServices.ServeGuidToAuthentication(request.Email);
             if (!idResult.IsSuccess)
             {
                 return BadRequest();
             }
 
             var result = await _authenticationService.Login
-                (email, password, idResult.Data); // pass along houseID to pass it token-generation.
+                (request.Email, request.Password, idResult.Data); // pass along houseID to pass it token-generation.
             if(!result.IsSuccess)
             {
                 return Unauthorized(result.ErrorMessage);

@@ -1,4 +1,9 @@
-﻿using Dwellers.Notes.Domain;
+﻿using Dwellers.Common.Data.Models.Notes;
+using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
+using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Users;
+using Dwellers.Common.Persistance.NotesModule.Interfaces;
+using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Notes.Application.Feature.Notes.Commands
@@ -16,7 +21,7 @@ namespace Dwellers.Notes.Application.Feature.Notes.Commands
       Guid HouseId) : IRequest<AddNoteResult>;
 
     public record AddNoteResult(
-      Note Note);
+      NoteEntity Note);
 
 
     public class AddNoteCommandHandler : IRequestHandler<AddNoteCommand, AddNoteResult>
@@ -32,7 +37,8 @@ namespace Dwellers.Notes.Application.Feature.Notes.Commands
             INoteCommandRepository noteCommandRepository,
             INoteQueryRepository noteQueryRepository,
             IUserQueryRepository userQueryRepository,
-            IHouseQueryRepository houseQueryRepository)
+            IHouseQueryRepository houseQueryRepository
+)
         {
             _logger = logger;
             _noteCommandRepository = noteCommandRepository;
@@ -46,17 +52,15 @@ namespace Dwellers.Notes.Application.Feature.Notes.Commands
             if (user is null)
             {
                 _logger.LogInformation("Could not find entity in database");
-                throw new EntityNotFoundException("No user found");
             }
 
             var house = await _houseQueryRepository.GetHouseById(cmd.HouseId);
             if (house is null)
             {
                 _logger.LogInformation("Could not find entity in database");
-                throw new EntityNotFoundException("No house found");
             }
 
-            var note = new Note(cmd);
+            var note = new NoteEntity();
             note.User = user;
             note.House = house;
 
@@ -65,7 +69,6 @@ namespace Dwellers.Notes.Application.Feature.Notes.Commands
                 if (!await _noteCommandRepository.AddNote(note))
                 {
                     _logger.LogInformation("Could not persist note to database");
-                    throw new PersistanceFailedException("Note could not be persisted");
                 }
 
                 return new AddNoteResult(
@@ -77,11 +80,10 @@ namespace Dwellers.Notes.Application.Feature.Notes.Commands
                 var noteholder = await _noteQueryRepository.GetNoteholderById((Guid)cmd.NoteholderId);
                 if (noteholder is not null)
                 {
-                    var noteholdersNote = new NoteholderNotes(noteholder, note);
+                    var noteholdersNote = new NoteholderNotesEntity(noteholder, note);
                     if (!await _noteCommandRepository.AddNoteholderNote(noteholdersNote))
                     {
                         _logger.LogInformation("Could not persist noteholderNote to database");
-                        throw new PersistanceFailedException("NoteholdersNote could not be persisted");
                     }
 
                 }
@@ -89,7 +91,6 @@ namespace Dwellers.Notes.Application.Feature.Notes.Commands
                 if (!await _noteCommandRepository.AddNote(note))
                 {
                     _logger.LogInformation("Could not persist note to database");
-                    throw new PersistanceFailedException("Note could not be persisted");
                 }
 
                 return new AddNoteResult(

@@ -1,9 +1,6 @@
-﻿using Dwellers.Household.Application.Common.Behaviours;
-using Dwellers.Household.Application.Interfaces.Houses;
-using Dwellers.Household.Application.Interfaces.Users;
-using Dwellers.Household.Application.Services;
-using Dwellers.Household.Infrastructure.Repositories.Houses;
-using Dwellers.Household.Infrastructure.Repositories.Users;
+﻿using Dwellers.Household.Common.Behaviours;
+using Dwellers.Household.Mappings;
+using Dwellers.Household.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -27,15 +24,12 @@ namespace Dwellers.Household.Application
             
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            //Repositories
-            services.AddTransient<IHouseCommandRepository, HouseCommandRepository>();
-            services.AddTransient<IHouseQueryRepository, HouseQueryRepository>();
-            services.AddTransient<IUserCommandRepository, UserCommandRepository>();
-            services.AddTransient<IUserQueryRepository, UserQueryRepository>();
-
             services.AddTransient<HouseServices>();
             services.AddTransient<UserServices>();
+            services.AddTransient<HouseRegisterService>();
 
+            services.AddTransient<HouseholdMappingService>();
+            
             return services;
         }
     }

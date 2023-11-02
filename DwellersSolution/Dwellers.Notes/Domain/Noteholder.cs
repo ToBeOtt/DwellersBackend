@@ -1,5 +1,5 @@
-﻿using Dwellers.Common.DAL.Models.Common.ValueObjects;
-using Dwellers.Common.DAL.Models.DwellerChat.ValueObjects;
+﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
+using Dwellers.Common.Data.Models.DwellerChat.ValueObjects;
 using Dwellers.Notes.Application.Feature.Notes.Commands;
 
 namespace Dwellers.Notes.Domain
@@ -17,25 +17,25 @@ namespace Dwellers.Notes.Domain
 
 
         public Noteholder() { }
-        public Noteholder(AddNoteholderCommand cmd)
-        {
-            NoteholderId = Guid.NewGuid();
-            Archived = false;
-            DateCreated = DateTime.Now;
-            Name = cmd.Name;
+        //public Noteholder(AddNoteholderCommand cmd)
+        //{
+        //    NoteholderId = Guid.NewGuid();
+        //    Archived = false;
+        //    DateCreated = DateTime.Now;
+        //    Name = cmd.Name;
 
-            if (Enum.TryParse(cmd.NoteholderScope, out VisibilityScope scope))
-            {
-                NoteholderScope = scope;
-            }
-            else NoteholderScope = VisibilityScope.Household;
+        //    if (Enum.TryParse(cmd.NoteholderScope, out VisibilityScope scope))
+        //    {
+        //        NoteholderScope = scope;
+        //    }
+        //    else NoteholderScope = VisibilityScope.Household;
 
-            if (Enum.TryParse(cmd.Category, out Category category))
-            {
-                Category = category;
-            }
-            else Category = null;
-        }
+        //    if (Enum.TryParse(cmd.Category, out Category category))
+        //    {
+        //        Category = category;
+        //    }
+        //    else Category = null;
+        //}
 
     }
 }

@@ -1,4 +1,6 @@
-﻿using Dwellers.Notes.Domain;
+﻿using Dwellers.Common.Data.Models.Notes;
+using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Dwellers.Notes.Application.Feature.Notes.Queries
@@ -6,7 +8,7 @@ namespace Dwellers.Notes.Application.Feature.Notes.Queries
     public record GetNoteQuery(
        Guid NoteId) : IRequest<GetNoteResult>;
     public record GetNoteResult(
-       Note Note);
+       NoteEntity Note);
 
     public class GetNoteQueryHandler : IRequestHandler<GetNoteQuery, GetNoteResult>
     {
@@ -26,7 +28,6 @@ namespace Dwellers.Notes.Application.Feature.Notes.Queries
             if (note is null)
             {
                 _logger.LogInformation("The note could not be found");
-                throw new EntityNotFoundException("Note could not be found");
             }
             return new GetNoteResult(
                 Note: note);

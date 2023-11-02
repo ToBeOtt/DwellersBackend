@@ -1,8 +1,6 @@
-﻿using Dwellers.Household.Application.Features.Household.Dashboard.Queries;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Authentication;
 
 namespace DwellersApi.Controllers.Household
 {
@@ -21,21 +19,21 @@ namespace DwellersApi.Controllers.Household
         }
 
 
-        [HttpGet("GetDashboardNotes")]
-        public async Task<IActionResult> GetDashboardNotes()
-        {
-            var houseIdClaim = User.FindFirst("HouseId");
+        //[HttpGet("GetDashboardNotes")]
+        //public async Task<IActionResult> GetDashboardNotes()
+        //{
+        //    var houseIdClaim = User.FindFirst("HouseId");
 
-            if (houseIdClaim is null)
-            {
-                throw new InvalidCredentialException();
-            }
+        //    if (houseIdClaim is null)
+        //    {
+        //        throw new InvalidCredentialException();
+        //    }
 
-            var cmd = new GetDashboardNotesCommand(
-                HouseId: new Guid(houseIdClaim.Value));
+        //    var cmd = new GetDashboardNotesCommand(
+        //        HouseId: new Guid(houseIdClaim.Value));
 
-            var getDashboardNotesResult = await _mediator.Send(cmd);
-            return Ok(getDashboardNotesResult);
-        }
+        //    var getDashboardNotesResult = await _mediator.Send(cmd);
+        //    return Ok(getDashboardNotesResult);
+        //}
     }
 }

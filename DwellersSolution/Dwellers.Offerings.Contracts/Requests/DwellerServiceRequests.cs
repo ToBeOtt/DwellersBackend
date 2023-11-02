@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Dwellers.Offerings.Contracts.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Dwellers.Offerings.Contracts.Requests
 {
-    internal class DwellerServiceRequests
-    {
-    }
+    public record AddDwellerServiceRequest(
+         Guid HouseId,
+         string Name,
+         string Description,
+         string ServiceScope);
 }

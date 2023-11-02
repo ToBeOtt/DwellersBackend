@@ -2,10 +2,11 @@ using Dwellers.Authentication;
 using Dwellers.Calendar;
 using Dwellers.Chat;
 using Dwellers.Chat.Application.Hubs;
+using Dwellers.Common.Data;
+using Dwellers.Common.Persistance;
 using Dwellers.Household.Application;
 using Dwellers.Notes;
 using Dwellers.Offerings;
-using Dwellers.Offerings.Application.Mappings;
 using DwellersApi;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.OpenApi.Models;
@@ -16,13 +17,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Other services
 builder.Services.AddCoreServices();
 
-// Modules
+// Persistence and DA
+builder.Services.AddDataServices(builder.Configuration);
+builder.Services.AddPersistenceServices(builder.Configuration);
+
+// Auth
 builder.Services.AddAuthenticationServices(builder.Configuration);
+
+// Modules
 builder.Services.AddHouseholdModuleServices(builder.Configuration);
 builder.Services.AddOfferingsModuleServices(builder.Configuration);
 builder.Services.AddChatModuleServices(builder.Configuration);
 builder.Services.AddNotesModuleServices(builder.Configuration);
 builder.Services.AddCalendarModuleServices(builder.Configuration);
+
 
 
 // DEVELOPMENT -- for authentication testing 

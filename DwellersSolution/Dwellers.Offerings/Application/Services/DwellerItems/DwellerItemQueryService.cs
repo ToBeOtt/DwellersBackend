@@ -1,5 +1,5 @@
-﻿using Dwellers.Common.DAL.Models.DwellerItems;
-using Dwellers.Offerings.Application.Interfaces.DwellerItems;
+﻿using Dwellers.Common.Data.Models.DwellerItems;
+using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
 using Dwellers.Offerings.Application.Services.ServiceResponses;
 using Microsoft.Extensions.Logging;
 
