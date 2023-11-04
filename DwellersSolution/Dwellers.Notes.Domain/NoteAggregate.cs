@@ -5,7 +5,7 @@ namespace Dwellers.Notes.Domain
 {
     public sealed class NoteAggregate : BaseEntity
     {
-        public Guid Id { get; set; }
+        private Guid _Id { get; set; }
         public string? Name { get; private set; } = null;
         public string? Description { get; private set; } = null;
 
@@ -28,12 +28,17 @@ namespace Dwellers.Notes.Domain
                 NoteSharing noteShare = new(statusValue);
             }
 
-
             if (noteToInitiate.NotePriority != null)
             {
                 var priorityValue = noteToInitiate.NotePriority.Value;
                 UrgencyOfNote noteUrgency = new(priorityValue);
             }
-        }   
+        }     
+
+        public async Task UpdateNote(DbModelDTO editedNote)
+        {
+            new NoteAggregate(editedNote);
+        }
+
     }
 }
