@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using SharedKernel.Domain.DomainResponse;
 
 namespace Dwellers.Authentication.Domain
 {
@@ -9,46 +10,39 @@ namespace Dwellers.Authentication.Domain
 
         public DbUser() { }
 
-        public DomainResponse CreateUser(string email, string alias)
+        public async Task<DomainResponse<bool>> CreateUser(string email, string alias)
         {
-            DomainResponse domainResponse = new DomainResponse();
-            var emailResponse = SetEmail(email);
+            DomainResponse<bool> domainResponse = new();
+
+            var emailResponse = await SetEmail(email);
             if (!emailResponse.IsSuccess) return (emailResponse);
 
-            var aliasResponse = SetAlias(alias);
+            var aliasResponse = await SetAlias(alias);
             if (!aliasResponse.IsSuccess) return (aliasResponse);
-            
-            domainResponse.IsSuccess = true;
-            return domainResponse;
+
+            return await domainResponse.SuccessResponse(domainResponse);
         }
 
-        public DomainResponse SetEmail(string email)
+        public async Task<DomainResponse<bool>> SetEmail(string email)
         {
-            DomainResponse domainResponse = new DomainResponse();
+            DomainResponse<bool> domainResponse = new();
             if (this.UserName != null && this.UserName != email)
-            {
-                domainResponse.IsSuccess = false;
-                domainResponse.Info = "Email is not the same as username.";
-                return domainResponse;
-            }
+                return await domainResponse.ErrorResponse(domainResponse, "Email is not the same as username.");
+
             Email = email;
             UserName = email;
-            domainResponse.IsSuccess = true;
-            return domainResponse;
+
+            return await domainResponse.SuccessResponse(domainResponse);
         }
 
-        public DomainResponse SetAlias(string alias)
+        public async Task<DomainResponse<bool>> SetAlias(string alias)
         {
-            DomainResponse domainResponse = new DomainResponse();
+            DomainResponse<bool> domainResponse = new();
             if (alias.IsNullOrEmpty())
-            {
-                domainResponse.IsSuccess = false;
-                domainResponse.Info = "Username is not the same as username.";
-                return domainResponse;
-            }
+                return await domainResponse.ErrorResponse(domainResponse, "Username is not the same as username.");
+
             Alias = alias;
-            domainResponse.IsSuccess = true;
-            return domainResponse;
+            return await domainResponse.SuccessResponse(domainResponse);
         }
     }
 }

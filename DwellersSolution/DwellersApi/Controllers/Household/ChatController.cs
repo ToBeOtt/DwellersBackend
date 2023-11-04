@@ -1,4 +1,4 @@
-﻿using Dwellers.Chat.Application.Services;
+﻿using Dwellers.Chat.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;

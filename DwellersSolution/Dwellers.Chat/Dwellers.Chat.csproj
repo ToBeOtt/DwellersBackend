@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dwellers.Chat.Domain\Dwellers.Chat.Domain.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
   </ItemGroup>
 

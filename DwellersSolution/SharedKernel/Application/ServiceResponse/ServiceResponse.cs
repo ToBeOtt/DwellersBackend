@@ -6,13 +6,13 @@ namespace SharedKernel.Application.ServiceResponse
     {
         public bool IsSuccess { get; set; }
         public T? Data { get; set; }
-        public string? ErrorResponse { get; set; }
+        public string? ErrorMessage{ get; set; }
 
-        public virtual async Task<ServiceResponse<T>> ReturnError
+        public virtual async Task<ServiceResponse<T>> ErrorResponse
             (ServiceResponse<T> response, string message, ILogger logger, string? logMessage = null) 
         {
             response.IsSuccess = false;
-            response.ErrorResponse = message;
+            response.ErrorMessage = message;
             if (logMessage != null)
             {
                 logger.LogInformation(logMessage);
@@ -21,7 +21,7 @@ namespace SharedKernel.Application.ServiceResponse
             return response;
         }
 
-        public virtual async Task<ServiceResponse<T>> ReturnSuccess
+        public virtual async Task<ServiceResponse<T>> SuccessResponse
          (ServiceResponse<T> response, T data = default)
         {
             response.IsSuccess = true;

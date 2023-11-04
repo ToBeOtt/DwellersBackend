@@ -1,6 +1,6 @@
 ﻿using Dwellers.Authentication.Application.Services;
 using Dwellers.Authentication.Contracts.Requests;
-using Dwellers.Chat.Application.Services;
+using Dwellers.Chat.Services;
 using Dwellers.Household.Contracts.Commands;
 using Dwellers.Household.Contracts.Requests;
 using Dwellers.Household.Services;

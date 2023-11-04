@@ -1,6 +1,4 @@
-﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
-
-namespace Dwellers.Common.Data.Models.DwellerItems
+﻿namespace Dwellers.Common.Data.Models.DwellerItems
 {
     public sealed class DwellerItemEntity
     {

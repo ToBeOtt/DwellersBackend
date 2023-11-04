@@ -55,11 +55,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Common.Persistance
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Common.Data", "Dwellers.Common.Data\Dwellers.Common.Data.csproj", "{A822D1CA-A65B-4C19-AA87-E36C714C6081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Calendar.Domain", "Dwellers.Calendar.Domain\Dwellers.Calendar.Domain.csproj", "{363486B9-C6AA-4E44-B43E-4C54545B6A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Calendar.Domain", "Dwellers.Calendar.Domain\Dwellers.Calendar.Domain.csproj", "{363486B9-C6AA-4E44-B43E-4C54545B6A22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Chat.Domain", "Dwellers.Chat.Domain\Dwellers.Chat.Domain.csproj", "{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Chat.Domain", "Dwellers.Chat.Domain\Dwellers.Chat.Domain.csproj", "{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dwellers.Household.Domain", "Dwellers.Household.Domain\Dwellers.Household.Domain.csproj", "{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Household.Domain", "Dwellers.Household.Domain\Dwellers.Household.Domain.csproj", "{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Offerings.Domain", "Dwellers.Offerings.Domain\Dwellers.Offerings.Domain.csproj", "{00D208C9-59B6-40D2-8D06-F87A7BB6927A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dwellers.Notes.Domain", "Dwellers.Notes.Domain\Dwellers.Notes.Domain.csproj", "{574274D8-3FBB-4A15-B153-631BF6082350}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,12 +155,20 @@ Global
 		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D208C9-59B6-40D2-8D06-F87A7BB6927A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D208C9-59B6-40D2-8D06-F87A7BB6927A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D208C9-59B6-40D2-8D06-F87A7BB6927A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D208C9-59B6-40D2-8D06-F87A7BB6927A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{574274D8-3FBB-4A15-B153-631BF6082350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{574274D8-3FBB-4A15-B153-631BF6082350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{574274D8-3FBB-4A15-B153-631BF6082350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{574274D8-3FBB-4A15-B153-631BF6082350}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FC8E9B25-C904-4A10-A9C4-13D6D80CFFAB} = {AB869E0A-360E-44AF-B2CC-D5DFCC77F278}
+		{FC8E9B25-C904-4A10-A9C4-13D6D80CFFAB} = {E0CF8A52-C794-4456-AB26-117F56F172F9}
 		{E5D60AD5-39CA-436B-9869-48BF98B298B2} = {FC8E9B25-C904-4A10-A9C4-13D6D80CFFAB}
 		{E6ADC433-501D-4493-81C5-6A93D1F75691} = {FC8E9B25-C904-4A10-A9C4-13D6D80CFFAB}
 		{69479EE9-FFE1-4A97-A320-866B7C975C65} = {500FE27F-380B-4F9C-9077-7CB124CE022C}
@@ -179,6 +191,8 @@ Global
 		{363486B9-C6AA-4E44-B43E-4C54545B6A22} = {D5B71047-E08B-4FD0-95A9-FA4651F77F81}
 		{EAEEBCE6-09A8-462F-9614-4FE4B6EB093D} = {D7CBA853-CF41-4810-AE39-F7329BC85C2E}
 		{E0FA9F50-3BE9-4CEA-AE3E-C10D9F7239BC} = {FC8E9B25-C904-4A10-A9C4-13D6D80CFFAB}
+		{00D208C9-59B6-40D2-8D06-F87A7BB6927A} = {C098B2F0-3FD9-417D-89F7-15E8E5823473}
+		{574274D8-3FBB-4A15-B153-631BF6082350} = {E0CF8A52-C794-4456-AB26-117F56F172F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03F7727D-0D30-44F6-8909-DD8FFA13ADC5}

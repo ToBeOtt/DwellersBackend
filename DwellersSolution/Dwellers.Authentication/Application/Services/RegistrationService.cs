@@ -1,85 +1,72 @@
-﻿using Dwellers.Authentication.Application.Interfaces;
-using Dwellers.Authentication.Application.Services.Responses;
+﻿using Azure;
+using Dwellers.Authentication.Application.Interfaces;
 using Dwellers.Authentication.Domain;
+using Microsoft.Extensions.Logging;
+using SharedKernel.Application.ServiceResponse;
+using static Dwellers.Authentication.Application.Services.DTO.AuthenticationDTO;
 
 namespace Dwellers.Authentication.Application.Services
 {
     public class RegistrationService
     {
+        private readonly ILogger<RegistrationService> _logger;
         private readonly IRegistrationRepository _registrationRepository;
 
-        public RegistrationService(IRegistrationRepository registrationRepository)
+        public RegistrationService(
+            ILogger<RegistrationService> logger,
+            IRegistrationRepository registrationRepository)
         {
+            _logger = logger;
             _registrationRepository = registrationRepository;
         }
 
-
-        public async Task<RegisterServiceResponse<DbUser>> Register(string email, string alias, string password)
+        public async Task<ServiceResponse<RegistrationDTO>> Register(string email, string alias, string password)
         {
-
-            RegisterServiceResponse<DbUser> serviceResponse = new RegisterServiceResponse<DbUser> ();
+            ServiceResponse<RegistrationDTO> response = new();
 
             if (await _registrationRepository.CheckNoUserExist(email))
-            {
-                serviceResponse.ErrorMessage = "There was already another user with that email.";
-                serviceResponse.IsSuccess = false;
-                return serviceResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Email taken or wrong format", _logger);
 
             var user = new DbUser();
+
             var userCreationResult = user.CreateUser(email, alias);
             if (!userCreationResult.IsSuccess)
-            {
-                serviceResponse.ErrorMessage = userCreationResult.Info;
-                serviceResponse.IsSuccess = false;
-                return serviceResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Could not create user.", _logger, userCreationResult.Info);
 
             var result = await _registrationRepository.AddUser(user, password);
             if (!result.Succeeded)
-            {
-                serviceResponse.ErrorMessage = "User could not be added to database.";
-                serviceResponse.IsSuccess = false;
-                return serviceResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Could not create user.", _logger, userCreationResult.Info);
 
-            serviceResponse.IsSuccess = true;
-            serviceResponse.Data = user; 
-            return serviceResponse;
+            RegistrationDTO data = new(
+              DbUser: user);
+            return await response.SuccessResponse(response, data);
         }
 
-        public async Task<RegisterServiceResponse<DbUser>> AttachHouseTo(string email, string alias, string password)
+        public async Task<ServiceResponse<RegistrationDTO>> AttachHouseTo(string email, string alias, string password)
         {
-
-            RegisterServiceResponse<DbUser> serviceResponse = new RegisterServiceResponse<DbUser>();
+            ServiceResponse<RegistrationDTO> response = new();
 
             if (await _registrationRepository.CheckNoUserExist(email))
-            {
-                serviceResponse.ErrorMessage = "There was already another user with that email.";
-                serviceResponse.IsSuccess = false;
-                return serviceResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Duplicate email.", _logger);
 
             var user = new DbUser();
             var userCreationResult = user.CreateUser(email, alias);
             if (!userCreationResult.IsSuccess)
-            {
-                serviceResponse.ErrorMessage = userCreationResult.Info;
-                serviceResponse.IsSuccess = false;
-                return serviceResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Could not create user.", _logger);
 
             var result = await _registrationRepository.AddUser(user, password);
             if (!result.Succeeded)
-            {
-                serviceResponse.ErrorMessage = "User could not be added to database.";
-                serviceResponse.IsSuccess = false;
-                return serviceResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Could not create user.", _logger);
 
-            serviceResponse.IsSuccess = true;
-            serviceResponse.Data = user;
-            return serviceResponse;
+            RegistrationDTO data = new(
+              DbUser: user);
+            return await response.SuccessResponse(response, data);
         }
     }
 }

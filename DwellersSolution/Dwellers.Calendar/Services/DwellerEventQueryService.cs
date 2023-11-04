@@ -3,6 +3,7 @@ using Dwellers.Common.Data.Models.DwellerEvents;
 using Dwellers.Common.Persistance.CalendarModule.Interfaces;
 using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Users;
 using Microsoft.Extensions.Logging;
+using SharedKernel.Application.ServiceResponse;
 
 namespace Dwellers.Calendar.Services
 {
@@ -10,68 +11,51 @@ namespace Dwellers.Calendar.Services
     {
         private readonly ILogger<DwellerEventQueryService> _logger;
         private readonly IDwellerEventsQueryRepository _dwellerEventsQueryRepository;
-        private readonly IUserQueryRepository _userQueryRepository;
 
         public DwellerEventQueryService(
             ILogger<DwellerEventQueryService> logger,
-            IDwellerEventsQueryRepository dwellerEventsQueryRepository,
-            IUserQueryRepository userQueryRepository)
+            IDwellerEventsQueryRepository dwellerEventsQueryRepository)
         {
             _logger = logger;
             _dwellerEventsQueryRepository = dwellerEventsQueryRepository;
-            _userQueryRepository = userQueryRepository;
         }
-        public async Task<EventServiceResponse<DwellerEventEntity>> FetchEvent
+        public async Task<ServiceResponse<DwellerEventEntity>> FetchEvent
            (GetEventQuery query)
         {
-            EventServiceResponse<DwellerEventEntity> response = new();
+            ServiceResponse<DwellerEventEntity> response = new();
 
             var dwellerEvent = await _dwellerEventsQueryRepository.GetEvent(query.EventId);
             if (dwellerEvent == null)
-            {
-                _logger.LogInformation("No events found or registered");
-                response.IsSuccess = false;
-                return response;
-            }
-            response.IsSuccess = true;
-            response.Data = dwellerEvent;
-            return response;
+                return await response.ErrorResponse
+                        (response, "No events found or registered.", _logger);
+
+            return await response.SuccessResponse(response, dwellerEvent);
         }
 
-        public async Task<EventServiceResponse<ICollection<DwellerEventEntity>>> FetchAllEvents
+        public async Task<ServiceResponse<ICollection<DwellerEventEntity>>> FetchAllEvents
             (Guid houseId)
         {
-            EventServiceResponse<ICollection<DwellerEventEntity>> response = new();
+            ServiceResponse<ICollection<DwellerEventEntity>> response = new();
 
             var eventList = await _dwellerEventsQueryRepository.GetAllEvents(houseId);
             if (eventList == null)
-            {
-                _logger.LogInformation("No events found or registered");
-                response.IsSuccess = false;
-                return response;
-            }
+                return await response.ErrorResponse
+                           (response, "No events found or registered.", _logger);
 
-            response.IsSuccess = true;
-            response.Data = eventList;
-            return response;
+            return await response.SuccessResponse(response, eventList);
         }
 
-        public async Task<EventServiceResponse<ICollection<DwellerEventEntity>>> FetchUpcomingEvents
+        public async Task<ServiceResponse<ICollection<DwellerEventEntity>>> FetchUpcomingEvents
             (GetUpcomingEventsQuery query)
         {
-            EventServiceResponse<ICollection<DwellerEventEntity>> response = new();
+            ServiceResponse<ICollection<DwellerEventEntity>> response = new();
 
             var eventList = await _dwellerEventsQueryRepository.GetUpcomingEvents(query.HouseId);
             if (eventList == null)
-            {
-                _logger.LogInformation("No upcoming events can be found.");
-                response.IsSuccess = false;
-                return response;
-            }
-
-            response.IsSuccess = true;
-            response.Data = eventList;
-            return response;
+                return await response.ErrorResponse
+                        (response, "No upcoming events can be found.", _logger);
+        
+           return await response.SuccessResponse(response, eventList);;
         }
     }
 }

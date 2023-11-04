@@ -6,5 +6,6 @@
         public bool IsArchived { get; protected set; }
         public DateTime IsCreated { get; protected set; }
         public DateTime? IsModified { get; protected set; }
+
     }
 }

@@ -1,7 +1,7 @@
 using Dwellers.Authentication;
 using Dwellers.Calendar;
 using Dwellers.Chat;
-using Dwellers.Chat.Application.Hubs;
+using Dwellers.Chat.Hubs;
 using Dwellers.Common.Data;
 using Dwellers.Common.Persistance;
 using Dwellers.Household.Application;

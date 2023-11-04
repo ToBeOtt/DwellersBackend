@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SharedKernel.Domain;
 using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain.DomainResponse;
 
 namespace Dwellers.Household.Domain.Entities
 {

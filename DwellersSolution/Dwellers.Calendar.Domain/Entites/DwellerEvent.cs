@@ -1,6 +1,7 @@
 ﻿using Dwellers.Calendar.Contracts.Commands;
 using Dwellers.Calendar.Domain.Entites.ValueObjects;
 using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain.DomainResponse;
 
 namespace Dwellers.Calendar.Domain.Entites
 {
@@ -22,24 +23,24 @@ namespace Dwellers.Calendar.Domain.Entites
             IsArchived = false;
         }
 
-        public async Task<DomainResponse> SetScopeFromUI(string scope)
+        public async Task<DomainResponse<bool>> SetScopeFromUI(string scope)
         {
-            DomainResponse response = new();
+            DomainResponse<bool> response = new();
 
             int parsedScope = int.Parse(scope);
             if (parsedScope < 0 || parsedScope > 2)
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Could not set scope.";
+                response.DomainErrorMessage = "Could not set scope.";
                 return response;
             }
             var scopeResponse = await SetScopeFromDB(parsedScope);
             return scopeResponse;
         }
 
-        public async Task<DomainResponse> SetScopeFromDB(int scope)
+        public async Task<DomainResponse<bool>> SetScopeFromDB(int scope)
         {
-            DomainResponse response = new();
+            DomainResponse<bool> response = new();
             try
             {
                 EventScope = Visibility.FromDbValue(scope);
@@ -49,7 +50,7 @@ namespace Dwellers.Calendar.Domain.Entites
             catch (ArgumentException ex)
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = ex.Message;
+                response.DomainErrorMessage = ex.Message;
                 return response;
             }
         }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Graph.Models;
-using SharedKernel.Domain;
 using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain.DomainResponse;
 using System.Threading;
 
 namespace Dwellers.Household.Domain.Entities
