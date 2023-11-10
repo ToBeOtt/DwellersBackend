@@ -26,9 +26,5 @@ namespace Dwellers.Notes.Domain.ValueObjects
             throw new ArgumentException("Invalid value for priority");
         }
 
-        public override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Priority;
-        }
     }
 }

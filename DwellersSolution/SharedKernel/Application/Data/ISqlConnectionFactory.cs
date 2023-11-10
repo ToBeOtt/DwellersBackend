@@ -10,4 +10,3 @@ namespace SharedKernel.Application.Data;
 
         string GetConnectionString();
     }
-}

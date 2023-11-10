@@ -1,9 +1,8 @@
 ﻿using Dwellers.Common.Data.Models.DwellerServices;
 using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
-using Dwellers.Offerings.Application.Services.ServiceResponses;
 using Dwellers.Offerings.Contracts.Commands;
-using Dwellers.Offerings.Domain.Entities.DwellerServices;
+using Dwellers.Offerings.Domain.DwellerServices;
 using Dwellers.Offerings.Mappings.DwellerServices;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
@@ -42,9 +41,9 @@ namespace Dwellers.Offerings.Services.DwellerServices
                 return await response.ErrorResponse
                            (response, "Could not find household to which item belong.", _logger);
 
-            var dwellerService = new DomainDwellerService(cmd);
+            var dwellerService = new DwellerService(cmd.Name, cmd.Description);
 
-            var scopeSet = dwellerService.SetServiceScope(cmd.ServiceScope);
+            var scopeSet = await dwellerService.SetServiceScope(cmd.ServiceScope);
             if (!scopeSet.IsSuccess)
                 return await response.ErrorResponse
                         (response, "Something went wrong with adding the service.", _logger, scopeSet.DomainErrorMessage);

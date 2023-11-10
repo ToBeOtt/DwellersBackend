@@ -48,7 +48,7 @@ namespace Dwellers.Household.Domain.Entities
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Photo could not be added to user.";
+                response.DomainErrorMessage = "Photo could not be added to user.";
                 return response;
             }
         }

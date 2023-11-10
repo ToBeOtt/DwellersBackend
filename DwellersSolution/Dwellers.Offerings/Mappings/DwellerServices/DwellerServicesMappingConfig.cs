@@ -1,5 +1,5 @@
 ﻿using Dwellers.Common.Data.Models.DwellerServices;
-using Dwellers.Offerings.Domain.Entities.DwellerServices;
+using Dwellers.Offerings.Domain.DwellerServices;
 using Mapster;
 
 namespace Dwellers.Offerings.Mappings.DwellerServices
@@ -8,7 +8,7 @@ namespace Dwellers.Offerings.Mappings.DwellerServices
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<DwellerServiceEntity, DomainDwellerService>()
+            config.NewConfig<DwellerServiceEntity, DwellerService>()
                 .Map(dest => dest, src => src);
         }
     }

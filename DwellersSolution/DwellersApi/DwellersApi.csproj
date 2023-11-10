@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dwellers.Authentication\Dwellers.Authentication.csproj" />
+    <ProjectReference Include="..\Dwellers.Bulletins.Application\Dwellers.Bulletins.Application.csproj" />
+    <ProjectReference Include="..\Dwellers.Bulletins.Contracts\Dwellers.Bulletins.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Calendar\Dwellers.Calendar.csproj" />
     <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />

@@ -30,15 +30,15 @@ namespace Dwellers.Authentication.Application.Services
 
             var user = new DbUser();
 
-            var userCreationResult = user.CreateUser(email, alias);
+            var userCreationResult = await user.CreateUser(email, alias);
             if (!userCreationResult.IsSuccess)
                 return await response.ErrorResponse
-                        (response, "Could not create user.", _logger, userCreationResult.Info);
+                        (response, "Could not create user.", _logger, userCreationResult.DomainErrorMessage);
 
             var result = await _registrationRepository.AddUser(user, password);
             if (!result.Succeeded)
                 return await response.ErrorResponse
-                        (response, "Could not create user.", _logger, userCreationResult.Info);
+                        (response, "Could not create user.", _logger, userCreationResult.DomainErrorMessage);
 
             RegistrationDTO data = new(
               DbUser: user);
@@ -54,7 +54,7 @@ namespace Dwellers.Authentication.Application.Services
                         (response, "Duplicate email.", _logger);
 
             var user = new DbUser();
-            var userCreationResult = user.CreateUser(email, alias);
+            var userCreationResult = await user.CreateUser(email, alias);
             if (!userCreationResult.IsSuccess)
                 return await response.ErrorResponse
                         (response, "Could not create user.", _logger);

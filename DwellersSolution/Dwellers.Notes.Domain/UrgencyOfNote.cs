@@ -18,11 +18,11 @@ namespace Dwellers.Notes.Domain
             try
             {
                 NotePriority = NotePriority.FromDbValue(priority);
-                return await response.SuccessResponse(response);
+                return response.SuccessResponse(response);
             }
             catch (ArgumentException ex)
             {
-                return await response.ErrorResponse(response, "Could not convert status");
+                return response.ErrorResponse(response, "Could not convert status");
             }
         }
     }

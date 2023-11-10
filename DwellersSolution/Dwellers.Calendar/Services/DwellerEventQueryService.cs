@@ -1,7 +1,6 @@
 ﻿using Dwellers.Calendar.Contracts.Queries;
 using Dwellers.Common.Data.Models.DwellerEvents;
 using Dwellers.Common.Persistance.CalendarModule.Interfaces;
-using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Users;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
 

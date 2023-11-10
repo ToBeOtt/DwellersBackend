@@ -51,13 +51,13 @@ namespace Dwellers.Calendar.Services
             var scopeResult = await dwellerEvent.SetScopeFromUI(cmd.EventScope);
             if (!scopeResult.IsSuccess)
                 return await response.ErrorResponse
-                         (response, "Server-error", _logger, response.DomainErrorMessage);
+                         (response, "Server-error", _logger, response.ErrorMessage);
 
             var persistanceEvent = _mapping.MapToPersistence(dwellerEvent);
 
             if (!await _eventsCommandRepository.AddEvent(persistanceEvent))
                 return await response.ErrorResponse
-                     (response, "Server-error", _logger,);
+                     (response, "Server-error", _logger);
 
             return await response.SuccessResponse(response);
         }

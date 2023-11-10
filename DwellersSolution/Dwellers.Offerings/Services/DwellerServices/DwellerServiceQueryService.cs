@@ -1,7 +1,5 @@
-﻿using Azure;
-using Dwellers.Common.Data.Models.DwellerServices;
+﻿using Dwellers.Common.Data.Models.DwellerServices;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
-using Dwellers.Offerings.Application.Services.ServiceResponses;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
 

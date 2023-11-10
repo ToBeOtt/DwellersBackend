@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using SharedKernel.Application.Queries;
+using System.Threading.Tasks;
 
 namespace SharedKernel.Application.Outbox
 {

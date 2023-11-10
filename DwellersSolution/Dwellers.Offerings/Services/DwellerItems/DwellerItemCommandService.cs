@@ -1,9 +1,8 @@
 ﻿using Dwellers.Common.Data.Models.DwellerItems;
 using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
-using Dwellers.Offerings.Application.Services.ServiceResponses;
 using Dwellers.Offerings.Contracts.Commands;
-using Dwellers.Offerings.Domain.Entities.DwellerItems;
+using Dwellers.Offerings.Domain.DwellerItems;
 using Dwellers.Offerings.Mappings.DwellerItems;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.ServiceResponse;
@@ -41,7 +40,7 @@ namespace Dwellers.Offerings.Services.DwellerItems
                 return await response.ErrorResponse
                     (response, "The item could not be added.", _logger, "Could not find entity in database.");
 
-            var dwellerItem = new DomainDwellerItem(cmd.Name, cmd.Desc);
+            var dwellerItem = new DwellerItem(cmd.Name, cmd.Desc);
 
             if (cmd.ItemScope != null)
             {

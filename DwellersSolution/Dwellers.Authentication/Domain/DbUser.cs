@@ -20,29 +20,29 @@ namespace Dwellers.Authentication.Domain
             var aliasResponse = await SetAlias(alias);
             if (!aliasResponse.IsSuccess) return (aliasResponse);
 
-            return await domainResponse.SuccessResponse(domainResponse);
+            return domainResponse.SuccessResponse(domainResponse);
         }
 
         public async Task<DomainResponse<bool>> SetEmail(string email)
         {
             DomainResponse<bool> domainResponse = new();
             if (this.UserName != null && this.UserName != email)
-                return await domainResponse.ErrorResponse(domainResponse, "Email is not the same as username.");
+                return domainResponse.ErrorResponse(domainResponse, "Email is not the same as username.");
 
             Email = email;
             UserName = email;
 
-            return await domainResponse.SuccessResponse(domainResponse);
+            return domainResponse.SuccessResponse(domainResponse);
         }
 
         public async Task<DomainResponse<bool>> SetAlias(string alias)
         {
             DomainResponse<bool> domainResponse = new();
             if (alias.IsNullOrEmpty())
-                return await domainResponse.ErrorResponse(domainResponse, "Username is not the same as username.");
+                return domainResponse.ErrorResponse(domainResponse, "Username is not the same as username.");
 
             Alias = alias;
-            return await domainResponse.SuccessResponse(domainResponse);
+            return domainResponse.SuccessResponse(domainResponse);
         }
     }
 }

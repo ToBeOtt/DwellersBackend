@@ -1,5 +1,5 @@
 ﻿using Dwellers.Common.Data.Models.DwellerItems;
-using Dwellers.Offerings.Domain.Entities.DwellerItems;
+using Dwellers.Offerings.Domain.DwellerItems;
 using Mapster;
 
 namespace Dwellers.Offerings.Mappings.DwellerItems
@@ -13,15 +13,15 @@ namespace Dwellers.Offerings.Mappings.DwellerItems
             _config = config;
         }
 
-        public DwellerItemEntity MapToPersistence(DomainDwellerItem domainItem)
+        public DwellerItemEntity MapToPersistence(DwellerItem domainItem)
         {
             var persistenceItem = domainItem.Adapt<DwellerItemEntity>(_config);
             return persistenceItem;
         }
 
-        public DomainDwellerItem MapToDomain(DwellerItemEntity persistenceItem)
+        public DwellerItem MapToDomain(DwellerItemEntity persistenceItem)
         {
-            var domainItem = persistenceItem.Adapt<DomainDwellerItem>(_config);
+            var domainItem = persistenceItem.Adapt<DwellerItem>(_config);
             return domainItem;
         }
     }

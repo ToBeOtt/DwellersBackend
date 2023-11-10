@@ -24,11 +24,11 @@ namespace Dwellers.Notes.Domain
             try
             {
                 NoteScope = Visibility.FromDbValue(scope);
-                return await response.SuccessResponse(response);
+                return response.SuccessResponse(response);
             }
             catch (ArgumentException ex)
             {
-                return await response.ErrorResponse(response, "Could not convert status");
+                return response.ErrorResponse(response, "Could not convert status");
             }
         }
 

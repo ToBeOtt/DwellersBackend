@@ -26,10 +26,5 @@ namespace Dwellers.Offerings.Domain.ValueObjects
             }
             throw new ArgumentException("Invalid value for VisibilityScope");
         }
-
-        public override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Scope;
-        }
     }
 }

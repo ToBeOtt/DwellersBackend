@@ -1,6 +1,4 @@
-﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
-using Dwellers.Common.Data.Models.Household;
-using System.ComponentModel.DataAnnotations;
+﻿using Dwellers.Common.Data.Models.Household;
 
 namespace Dwellers.Common.Data.Models.DwellerEvents
 {
@@ -13,7 +11,7 @@ namespace Dwellers.Common.Data.Models.DwellerEvents
         public DateTime EventDate { get; private set; }
         public int EventScope { get; private set; }
 
-        public bool Archived { get; private set; }
+        public bool IsArchived { get; private set; }
         public DateTime IsCreated { get; private set; }
         public DateTime? IsModified { get; private set; }
 

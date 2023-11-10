@@ -35,10 +35,10 @@ namespace Dwellers.Offerings.Domain.DwellerItems
             if (Enum.TryParse(scope, out VisibilityScope itemscope))
             {
                 ItemScope = itemscope;
-                return await response.SuccessResponse(response);
+                return response.SuccessResponse(response);
             }
 
-            return await response.ErrorResponse(response, "Scope could not be parsed to enum.");
+            return response.ErrorResponse(response, "Scope could not be parsed to enum.");
         }
 
         public async Task<DomainResponse<bool>> SetItemPhoto(IFormFile photo)
@@ -53,12 +53,12 @@ namespace Dwellers.Offerings.Domain.DwellerItems
                     byte[] imageData = memoryStream.ToArray();
 
                     ItemPhoto = imageData;
-                    return await response.SuccessResponse(response);
+                    return response.SuccessResponse(response);
                 }
             }
             catch (Exception ex)
             {
-                return await response.ErrorResponse(response, ex.Message);
+                return response.ErrorResponse(response, ex.Message);
             }
         }
     }

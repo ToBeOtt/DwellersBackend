@@ -19,8 +19,7 @@ namespace Dwellers.Common.Data.Models.Household
         // Joins
         public ICollection<HouseUserEntity> HouseUsers { get; private set; }
         public ICollection<NoteEntity> Notes { get; set; }
-        public ICollection<HouseNoteholderEntity> HouseNoteholders { get; private set; }
-
+ 
         public ICollection<BorrowedItemEntity> BorrowedItems { get; set; }
         public ICollection<ProvidedServiceEntity> ProvidedServices { get; set; }
 

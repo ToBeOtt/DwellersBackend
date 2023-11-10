@@ -32,7 +32,7 @@ namespace Dwellers.Household.Domain.Entities
             else
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Housename must be unique.";
+                response.DomainErrorMessage = "Housename must be unique.";
             }
 
             return response;
@@ -63,7 +63,7 @@ namespace Dwellers.Household.Domain.Entities
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Photo could not be added.";
+                response.DomainErrorMessage = "Photo could not be added.";
                 return response;
             }
         }

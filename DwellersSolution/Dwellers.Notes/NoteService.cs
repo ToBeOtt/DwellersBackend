@@ -26,6 +26,7 @@ namespace Dwellers.Notes
         {
             var note = await _noteQuery.GetNoteById(noteId);
             DbModelDTO dTO = new DbModelDTO();
+            return note;
         }
     }
 }

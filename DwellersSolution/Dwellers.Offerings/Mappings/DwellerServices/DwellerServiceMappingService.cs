@@ -1,5 +1,5 @@
 ﻿using Dwellers.Common.Data.Models.DwellerServices;
-using Dwellers.Offerings.Domain.Entities.DwellerServices;
+using Dwellers.Offerings.Domain.DwellerServices;
 using Mapster;
 
 namespace Dwellers.Offerings.Mappings.DwellerServices
@@ -12,15 +12,15 @@ namespace Dwellers.Offerings.Mappings.DwellerServices
             _config = config;
         }
 
-        public DwellerServiceEntity MapToPersistence(DomainDwellerService domainItem)
+        public DwellerServiceEntity MapToPersistence(DwellerService domainItem)
         {
             var persistenceItem = domainItem.Adapt<DwellerServiceEntity>(_config);
             return persistenceItem;
         }
 
-        public DomainDwellerService MapToDomain(DwellerServiceEntity persistenceItem)
+        public DwellerService MapToDomain(DwellerServiceEntity persistenceItem)
         {
-            var domainItem = persistenceItem.Adapt<DomainDwellerService>(_config);
+            var domainItem = persistenceItem.Adapt<DwellerService>(_config);
             return domainItem;
         }
     }

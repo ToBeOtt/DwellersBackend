@@ -31,11 +31,11 @@ namespace Dwellers.Notes.Domain
             try
             {
                 NoteStatus = NoteStatus.FromDbValue(status);
-                return await response.SuccessResponse(response);
+                return response.SuccessResponse(response);
             }
             catch (ArgumentException ex)
             {
-                return await response.ErrorResponse(response, "Could not convert status");
+                return response.ErrorResponse(response, "Could not convert status");
             }
         }
 
@@ -50,10 +50,10 @@ namespace Dwellers.Notes.Domain
             if (validatedTags.IsSuccess)
             {
                 Tags = validatedTags.DomainData;
-                return await domainResponse.SuccessResponse(domainResponse, Tags);
+                return domainResponse.SuccessResponse(domainResponse, Tags);
             }
 
-            return await domainResponse.ErrorResponse(domainResponse, "Tag could not be added.");
+            return domainResponse.ErrorResponse(domainResponse, "Tag could not be added.");
         }
 
         public async Task<DomainResponse<List<string>>> ValidateAndCheckForDuplicates
@@ -64,7 +64,7 @@ namespace Dwellers.Notes.Domain
             foreach (var tag in tags)
             {
                 if (tag.Any(ch => !char.IsLetterOrDigit(ch)))
-                    return await domainResponse.ErrorResponse
+                    return domainResponse.ErrorResponse
                         (domainResponse, "Format of hashtag not allowed");
 
                 tag.ToLower();
@@ -79,7 +79,7 @@ namespace Dwellers.Notes.Domain
                 Tags = tags;
             }
 
-            return await domainResponse.SuccessResponse(domainResponse, Tags);
+            return domainResponse.SuccessResponse(domainResponse, Tags);
         }
 
 

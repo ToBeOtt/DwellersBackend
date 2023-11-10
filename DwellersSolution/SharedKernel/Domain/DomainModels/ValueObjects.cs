@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using SharedKernel.Domain.DomainResponse;
+using System.Reflection;
 
 namespace SharedKernel.Domain.DomainModels
 {
@@ -72,7 +73,23 @@ namespace SharedKernel.Domain.DomainModels
                 throw new BusinessRuleValidationException(rule);
             }
         }
+        public static DomainResponse<bool> DwellerValidation(IBusinessRule rule)
+        {
+            if (rule.IsBroken())
+            {
+                return new DomainResponse<bool>
+                {
+                    IsSuccess = false,
+                    DomainErrorMessage = rule.Message
+                };
+            }
 
+            return new DomainResponse<bool>
+            {
+                IsSuccess = true,
+            };
+        }
+        
         private bool PropertiesAreEqual(object obj, PropertyInfo p)
         {
             return object.Equals(p.GetValue(this, null), p.GetValue(obj, null));

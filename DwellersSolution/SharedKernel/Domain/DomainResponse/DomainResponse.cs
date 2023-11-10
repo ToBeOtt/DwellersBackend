@@ -2,11 +2,11 @@
 {
     public class DomainResponse<T>
     {
-        public bool IsSuccess { get; set; }
+        public bool IsSuccess { get; set; } = true;
         public T? DomainData { get; set; }
         public string? DomainErrorMessage { get; set; }
 
-        public virtual async Task<DomainResponse<T>> ErrorResponse
+        public virtual DomainResponse<T> ErrorResponse
             (DomainResponse<T> response, string? message = null)
         {
             response.IsSuccess = false;
@@ -15,7 +15,7 @@
             return response;
         }
 
-        public virtual async Task<DomainResponse<T>> SuccessResponse
+        public virtual DomainResponse<T> SuccessResponse
          (DomainResponse<T> response, T data = default)
         {
             response.IsSuccess = true;

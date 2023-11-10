@@ -17,9 +17,6 @@ namespace DwellersApi.Common.Mapping.Notes
 
             config.NewConfig<GetNoteRequest, GetNoteQuery>();
             config.NewConfig<GetNotesRequest, GetNotesQuery>();
-            config.NewConfig<GetNoteholdersRequest, GetNoteholdersQuery>();
-
-            config.NewConfig<GetNoteholdersRequest, GetNoteholdersQuery>();
 
             config.NewConfig<RemoveNoteRequest, RemoveNoteCommand>();
 

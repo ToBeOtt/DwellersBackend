@@ -35,10 +35,10 @@ namespace Dwellers.Offerings.Domain.DwellerServices
             if (Enum.TryParse(scope, out VisibilityScope serviceScope))
             {
                 ServiceScope = serviceScope;
-                return await response.SuccessResponse(response);
+                return response.SuccessResponse(response);
             }
 
-            return await  response.ErrorResponse(response, "Scope could not be parsed to enum.");
+            return response.ErrorResponse(response, "Scope could not be parsed to enum.");
         }
     }
 }
