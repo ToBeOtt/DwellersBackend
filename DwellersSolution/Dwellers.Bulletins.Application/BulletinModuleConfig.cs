@@ -12,7 +12,6 @@ namespace Dwellers.Bulletins.Application
         {
             //services.AddTransient<ICommandHandler<AddSomethingCommand, AddSomethingResult>, TestHandler>();
            
-            services.AddTransient<BulletinCommandService>();
             return services;
         }
     }

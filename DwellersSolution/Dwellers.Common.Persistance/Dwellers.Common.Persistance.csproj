@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Dwellers.Common.Data\Dwellers.Common.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BulletinModule\Interfaces\" />
+  </ItemGroup>
+
 </Project>

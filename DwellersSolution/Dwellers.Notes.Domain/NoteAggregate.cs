@@ -5,7 +5,7 @@ namespace Dwellers.Notes.Domain
 {
     public sealed class NoteAggregate : BaseEntity
     {
-        private Guid _Id { get; set; }
+        private Guid Id { get; set; }
         public string? Name { get; private set; } = null;
         public string? Description { get; private set; } = null;
 
@@ -38,7 +38,7 @@ namespace Dwellers.Notes.Domain
         public async Task UpdateNote(DbModelDTO editedNote)
         {
             new NoteAggregate(editedNote);
-        }
+        } 
 
     }
 }

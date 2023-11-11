@@ -23,15 +23,15 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             _status = status;
         }
 
-        public static class BulletinStatusFactory
+        internal static class BulletinStatusFactory
         {
-            public static BulletinStatus CreateNewStatus(string strStatusValue)
+            internal static BulletinStatus CreateNewStatus(string strStatusValue)
             {
                 return new BulletinStatus(strStatusValue);
             }
         }
 
-        public void ModifyBulletinStatus(Status status, BulletinId bulletinId)
+        internal void ModifyBulletinStatus(Status status, BulletinId bulletinId)
         {
             CheckRule(new StatusHasNotChanged(_status, status));
 
@@ -43,7 +43,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             }
         }
 
-        public void ConvertStatusFromDbValue(int dbValue)
+        internal void ConvertStatusFromDbValue(int dbValue)
         {
             if (Enum.IsDefined(typeof(Status), dbValue))
             {
@@ -55,7 +55,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             }
         }
 
-        public static Status ConvertPriorityFromUIValue(string uiValue)
+        internal static Status ConvertPriorityFromUIValue(string uiValue)
         {
             if (int.TryParse(uiValue, out int parsedvalue) && 
                 Enum.IsDefined(typeof(Status), parsedvalue))

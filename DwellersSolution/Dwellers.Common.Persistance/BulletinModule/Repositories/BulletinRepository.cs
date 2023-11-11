@@ -1,7 +1,7 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins;
 using Dwellers.Common.Data.Context;
-using Dwellers.Common.Persistance.BulletinModule.Interfaces;
 using Dwellers.Common.Persistance.Common;
+using Microsoft.EntityFrameworkCore;
 using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
 
 namespace Dwellers.Common.Persistance.BulletinModule.Repositories
@@ -15,26 +15,21 @@ namespace Dwellers.Common.Persistance.BulletinModule.Repositories
             _context = context;
         }
 
-
-        public async Task AddAsync(Bulletin bulletin)
+        public async Task<bool> AddBulletin(Bulletin bulletin)
         {
             _context.Bulletins.AddAsync(bulletin);
-            await Save();
+            return await Save();
         }
 
-        public async Task<Bulletin> GetByIdAsync(BulletinId id)
+        public async Task<Bulletin> GetById(BulletinId id)
         {
-            return await _context.Bulletins.FindAsync(id);
+            return await _context.Bulletins.Where(b => b.Id == id).SingleOrDefaultAsync();
         }
 
-        Task IBulletinRepository.DeleteAsync(Bulletin bulletin)
+        public async Task<bool> DeleteBulletin(Bulletin bulletin)
         {
-            throw new NotImplementedException();
-        }
-
-        Task IBulletinRepository.UpdateAsync(Bulletin bulletin)
-        {
-            throw new NotImplementedException();
+            _context.Bulletins.Update(bulletin);
+            return await Save();
         }
     }
 }

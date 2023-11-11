@@ -10,10 +10,10 @@ namespace Dwellers.Bulletins.Application
     {
         public static IServiceCollection AddSharedKernelServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.TryAddSingleton<ICommandDispatcher, CommandDispatcher>();
-            services.AddSingleton<ICommandHandlerFactory, CommandHandlerFactory>();
-            services.TryAddSingleton<IQueryDispatcher, QueryDispatcher>();
-            services.AddSingleton<IQueryHandlerFactory, QueryHandlerFactory>();
+            services.AddTransient<ICommandDispatcher, CommandDispatcher>();
+            services.AddTransient<ICommandHandlerFactory, CommandHandlerFactory>();
+            services.AddTransient<IQueryDispatcher, QueryDispatcher>();
+            services.AddTransient<IQueryHandlerFactory, QueryHandlerFactory>();
 
             services.Scan(selector =>
             {

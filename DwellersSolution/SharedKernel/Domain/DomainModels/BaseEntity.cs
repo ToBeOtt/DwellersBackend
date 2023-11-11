@@ -4,11 +4,6 @@ namespace SharedKernel.Domain.DomainModels
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; set; }
-        public DateTime IsCreated { get; set; }
-        public DateTime IsModified { get; set; }
-        public bool IsArchived { get; set; }
-
         private List<IDomainEvent> _domainEvents;
 
         /// <summary>

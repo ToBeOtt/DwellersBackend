@@ -6,11 +6,15 @@ namespace Dwellers.Household.Domain.Entities
 {
     public sealed class DwellerHouse: BaseEntity
     {
+        public Guid Id { get; set; }    
         public Guid HouseholdCode { get; set; }
         public string Name { get; private set; }
         public string? Description { get; private set; }
         public byte[]? HousePhoto { get; set; }
 
+        public bool IsArchived { get; set; }
+        public DateTime IsCreated { get; set; }
+        public DateTime? IsModified { get; set; }
 
         public DwellerHouse() 
         {

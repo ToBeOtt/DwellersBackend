@@ -7,12 +7,17 @@ namespace Dwellers.Offerings.Domain.DwellerItems
 {
     public sealed class DwellerItem : BaseEntity
     {
+        public Guid Id { get; set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
 
         public VisibilityScope ItemScope { get; private set; }
         public byte[]? ItemPhoto { get; private set; }
         public bool ItemStatus { get; private set; }
+
+        public bool IsArchived { get; set; }
+        public DateTime IsCreated { get; set; }
+        public DateTime? IsModified { get; set; }
 
         public DwellerItem()
         {

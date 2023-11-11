@@ -1,8 +1,8 @@
-﻿using Dwellers.Bulletins.Application.Bulletins.Commands;
-using MediatR;
+﻿using Dwellers.Bulletins.Application.Bulletins.Commands.AddBulletin;
 using Microsoft.AspNetCore.Mvc;
-using static Dwellers.Bulletins.Contracts.Commands.BulletinCommands;
+using SharedKernel.Infrastructure.Configuration.Commands;
 using static Dwellers.Bulletins.Contracts.Request.BulletinRequests;
+using static SharedKernel.Application.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace DwellersApi.Controllers.BulletinModule
 {
@@ -11,13 +11,12 @@ namespace DwellersApi.Controllers.BulletinModule
     [Route("bulletin")]
     public class BulletinController : ControllerBase
     {
-        private readonly ISender _mediator;
-
+        private readonly ICommandHandlerFactory _commandHandler;
 
         public BulletinController(
-            ISender mediator)
+          ICommandHandlerFactory commandHandler)
         {
-            _mediator = mediator;
+            _commandHandler = commandHandler;
         }
 
         // DWELLER-ITEMS
@@ -30,22 +29,24 @@ namespace DwellersApi.Controllers.BulletinModule
             //{
             //    return BadRequest("Invalid user");
             //}
-            string tempUserID = "stringId";
 
+            var tempUserId = "f845394++5+040";
             var cmd = new AddBulletinCommand(
-                      UserId: tempUserID,
-                      Title: request.Name,
-                      Text: request.Desc,
-                      BulletinPriority: request.BulletinPriority,
-                      BulletinStatus: request.BulletinStatus,
+                      UserId: tempUserId,
+                      //UserId: userId.Value,
+                      Title: request.Title,
+                      Text: request.Text,
                       BulletinTags: request.BulletinTags,
-                      ChosenHouses: request.ChosenHouses,
-                      Visibility: request.Visibility
-                      );
+                      BulletinStatus: request.BulletinStatus,
+                      BulletinPriority: request.BulletinPriority,
+                      Visibility: request.Visibility,
+                      ChosenHouses: request.ChosenHouses
+            ); ;
 
+            var handler = _commandHandler.GetHandler<AddBulletinCommand, DwellerUnit>();
+            var result = await handler.Handle(cmd, new CancellationToken());
 
-            var result = await _mediator.Send(cmd);
-            if (result == null)
+            if (!result.IsSuccess)
             {
                 return BadRequest();
             }

@@ -1,4 +1,6 @@
-﻿using Dwellers.Calendar.Application.Interfaces;
+﻿using Dwellers.Bulletins.Domain.Bulletins;
+using Dwellers.Calendar.Application.Interfaces;
+using Dwellers.Common.Persistance.BulletinModule.Repositories;
 using Dwellers.Common.Persistance.CalendarModule.Interfaces;
 using Dwellers.Common.Persistance.CalendarModule.Repositories;
 using Dwellers.Common.Persistance.ChatModule.Interfaces;
@@ -36,6 +38,8 @@ namespace Dwellers.Common.Persistance
 
             services.AddTransient<INoteCommandRepository, NoteCommandRepository>();
             services.AddTransient<INoteQueryRepository, NoteQueryRepository>();
+
+            services.AddTransient<IBulletinRepository, BulletinRepository>();
 
             services.AddTransient<IChatCommandRepository, ChatCommandRepository>();
             services.AddTransient<IChatQueryRepository, ChatQueryRepository>();

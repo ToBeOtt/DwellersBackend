@@ -22,15 +22,15 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             _priority = priority;
         }
 
-        public static class BulletinPriorityFactory
+        internal static class BulletinPriorityFactory
         {
-            public static BulletinPriority CreateNewPriority(string strPriority)
+            internal static BulletinPriority CreateNewPriority(string strPriority)
             {
                 return new BulletinPriority(strPriority);
             }
         }
 
-        public void ConvertPriorityFromDbValue(int dbValue)
+        internal void ConvertPriorityFromDbValue(int dbValue)
         {
             if (Enum.IsDefined(typeof(Priority), dbValue))
             {
@@ -41,7 +41,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
                 throw new ArgumentException("Invalid value for status");
             }
         }
-        public static Priority ConvertPriorityFromUIValue(string uiValue)
+        internal static Priority ConvertPriorityFromUIValue(string uiValue)
         {
             if (int.TryParse(uiValue, out int parsedvalue) && Enum.IsDefined(typeof(Priority), parsedvalue))
             {

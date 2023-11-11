@@ -1,8 +1,9 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins.DomainEvents;
 using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using Microsoft.Graph.Models;
 using SharedKernel.Domain.DomainModels;
+using static Dwellers.Bulletins.Domain.Bulletins.BulletinPriority;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinScope;
+using static Dwellers.Bulletins.Domain.Bulletins.BulletinStatus;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinTag;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
@@ -24,6 +25,8 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         private string _userId;
 
         private bool _isArchived;
+        private DateTime _isCreated;
+        private DateTime _isModified;
 
         public Bulletin() { }
 
@@ -32,8 +35,8 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             string title,
             string text,
             List<string> tags,
-            BulletinPriority bulletinPriority,
-            BulletinStatus bulletinStatus,
+            string bulletinPriority,
+            string bulletinStatus,
             List<Guid>? houseList,
             string visibility
             )
@@ -42,12 +45,13 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             _userId = userId;
             _title = title;
             _text = text;
-            _priority = bulletinPriority;
-            _status = bulletinStatus;
+            _priority = BulletinPriorityFactory.CreateNewPriority(bulletinPriority);
+            _status = BulletinStatusFactory.CreateNewStatus(bulletinStatus);
             _tags = BulletinTagFactory.CreateNewCollectionOfTags(tags, Id);
             _scope = BulletinScopeFactory.SetBulletinScope(Id, houseList, visibility);
+            _isArchived = false;
+            _isCreated = DateTime.Now;
         }
-
         public static class BulletinPostFactory
         {
            public static Bulletin CreateNewBulletin(
@@ -55,8 +59,8 @@ namespace Dwellers.Bulletins.Domain.Bulletins
                 string title,
                 string text,
                 List<string> tags,
-                BulletinPriority bulletinPriority,
-                BulletinStatus bulletinStatus,
+                string bulletinPriority,
+                string bulletinStatus,
                 List<Guid>? houseList,
                 string visibility)
             {
@@ -75,6 +79,12 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public void StatusUpdateToDone(BulletinStatusChangedToDoneDomainEvent @event)
         {
             _isArchived = true;
+        }
+
+        public void ArchiveBulletin(Bulletin bulletin)
+        {
+            _isArchived = true;
+            _isModified = DateTime.Now;
         }
 
         public void AddTags(List<BulletinTag> tags)

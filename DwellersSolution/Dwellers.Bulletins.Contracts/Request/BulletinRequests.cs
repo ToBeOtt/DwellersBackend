@@ -3,13 +3,15 @@
     public class BulletinRequests
     {
         public record AddBulletinRequest(
-          string Name,
-          string Desc,
-          string BulletinPriority,
-          string BulletinStatus,
+          string Title,
+          string Text,
           List<string> BulletinTags,
-          List<Guid>? ChosenHouses,
-          string Visibility);
+          string BulletinStatus,
+          string BulletinPriority,
+          string Visibility,
+          List<Guid>? ChosenHouses
+          );
             
     }
 }
+

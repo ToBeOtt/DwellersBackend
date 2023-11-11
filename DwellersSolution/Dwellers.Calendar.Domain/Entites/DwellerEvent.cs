@@ -7,11 +7,15 @@ namespace Dwellers.Calendar.Domain.Entites
 {
     public sealed class DwellerEvent : BaseEntity
     {
+        public Guid Id { get; set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
 
         public DateTime EventDate { get; private set; }
         public Visibility EventScope { get; private set; }
+        public bool IsArchived { get; set; }
+        public DateTime IsCreated { get; set; }
+        public DateTime? IsModified { get; set; }
 
 
         public DwellerEvent(AddEventCommand cmd)

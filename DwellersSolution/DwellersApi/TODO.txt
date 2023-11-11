@@ -1,6 +1,6 @@
 {
-  "name": "fdhgfh",
-  "desc": "hgjfj",
+  "title": "fdhgfh",
+  "text": "hgjfj",
   "bulletinPriority": "2",
   "bulletinStatus": "1",
   "bulletinTags": [

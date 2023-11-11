@@ -4,7 +4,7 @@ namespace SharedKernel.Application.ServiceResponse
 {
     public class ServiceResponse<T>
     {
-        public bool IsSuccess { get; set; }
+        public bool IsSuccess { get; set; } = true;
         public T? Data { get; set; }
         public string? ErrorMessage{ get; set; }
 
