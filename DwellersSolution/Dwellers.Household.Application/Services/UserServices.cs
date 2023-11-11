@@ -39,10 +39,9 @@ namespace Dwellers.Household.Services
             dwellerUser.Alias = dbUserAlias;
 
             if (!await _userCommand.AddUser(dwellerUser))
-                return await response.ReturnError(response, "User could not be persisted.", _logger);
-       
-            response.IsSuccess = true;
-            return response;
+                return await response.ErrorResponse(response, "User could not be persisted.", _logger);
+
+            return await response.SuccessResponse(response);
         }
 
         public async Task<ServiceResponse<DwellerUserEntity>> UpdateUserInformation
@@ -52,14 +51,11 @@ namespace Dwellers.Household.Services
 
             var user = await _userQuery.GetUserById(cmd.UserId);
             if (user is null)
-                return await response.ReturnError
+                return await response.ErrorResponse
                     (response, "User could not be found.", _logger, 
                     "An error occurred while updating the user profile photo.");
            
-
-            response.IsSuccess = true;
-            response.Data = user;
-            return response;
+            return await response.SuccessResponse(response, user);
         }
 
         public async Task<ServiceResponse<UserDetailsDTO>> FetchUserDetails
@@ -68,12 +64,12 @@ namespace Dwellers.Household.Services
             ServiceResponse<UserDetailsDTO> response = new();
             var user = await _userQuery.GetUserById(query.UserId);
             if (user is null)
-                return await response.ReturnError(response, "User details could not be fetched.", _logger);
+                return await response.ErrorResponse(response, "User details could not be fetched.", _logger);
 
             
             var house = await _houseQuery.GetHouseById(query.HouseId);
             if (house is null)
-                return await response.ReturnError
+                return await response.ErrorResponse
                     (response, "User details could not be fetched.", _logger, "House not found in database.");
 
 
@@ -81,7 +77,7 @@ namespace Dwellers.Household.Services
                 User: user,
                 House: house
                 );
-            return await response.ReturnSuccess(response, data);
+            return await response.SuccessResponse(response, data);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Dwellers.Chat.Application.Services;
+﻿using Dwellers.Chat.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Authentication;
@@ -39,7 +39,7 @@ namespace DwellersApi.Controllers.Household
 
             if (!result.IsSuccess)
             {
-                return BadRequest(result.ValidationMessage);
+                return BadRequest(result.ErrorMessage);
             }
 
             return Ok(result.Data);
@@ -58,7 +58,7 @@ namespace DwellersApi.Controllers.Household
 
             if (!result.IsSuccess)
             {
-                return BadRequest(result.ValidationMessage);
+                return BadRequest(result.ErrorMessage);
             }
             return Ok(result.Data);
         }

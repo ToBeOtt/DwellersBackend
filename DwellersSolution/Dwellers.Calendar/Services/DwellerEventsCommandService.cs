@@ -5,6 +5,7 @@ using Dwellers.Calendar.Mappings;
 using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
 using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Users;
 using Microsoft.Extensions.Logging;
+using SharedKernel.Application.ServiceResponse;
 
 namespace Dwellers.Calendar.Services
 {
@@ -31,46 +32,34 @@ namespace Dwellers.Calendar.Services
             _mapping = mapping;
         }
 
-        public async Task<EventServiceResponse<bool>> CreateAndPersistEvent(AddEventCommand cmd)
+        public async Task<ServiceResponse<bool>> CreateAndPersistEvent(AddEventCommand cmd)
         {
-            EventServiceResponse<bool> response = new();
+            ServiceResponse<bool> response = new();
 
             var user = await _userQueryRepository.GetUserById(cmd.UserId);
             if (user is null)
-            {
-                _logger.LogInformation("Could not find entity in database");
-                response.IsSuccess = false;
-                return response;
-            }
+                return await response.ErrorResponse
+                        (response, "Server-error", _logger, "User could not be found");
 
             var house = await _houseQueryRepository.GetHouseById(cmd.HouseId);
             if (house is null)
-            {
-                _logger.LogInformation("Could not find entity in database");
-                response.IsSuccess = false;
-                return response;
-            }
+                return await response.ErrorResponse
+                        (response, "Server-error", _logger, "User could not be found");
+
 
             var dwellerEvent = new DwellerEvent(cmd);
             var scopeResult = await dwellerEvent.SetScopeFromUI(cmd.EventScope);
             if (!scopeResult.IsSuccess)
-            {
-                _logger.LogInformation(response.ErrorMessage);
-                response.IsSuccess = false;
-                return response;
-            }
+                return await response.ErrorResponse
+                         (response, "Server-error", _logger, response.ErrorMessage);
 
             var persistanceEvent = _mapping.MapToPersistence(dwellerEvent);
 
             if (!await _eventsCommandRepository.AddEvent(persistanceEvent))
-            {
-                _logger.LogInformation("Could not persist event to database");
-                response.IsSuccess = false;
-                return response;
-            }
+                return await response.ErrorResponse
+                     (response, "Server-error", _logger);
 
-            response.IsSuccess = true;
-            return response;
+            return await response.SuccessResponse(response);
         }
     }
 }

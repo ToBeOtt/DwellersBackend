@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Offerings.Domain\Dwellers.Offerings.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,4 @@
-﻿using Dwellers.Common.Data.Models.Common.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dwellers.Common.Data.Models.DwellerServices
+﻿namespace Dwellers.Common.Data.Models.DwellerServices
 {
     public sealed class DwellerServiceEntity
     {

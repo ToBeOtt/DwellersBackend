@@ -41,12 +41,7 @@ namespace Dwellers.Common.Persistance.NotesModule.Repositories
                 return 0;
             }
         }
-        public async Task<bool> AddNoteholder(NoteholderEntity noteholder)
-        {
-            await _context.Noteholders.AddAsync(noteholder);
-            int result = await SaveActions();
-            return result > 0;
-        }
+
         public async Task<bool> AddNote(NoteEntity note)
         {
             using (var transaction = _context.Database.BeginTransaction())
@@ -67,13 +62,6 @@ namespace Dwellers.Common.Persistance.NotesModule.Repositories
             }
         }
 
-        public async Task<bool> AddHouseNoteholder(HouseNoteholderEntity HouseNoteholder)
-        {
-            await _context.HouseNoteholders.AddAsync(HouseNoteholder);
-            int result = await SaveActions();
-            return result > 0;
-        }
-
         public async Task<bool> RemoveNote(NoteEntity Note)
         {
             _context.Notes.Remove(Note);
@@ -81,18 +69,5 @@ namespace Dwellers.Common.Persistance.NotesModule.Repositories
             return result > 0;
         }
 
-        public async Task<bool> RemoveNoteholder(NoteholderEntity Noteholder)
-        {
-            _context.Noteholders.Remove(Noteholder);
-            int result = await SaveActions();
-            return result > 0;
-        }
-
-        public async Task<bool> AddNoteholderNote(NoteholderNotesEntity noteholderNotes)
-        {
-            await _context.NoteholderNotes.AddAsync(noteholderNotes);
-            int result = await SaveActions();
-            return result > 0;
-        }
     }
 }

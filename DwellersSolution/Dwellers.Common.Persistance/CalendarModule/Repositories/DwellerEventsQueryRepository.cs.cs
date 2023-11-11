@@ -26,7 +26,7 @@ namespace Dwellers.Common.Persistance.CalendarModule.Interfaces
              return await _context.DwellerEvents
                 .Include(e => e.User)
                 .Where(e => e.House != null && e.House.Id == houseId)
-                .Where(e => !e.Archived)
+                .Where(e => !e.IsArchived)
                 .OrderByDescending(e => e.EventDate)
                 .Take(10)
                 .ToListAsync();

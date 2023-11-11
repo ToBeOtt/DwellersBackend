@@ -77,7 +77,6 @@ namespace SharedKernel.Exceptions
                 _ => (int)HttpStatusCode.InternalServerError
             };
 
-
         private static LogEventLevel GetLoggerLevel(Exception ex)
             => ex switch
             {

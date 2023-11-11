@@ -14,7 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dwellers.Bulletins.Domain\Dwellers.Bulletins.Domain.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Data\Dwellers.Common.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BulletinModule\Interfaces\" />
   </ItemGroup>
 
 </Project>

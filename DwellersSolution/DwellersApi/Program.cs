@@ -1,7 +1,8 @@
 using Dwellers.Authentication;
+using Dwellers.Bulletins.Application;
 using Dwellers.Calendar;
 using Dwellers.Chat;
-using Dwellers.Chat.Application.Hubs;
+using Dwellers.Chat.Hubs;
 using Dwellers.Common.Data;
 using Dwellers.Common.Persistance;
 using Dwellers.Household.Application;
@@ -24,13 +25,16 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 // Auth
 builder.Services.AddAuthenticationServices(builder.Configuration);
 
+// Shared kernel
+builder.Services.AddSharedKernelServices(builder.Configuration);
+
 // Modules
 builder.Services.AddHouseholdModuleServices(builder.Configuration);
 builder.Services.AddOfferingsModuleServices(builder.Configuration);
 builder.Services.AddChatModuleServices(builder.Configuration);
 builder.Services.AddNotesModuleServices(builder.Configuration);
 builder.Services.AddCalendarModuleServices(builder.Configuration);
-
+builder.Services.AddBulletinModuleServices(builder.Configuration);
 
 
 // DEVELOPMENT -- for authentication testing 

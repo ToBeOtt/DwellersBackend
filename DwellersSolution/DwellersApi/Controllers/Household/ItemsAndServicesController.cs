@@ -1,7 +1,7 @@
-﻿using Dwellers.Offerings.Application.Services.DwellerItems;
-using Dwellers.Offerings.Contracts.Commands;
+﻿using Dwellers.Offerings.Contracts.Commands;
 using Dwellers.Offerings.Contracts.Queries;
 using Dwellers.Offerings.Contracts.Requests;
+using Dwellers.Offerings.Services.DwellerItems;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

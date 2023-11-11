@@ -40,13 +40,13 @@ namespace Dwellers.Household.Services
 
             var user = await _userQueryRepository.GetUserByEmail(cmd.Email);
             if (user == null)
-               return await response.ReturnError(response, "User not found", _logger, "gfd");
+               return await response.ErrorResponse(response, "User not found", _logger, "gfd");
 
 
             var nameResult = domainHouse.SetName(cmd.Name, await _houseQuery.GetAllHouseNames());
                 if(!nameResult.IsSuccess)
-                    return await response.ReturnError
-                    (response, nameResult.DomainErrorResponse, _logger, "gfd");
+                    return await response.ErrorResponse
+                    (response, nameResult.DomainErrorMessage, _logger, "gfd");
 
             domainHouse.SetDescription(cmd.Description);
             
@@ -55,14 +55,14 @@ namespace Dwellers.Household.Services
 
             if (!await _houseCommand.AddHouse(persistanceHouse))
             {
-                return await response.ReturnError
+                return await response.ErrorResponse
                     (response, "Could not presist house to database", _logger);
             }
 
             var houseUser = new HouseUserEntity(persistanceHouse, user);
             if (!await _houseCommand.AddHouseUser(houseUser))
             {
-                return await response.ReturnError
+                return await response.ErrorResponse
                    (response, "User attachment to house could not be persisted", _logger);
  
             }
@@ -70,7 +70,7 @@ namespace Dwellers.Household.Services
                 Name: domainHouse.Name,
                 HouseId: domainHouse.Id
                 );
-             return await response.ReturnSuccess(response, data);
+             return await response.SuccessResponse(response, data);
         }
 
         public async Task<ServiceResponse<MemberToHouseDTO>> AttachMemberToHouse
@@ -80,19 +80,19 @@ namespace Dwellers.Household.Services
 
             var user = await _userQueryRepository.GetUserByEmail(command.Email);
             if (user == null)
-                 return await response.ReturnError
+                 return await response.ErrorResponse
                    (response, "No user exist in database", _logger);
 
 
             var house = await _houseQuery.GetHouseByInvite(command.Invitation);
             if (house is null)
-                return await response.ReturnError
+                return await response.ErrorResponse
                       (response, "Something went wrong.", _logger, "Could not persist house to database");
             
 
             var houseUser = new HouseUserEntity(house, user);
             if (!await _houseCommand.AddHouseUser(houseUser))
-                return await response.ReturnError
+                return await response.ErrorResponse
                         (response, "Something went wrong.", _logger, "User attachment to house could not be persisted");
 
 
@@ -101,7 +101,7 @@ namespace Dwellers.Household.Services
                   Alias: user.Alias
                    );
 
-            return await response.ReturnSuccess(response, data);
+            return await response.SuccessResponse(response, data);
         }
     }
 }

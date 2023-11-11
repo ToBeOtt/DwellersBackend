@@ -1,4 +1,4 @@
-﻿using Dwellers.Chat.Application.Services;
+﻿using Dwellers.Chat.Services;
 using Dwellers.Common.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

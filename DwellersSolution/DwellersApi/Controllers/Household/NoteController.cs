@@ -1,6 +1,6 @@
-﻿using Dwellers.Notes.Application.Feature.Notes.Commands;
-using Dwellers.Notes.Application.Feature.Notes.Queries;
-using Dwellers.Notes.Contracts.Requests;
+﻿using Dwellers.Notes.Contracts.Requests;
+using Dwellers.Notes.Feature.Notes.Commands;
+using Dwellers.Notes.Feature.Notes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,9 +47,8 @@ namespace DwellersApi.Controllers.Household
         public async Task<IActionResult> AddNote(AddNoteRequest request)
         {
             var userIdClaim = User.FindFirst("UserId");
-            var houseIdClaim = User.FindFirst("HouseId");
 
-            if (userIdClaim is null || houseIdClaim is null)
+            if (userIdClaim is null)
             {
                 throw new InvalidCredentialException();
             }
@@ -61,9 +60,7 @@ namespace DwellersApi.Controllers.Household
                 NotePriority: request.NotePriority,
                 NoteScope: request.NoteScope,
                 Category: request.Category,
-                NoteholderId: request.NoteholderId,
-                UserId: userIdClaim.Value,
-                HouseId: new Guid(houseIdClaim.Value));
+                UserId: userIdClaim.Value);
 
             var addNoteResult = await _mediator.Send(cmd);
             return Ok(addNoteResult);
@@ -100,40 +97,6 @@ namespace DwellersApi.Controllers.Household
         }
 
 
-        [HttpGet("GetNoteholder")]
-        public async Task<IActionResult> GetNoteholder(Guid noteholderId)
-        {
-            var houseIdClaim = User.FindFirst("HouseId");
-
-            if (houseIdClaim is null)
-            {
-                throw new InvalidCredentialException();
-            }
-            var cmd = new GetNoteholderQuery(
-                HouseId: new Guid(houseIdClaim.Value),
-                NoteholderId: noteholderId);
-
-            var getNoteholderResult = await _mediator.Send(cmd);
-            return Ok(getNoteholderResult);
-        }
-
-
-        [HttpGet("GetNoteholders")]
-        public async Task<IActionResult> GetNoteholders()
-        {
-            var houseIdClaim = User.FindFirst("HouseId");
-
-            if (houseIdClaim is null)
-            {
-                throw new InvalidCredentialException();
-            }
-
-            var cmd = new GetNoteholdersQuery(
-                HouseId: new Guid(houseIdClaim.Value));
-
-            var getNoteholdersResult = await _mediator.Send(cmd);
-            return Ok(getNoteholdersResult);
-        }
 
         [HttpPost("RemoveNote")]
         public async Task<IActionResult> RemoveNote(RemoveNoteRequest request)

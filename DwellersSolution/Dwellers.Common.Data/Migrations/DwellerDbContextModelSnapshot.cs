@@ -22,6 +22,44 @@ namespace Dwellers.Common.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Dwellers.Bulletins.Domain.Bulletins.Bulletin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("_dateAdded")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DateAdded");
+
+                    b.Property<DateTime?>("_dateModified")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DateModified");
+
+                    b.Property<bool>("_isArchived")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsArchived");
+
+                    b.Property<string>("_text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Text");
+
+                    b.Property<string>("_title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Title");
+
+                    b.Property<string>("_userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("UserId");
+
+                    b.HasKey("Id")
+                        .HasName("Id");
+
+                    b.ToTable("Bulletins", (string)null);
+                });
+
             modelBuilder.Entity("Dwellers.Common.Data.Models.DwellerChat.DwellerConversationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -126,9 +164,6 @@ namespace Dwellers.Common.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -141,6 +176,9 @@ namespace Dwellers.Common.Data.Migrations
 
                     b.Property<Guid>("HouseId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("IsCreated")
                         .HasColumnType("datetime2");
@@ -320,7 +358,8 @@ namespace Dwellers.Common.Data.Migrations
 
                     b.Property<string>("Alias")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<bool>("Archived")
                         .HasColumnType("bit");
@@ -369,7 +408,8 @@ namespace Dwellers.Common.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -407,34 +447,28 @@ namespace Dwellers.Common.Data.Migrations
                     b.ToTable("HouseUsers");
                 });
 
-            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.HouseNoteholderEntity", b =>
+            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteComment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("HouseId")
+                    b.Property<Guid>("NoteId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("IsCreated")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("IsModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("NoteholderId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HouseId");
+                    b.HasIndex("NoteId");
 
-                    b.HasIndex("NoteholderId");
-
-                    b.ToTable("HouseNoteholders");
+                    b.ToTable("NoteComment");
                 });
 
             modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteEntity", b =>
@@ -446,14 +480,11 @@ namespace Dwellers.Common.Data.Migrations
                     b.Property<bool>("Archived")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("Category")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("HouseId")
+                    b.Property<Guid?>("HouseEntityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("IsCreated")
@@ -466,13 +497,13 @@ namespace Dwellers.Common.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NotePriority")
+                    b.Property<int>("NotePriority")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NoteScope")
+                    b.Property<int>("NoteScope")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NoteStatus")
+                    b.Property<int>("NoteStatus")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -480,71 +511,165 @@ namespace Dwellers.Common.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HouseId");
+                    b.HasIndex("HouseEntityId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteholderEntity", b =>
+            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteHashtagEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("Category")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("IsCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("IsModified")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NoteholderScope")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Noteholders");
-                });
-
-            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteholderNotesEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Archived")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("IsCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("IsModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("NoteId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("NoteholderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NoteId");
 
-                    b.HasIndex("NoteholderId");
+                    b.ToTable("NoteHashtagEntity");
+                });
 
-                    b.ToTable("NoteholderNotes");
+            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteSubscriber", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("HouseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NoteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HouseId");
+
+                    b.HasIndex("NoteId");
+
+                    b.ToTable("NoteSubscriber");
+                });
+
+            modelBuilder.Entity("Dwellers.Bulletins.Domain.Bulletins.Bulletin", b =>
+                {
+                    b.OwnsOne("Dwellers.Bulletins.Domain.Bulletins.BulletinPriority", "_priority", b1 =>
+                        {
+                            b1.Property<Guid>("BulletinId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("_priority")
+                                .HasColumnType("int")
+                                .HasColumnName("Priority");
+
+                            b1.HasKey("BulletinId");
+
+                            b1.ToTable("Bulletins");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BulletinId");
+                        });
+
+                    b.OwnsOne("Dwellers.Bulletins.Domain.Bulletins.BulletinScope", "_scope", b1 =>
+                        {
+                            b1.Property<Guid>("BulletinId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Visibility")
+                                .HasColumnType("int")
+                                .HasColumnName("Visibility");
+
+                            b1.HasKey("BulletinId");
+
+                            b1.ToTable("BulletinScope", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("BulletinId");
+
+                            b1.OwnsMany("Dwellers.Bulletins.Domain.Bulletins.ScopedHouse", "_listOfHouses", b2 =>
+                                {
+                                    b2.Property<Guid>("ScopeId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<Guid>("_scopedHouseId")
+                                        .HasColumnType("uniqueidentifier")
+                                        .HasColumnName("HouseId");
+
+                                    b2.HasKey("ScopeId", "Id");
+
+                                    b2.ToTable("ScopedHouse");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("ScopeId");
+                                });
+
+                            b1.Navigation("_listOfHouses");
+                        });
+
+                    b.OwnsOne("Dwellers.Bulletins.Domain.Bulletins.BulletinStatus", "_status", b1 =>
+                        {
+                            b1.Property<Guid>("BulletinId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("_status")
+                                .HasColumnType("int")
+                                .HasColumnName("Status");
+
+                            b1.HasKey("BulletinId");
+
+                            b1.ToTable("Bulletins");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BulletinId");
+                        });
+
+                    b.OwnsMany("Dwellers.Bulletins.Domain.Bulletins.BulletinTag", "_tags", b1 =>
+                        {
+                            b1.Property<Guid>("_bulletinId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("BulletinId");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("_tag")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Tag");
+
+                            b1.HasKey("_bulletinId", "Id");
+
+                            b1.ToTable("BulletinTag");
+
+                            b1.WithOwner()
+                                .HasForeignKey("_bulletinId")
+                                .HasConstraintName("FK_BulletinTag_BulletinId");
+                        });
+
+                    b.Navigation("_priority");
+
+                    b.Navigation("_scope");
+
+                    b.Navigation("_status");
+
+                    b.Navigation("_tags");
                 });
 
             modelBuilder.Entity("Dwellers.Common.Data.Models.DwellerChat.DwellerMessageEntity", b =>
@@ -659,59 +784,58 @@ namespace Dwellers.Common.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.HouseNoteholderEntity", b =>
+            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteComment", b =>
                 {
-                    b.HasOne("Dwellers.Common.Data.Models.Household.HouseEntity", "House")
-                        .WithMany("HouseNoteholders")
-                        .HasForeignKey("HouseId")
+                    b.HasOne("Dwellers.Common.Data.Models.Notes.NoteEntity", "Note")
+                        .WithMany("NoteComments")
+                        .HasForeignKey("NoteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dwellers.Common.Data.Models.Notes.NoteholderEntity", "Noteholder")
-                        .WithMany("HouseNoteholders")
-                        .HasForeignKey("NoteholderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("House");
-
-                    b.Navigation("Noteholder");
+                    b.Navigation("Note");
                 });
 
             modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteEntity", b =>
                 {
-                    b.HasOne("Dwellers.Common.Data.Models.Household.HouseEntity", "House")
+                    b.HasOne("Dwellers.Common.Data.Models.Household.HouseEntity", null)
                         .WithMany("Notes")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HouseEntityId");
 
                     b.HasOne("Dwellers.Common.Data.Models.Household.DwellerUserEntity", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("House");
-
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteholderNotesEntity", b =>
+            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteHashtagEntity", b =>
                 {
                     b.HasOne("Dwellers.Common.Data.Models.Notes.NoteEntity", "Note")
-                        .WithMany("NoteholderNotes")
+                        .WithMany("NoteHashtagEntities")
                         .HasForeignKey("NoteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dwellers.Common.Data.Models.Notes.NoteholderEntity", "Noteholder")
-                        .WithMany("NoteholderNotes")
-                        .HasForeignKey("NoteholderId")
+                    b.Navigation("Note");
+                });
+
+            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteSubscriber", b =>
+                {
+                    b.HasOne("Dwellers.Common.Data.Models.Household.HouseEntity", "House")
+                        .WithMany()
+                        .HasForeignKey("HouseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Note");
+                    b.HasOne("Dwellers.Common.Data.Models.Notes.NoteEntity", "Note")
+                        .WithMany("NoteSubscribers")
+                        .HasForeignKey("NoteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Noteholder");
+                    b.Navigation("House");
+
+                    b.Navigation("Note");
                 });
 
             modelBuilder.Entity("Dwellers.Common.Data.Models.DwellerChat.DwellerConversationEntity", b =>
@@ -740,8 +864,6 @@ namespace Dwellers.Common.Data.Migrations
                 {
                     b.Navigation("BorrowedItems");
 
-                    b.Navigation("HouseNoteholders");
-
                     b.Navigation("HouseUsers");
 
                     b.Navigation("Notes");
@@ -751,14 +873,11 @@ namespace Dwellers.Common.Data.Migrations
 
             modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteEntity", b =>
                 {
-                    b.Navigation("NoteholderNotes");
-                });
+                    b.Navigation("NoteComments");
 
-            modelBuilder.Entity("Dwellers.Common.Data.Models.Notes.NoteholderEntity", b =>
-                {
-                    b.Navigation("HouseNoteholders");
+                    b.Navigation("NoteHashtagEntities");
 
-                    b.Navigation("NoteholderNotes");
+                    b.Navigation("NoteSubscribers");
                 });
 #pragma warning restore 612, 618
         }

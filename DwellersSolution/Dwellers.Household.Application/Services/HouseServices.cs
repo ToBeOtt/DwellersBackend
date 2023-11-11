@@ -24,12 +24,12 @@ namespace Dwellers.Household.Services
             var houseId = await _houseQuery.GetHouseIdByEmail(email);
 
             if (houseId == null || houseId == Guid.Empty)
-                return await response.ReturnError(response, "House did not exist", _logger);
+                return await response.ErrorResponse(response, "House did not exist", _logger);
            
 
             response.IsSuccess = true;
             response.Data = houseId;
-            return await response.ReturnSuccess(response);
+            return await response.SuccessResponse(response);
         }
     }
 }

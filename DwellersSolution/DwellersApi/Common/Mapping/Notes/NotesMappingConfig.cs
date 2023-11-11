@@ -1,7 +1,7 @@
-﻿using Dwellers.Notes.Application.Feature.Notes.Commands;
-using Dwellers.Notes.Application.Feature.Notes.Queries;
-using Dwellers.Notes.Contracts.Requests;
+﻿using Dwellers.Notes.Contracts.Requests;
 using Dwellers.Notes.Contracts.Responses;
+using Dwellers.Notes.Feature.Notes.Commands;
+using Dwellers.Notes.Feature.Notes.Queries;
 using Mapster;
 
 
@@ -17,9 +17,6 @@ namespace DwellersApi.Common.Mapping.Notes
 
             config.NewConfig<GetNoteRequest, GetNoteQuery>();
             config.NewConfig<GetNotesRequest, GetNotesQuery>();
-            config.NewConfig<GetNoteholdersRequest, GetNoteholdersQuery>();
-
-            config.NewConfig<GetNoteholdersRequest, GetNoteholdersQuery>();
 
             config.NewConfig<RemoveNoteRequest, RemoveNoteCommand>();
 
@@ -33,12 +30,6 @@ namespace DwellersApi.Common.Mapping.Notes
                 .Map(dest => dest, src => src.Note);
             config.NewConfig<GetNotesResult, GetNotesResponse>()
                 .Map(dest => dest.Notes, src => src.Notes);
-            config.NewConfig<GetNoteholderResult, GetNoteholderResponse>()
-                .Map(dest => dest, src => src.Noteholder)
-                .Map(dest => dest, src => src.Notes);
-            config.NewConfig<GetNoteholdersResult, GetNoteholdersResponse>()
-                .Map(dest => dest.Noteholders, src => src.Noteholders);
-
             config.NewConfig<RemoveNoteResult, RemoveNoteResponse>()
                .Map(dest => dest, src => src);
         }

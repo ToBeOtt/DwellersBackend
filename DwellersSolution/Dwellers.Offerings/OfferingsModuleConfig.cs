@@ -2,10 +2,10 @@
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
 using Dwellers.Common.Persistance.OfferingsModule.Repositories.DwellerItems;
 using Dwellers.Common.Persistance.OfferingsModule.Repositories.DwellerServices;
-using Dwellers.Offerings.Application.Mappings.DwellerItems;
-using Dwellers.Offerings.Application.Mappings.DwellerServices;
-using Dwellers.Offerings.Application.Services.DwellerItems;
-using Dwellers.Offerings.Application.Services.DwellerServices;
+using Dwellers.Offerings.Mappings.DwellerItems;
+using Dwellers.Offerings.Mappings.DwellerServices;
+using Dwellers.Offerings.Services.DwellerItems;
+using Dwellers.Offerings.Services.DwellerServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

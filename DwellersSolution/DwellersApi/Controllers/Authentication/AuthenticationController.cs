@@ -1,6 +1,6 @@
 ﻿using Dwellers.Authentication.Application.Services;
 using Dwellers.Authentication.Contracts.Requests;
-using Dwellers.Chat.Application.Services;
+using Dwellers.Chat.Services;
 using Dwellers.Household.Contracts.Commands;
 using Dwellers.Household.Contracts.Requests;
 using Dwellers.Household.Services;
@@ -50,7 +50,7 @@ namespace DwellersApi.Controllers.Authentication
             if (!identityUser.IsSuccess) return BadRequest(identityUser.ErrorMessage);
 
             var dwellerUser = await _userServices.CreateDwellerUser
-                (identityUser.Data.Id, request.Email, request.Alias);
+                (identityUser.Data.DbUser.Id, request.Email, request.Alias);
 
             if (!dwellerUser.IsSuccess) return BadRequest(dwellerUser.ErrorResponse);
 
@@ -75,7 +75,7 @@ namespace DwellersApi.Controllers.Authentication
             
             if(!result.IsSuccess)
             {
-                return BadRequest(result.ValidationMessage);
+                return BadRequest(result.ErrorMessage);
             }
 
             return Ok(result);

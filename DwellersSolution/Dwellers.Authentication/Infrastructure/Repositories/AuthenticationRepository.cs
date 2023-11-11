@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dwellers.Authentication.Application.Interfaces;
+﻿using Dwellers.Authentication.Application.Interfaces;
 using Dwellers.Authentication.Domain;
 using Dwellers.Authentication.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;

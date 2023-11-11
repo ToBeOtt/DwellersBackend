@@ -1,16 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SharedKernel.Domain;
 using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain.DomainResponse;
 
 namespace Dwellers.Household.Domain.Entities
 {
     public sealed class DwellerHouse: BaseEntity
     {
+        public Guid Id { get; set; }    
         public Guid HouseholdCode { get; set; }
         public string Name { get; private set; }
         public string? Description { get; private set; }
         public byte[]? HousePhoto { get; set; }
 
+        public bool IsArchived { get; set; }
+        public DateTime IsCreated { get; set; }
+        public DateTime? IsModified { get; set; }
 
         public DwellerHouse() 
         {
@@ -32,7 +36,7 @@ namespace Dwellers.Household.Domain.Entities
             else
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Housename must be unique.";
+                response.DomainErrorMessage = "Housename must be unique.";
             }
 
             return response;
@@ -63,7 +67,7 @@ namespace Dwellers.Household.Domain.Entities
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Photo could not be added.";
+                response.DomainErrorMessage = "Photo could not be added.";
                 return response;
             }
         }

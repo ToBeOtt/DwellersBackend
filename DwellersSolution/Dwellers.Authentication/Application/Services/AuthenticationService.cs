@@ -1,7 +1,9 @@
-﻿using Dwellers.Authentication.Application.Interfaces;
-using Dwellers.Authentication.Application.Services.Responses;
+﻿using Azure;
+using Dwellers.Authentication.Application.Interfaces;
 using Dwellers.Authentication.Domain;
 using Microsoft.Extensions.Logging;
+using SharedKernel.Application.ServiceResponse;
+using static Dwellers.Authentication.Application.Services.DTO.AuthenticationDTO;
 
 namespace Dwellers.Authentication.Application.Services
 {
@@ -22,35 +24,28 @@ namespace Dwellers.Authentication.Application.Services
         }
 
 
-        public async Task<AuthenticationServiceResponse<DbUser>> Login
+        public async Task<ServiceResponse<ProvideJwtTokenDTO>> Login
             (string email, string password, Guid houseId)
         {
-            AuthenticationServiceResponse<DbUser> authResponse = new AuthenticationServiceResponse<DbUser>();
+            ServiceResponse<ProvideJwtTokenDTO> response = new();
 
             var user = await _authenticationRepository.GetUserByEmail(email);
             if (user == null)
-            {
-                _logger.LogInformation("User could not be found");
-                authResponse.IsSuccess = false;
-                authResponse.ErrorMessage = "Could not login.";
-                return authResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Invalid credentials.", _logger);
 
             var result = await _authenticationRepository.CheckLoginCredentials(user.UserName, password);
             if (!result.Succeeded)
-            {
-                _logger.LogInformation("Invalid credentials");
-                authResponse.IsSuccess = false;
-                authResponse.ErrorMessage = "Could not login.";
-                return authResponse;
-            }
+                return await response.ErrorResponse
+                        (response, "Invalid credentials.", _logger);
 
             var token = await _jwtTokenRepository.GenerateToken(user, houseId);
 
-            authResponse.IsSuccess = true;
-            authResponse.Token = token;
-            authResponse.Data = user;
-            return authResponse;
+            ProvideJwtTokenDTO data = new(
+                DbUser: user,
+                Token: token);
+
+            return await response.SuccessResponse(response, data);
         }
     }
 }

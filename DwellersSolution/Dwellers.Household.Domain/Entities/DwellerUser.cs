@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Graph.Models;
-using SharedKernel.Domain;
 using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain.DomainResponse;
 using System.Threading;
 
 namespace Dwellers.Household.Domain.Entities
 {
     public sealed class DwellerUser : BaseEntity
     {
+        public Guid Id { get; set; }
         public string Alias { get; set; }
         public string Email { get; set; }
         public byte[]? ProfilePhoto { get; set; }
+
+        public bool IsArchived { get; set; }
+        public DateTime IsCreated { get; set; }
+        public DateTime? IsModified { get; set; }
 
         public DwellerUser() 
         {
@@ -48,7 +53,7 @@ namespace Dwellers.Household.Domain.Entities
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.DomainErrorResponse = "Photo could not be added to user.";
+                response.DomainErrorMessage = "Photo could not be added to user.";
                 return response;
             }
         }
