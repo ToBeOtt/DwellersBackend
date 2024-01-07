@@ -1,6 +1,6 @@
 ﻿using Dwellers.Common.Persistance.ChatModule.Interfaces;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+using SharedKernel.ServiceResponse;
 using static Dwellers.Chat.Services.DTO.ChatServiceDTO;
 
 namespace Dwellers.Chat.Services
@@ -19,26 +19,26 @@ namespace Dwellers.Chat.Services
             _chatQueryRepository = chatQueryRepository;
         }
 
-        public async Task<ServiceResponse<GetConversationsDTO>> GetConversations(Guid HouseID)
+        public async Task<DwellerResponse<GetConversationsDTO>> GetConversations(Guid HouseID)
         {
-            ServiceResponse<GetConversationsDTO> response = new();
+            DwellerResponse<GetConversationsDTO> response = new();
 
             var conversation = await _chatQueryRepository.GetHouseholdConversation(HouseID);
             if (conversation == null)
                 return await response.ErrorResponse
-                        (response, "Conversation could not be found or contains no messages.", _logger);  
+                        ("Conversation could not be found or contains no messages.");  
 
             var messages = await _chatQueryRepository.GetConversationMessages(conversation.Id);
             if (messages == null)
                 return await response.ErrorResponse
-                          (response, "Conversation could not be found or contains no messages.", _logger);
+                          ("Conversation could not be found or contains no messages.");
 
 
             GetConversationsDTO data = new(
                 ConversationMessages: messages,
                 ConversationId: conversation.Id);
 
-            return await response.SuccessResponse(response, data);
+            return await response.SuccessResponse(data);
         }
 
     }

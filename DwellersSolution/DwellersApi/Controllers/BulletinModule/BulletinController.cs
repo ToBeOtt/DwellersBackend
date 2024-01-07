@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using static Dwellers.Bulletins.Contracts.Request.BulletinRequests;
-using static SharedKernel.Application.ServiceResponse.EmptySuccessfulCommandResponse;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace DwellersApi.Controllers.BulletinModule
 {

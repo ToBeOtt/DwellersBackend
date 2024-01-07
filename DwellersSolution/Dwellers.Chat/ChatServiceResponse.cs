@@ -1,6 +1,6 @@
 ﻿namespace Dwellers.Chat
 {
-    public class ChatServiceResponse<T>
+    public class ChatDwellerResponse<T>
     {
         public T? Data { get; set; }
         public Guid? ConversationID { get; set; }

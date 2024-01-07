@@ -12,20 +12,20 @@ namespace Dwellers.Common.Persistance.CalendarModule.Interfaces
         {
             _context = context;
         }
-        public async Task<ICollection<DwellerEventEntity>> GetAllEvents(Guid houseId)
+        public async Task<ICollection<DwellerEventEntity>> GetAllEvents(Guid dwellingId)
         {
             return await _context.DwellerEvents
-                    .Include(e => e.House)
-                    .Include(e => e.User)
-                    .Where(e => e.House.Id == houseId)
+                    .Include(e => e.Dwelling)
+                    .Include(e => e.Dweller)
+                    .Where(e => e.Dwelling.Id.Value == dwellingId)
                     .ToListAsync();
         }
 
-        public async Task<ICollection<DwellerEventEntity>> GetUpcomingEvents(Guid houseId)
+        public async Task<ICollection<DwellerEventEntity>> GetUpcomingEvents(Guid dwellingId)
         {
              return await _context.DwellerEvents
-                .Include(e => e.User)
-                .Where(e => e.House != null && e.House.Id == houseId)
+                .Include(e => e.Dweller)
+                .Where(e => e.Dwelling != null && e.Dwelling.Id.Value == dwellingId)
                 .Where(e => !e.IsArchived)
                 .OrderByDescending(e => e.EventDate)
                 .Take(10)

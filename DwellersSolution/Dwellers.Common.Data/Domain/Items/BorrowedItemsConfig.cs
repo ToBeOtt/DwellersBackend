@@ -1,4 +1,5 @@
 ﻿using Dwellers.Common.Data.Models.DwellerItems;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,13 +9,30 @@ namespace Dwellers.Common.Data.Domain.Items
     {
         public void Configure(EntityTypeBuilder<BorrowedItemEntity> builder)
         {
-            builder.HasOne(di => di.Item)
-               .WithMany(bi => bi.BorrowedItems)
-               .HasForeignKey(di => di.ItemId);
+            builder.ToTable("BorrowedItems");
 
-            builder.HasOne(h => h.House)
-                   .WithMany(bi => bi.BorrowedItems)
-                   .HasForeignKey(h => h.HouseId);
+            builder.HasKey(bi => bi.Id);
+
+            // Define the properties
+            builder.Property(bi => bi.DwellingId).IsRequired();
+            builder.Property(bi => bi.ItemId).IsRequired();
+            builder.Property(bi => bi.IsOwner);
+            builder.Property(bi => bi.Note);
+            builder.Property(bi => bi.Returned);
+            builder.Property(bi => bi.Archived);
+            builder.Property(bi => bi.IsCreated);
+            builder.Property(bi => bi.IsModified);
+
+            // Configure relationships using shadow properties
+            builder.HasOne<Dwelling>().WithMany()
+                .HasForeignKey(bi => bi.DwellingId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            builder.HasOne<DwellerItemEntity>().WithMany()
+                .HasForeignKey(bi => bi.ItemId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

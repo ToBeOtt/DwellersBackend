@@ -1,6 +1,6 @@
 ﻿using Dwellers.Offerings.Domain.ValueObjects;
-using SharedKernel.Domain.DomainModels;
-using SharedKernel.Domain.DomainResponse;
+using SharedKernel.Domain;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Offerings.Domain.DwellerServices
 {
@@ -33,16 +33,16 @@ namespace Dwellers.Offerings.Domain.DwellerServices
             IsArchived = false;
         }
 
-        public async Task<DomainResponse<bool>> SetServiceScope(string scope)
+        public async Task<DwellerResponse<bool>> SetServiceScope(string scope)
         {
-            DomainResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
             if (Enum.TryParse(scope, out VisibilityScope serviceScope))
             {
                 ServiceScope = serviceScope;
-                return response.SuccessResponse(response);
+                return await response.SuccessResponse();
             }
 
-            return response.ErrorResponse(response, "Scope could not be parsed to enum.");
+            return await response.ErrorResponse("Scope could not be parsed to enum.");
         }
     }
 }

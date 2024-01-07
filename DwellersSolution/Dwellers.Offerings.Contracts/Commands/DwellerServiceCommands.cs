@@ -4,6 +4,6 @@
      string Name,
      string Description,
      string ServiceScope,
-     Guid HouseId
+     Guid DwellingId
      );
 }

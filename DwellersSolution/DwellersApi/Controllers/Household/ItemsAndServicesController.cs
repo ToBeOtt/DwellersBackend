@@ -36,7 +36,7 @@ namespace DwellersApi.Controllers.Household
             }
 
             var cmd = new AddDwellerItemCommand(
-                HouseId: new Guid(houseIdClaim.Value),
+                DwellingId: new Guid(houseIdClaim.Value),
                 Name: Request.Form["name"],
                 Desc: Request.Form["description"],
                 ItemScope: Request.Form["itemScope"],
@@ -100,7 +100,7 @@ namespace DwellersApi.Controllers.Household
             }
 
             var cmd = new AddDwellerServiceCommand(
-                HouseId: new Guid(houseIdClaim.Value),
+                DwellingId: new Guid(houseIdClaim.Value),
                 Name: request.Name,
                 Description: request.Description,
                 ServiceScope: request.ServiceScope);

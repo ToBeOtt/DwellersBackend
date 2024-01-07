@@ -7,7 +7,7 @@ namespace Dwellers.Offerings.Contracts.Commands
            string Desc,
            string ItemScope,
            IFormFile ItemPhoto,
-           Guid HouseId
+           Guid DwellingId
            );
 
     public record RemoveDwellerItemCommand(

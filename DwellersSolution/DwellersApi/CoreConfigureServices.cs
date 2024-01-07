@@ -43,7 +43,7 @@ namespace DwellersApi
             });
 
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+            //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
             // Ignore circular reference looping in EF core with JSON.
             services.AddControllers().AddJsonOptions(options =>
@@ -52,7 +52,7 @@ namespace DwellersApi
                 options.JsonSerializerOptions.WriteIndented = true;
             });
 
-            services.AddMappings();
+            //services.AddMappings();
 
             return services;
         }

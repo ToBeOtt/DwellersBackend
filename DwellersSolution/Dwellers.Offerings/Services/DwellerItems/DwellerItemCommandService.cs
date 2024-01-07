@@ -1,11 +1,10 @@
 ﻿using Dwellers.Common.Data.Models.DwellerItems;
-using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using Dwellers.Offerings.Contracts.Commands;
 using Dwellers.Offerings.Domain.DwellerItems;
-using Dwellers.Offerings.Mappings.DwellerItems;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Offerings.Services.DwellerItems
 {
@@ -14,31 +13,28 @@ namespace Dwellers.Offerings.Services.DwellerItems
         private readonly ILogger<DwellerItemCommandService> _logger;
         private readonly IDwellerItemCommandRepository _dwellerItemCommandRepository;
         private readonly IDwellerItemQueryRepository _dwellerItemQueryRepository;
-        private readonly IHouseQueryRepository _houseQueryRepository;
-        private readonly DwellerItemMappingService _dwellerItemMappingService;
+        private readonly IDwellingRepository _dwellingRepository;
 
         public DwellerItemCommandService
             (ILogger<DwellerItemCommandService> logger,
             IDwellerItemCommandRepository dwellerItemCommandRepository,
             IDwellerItemQueryRepository dwellerItemQueryRepository,
-            IHouseQueryRepository houseQueryRepository,
-            DwellerItemMappingService dwellerItemMappingService)
+            IDwellingRepository dwellingRepository)
         {
             _logger = logger;
             _dwellerItemCommandRepository = dwellerItemCommandRepository;
             _dwellerItemQueryRepository = dwellerItemQueryRepository;
-            _houseQueryRepository = houseQueryRepository;
-            _dwellerItemMappingService = dwellerItemMappingService;
+            _dwellingRepository = dwellingRepository;
         }
 
-        public async Task<ServiceResponse<bool>> CreateAndPersistItem(AddDwellerItemCommand cmd)
+        public async Task<DwellerResponse<bool>> CreateAndPersistItem(AddDwellerItemCommand cmd)
         {
-            ServiceResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
 
-            var house = await _houseQueryRepository.GetHouseById(cmd.HouseId);
-            if (house is null)
-                return await response.ErrorResponse
-                    (response, "The item could not be added.", _logger, "Could not find entity in database.");
+            //var house = await _dwellingRepository.GetDwellingById(cmd.DwellingId);
+            //if (house is null)
+            //    return await response.ErrorResponse
+            //        (response, "The item could not be added.", _logger, "Could not find entity in database.");
 
             var dwellerItem = new DwellerItem(cmd.Name, cmd.Desc);
 
@@ -47,7 +43,7 @@ namespace Dwellers.Offerings.Services.DwellerItems
                 var setScope = await dwellerItem.SetItemScope(cmd.ItemScope);
                 if (!setScope.IsSuccess)
                     return await response.ErrorResponse
-                        (response, "Could not set item scope.", _logger, setScope.DomainErrorMessage);
+                        ("Could not set item scope.");
             }
 
             if (cmd.ItemPhoto != null)
@@ -55,39 +51,38 @@ namespace Dwellers.Offerings.Services.DwellerItems
                 var photoResult = await dwellerItem.SetItemPhoto(cmd.ItemPhoto);
                 if (!photoResult.IsSuccess)
                     return await response.ErrorResponse
-                        (response, "Could not add item-photo.", _logger, photoResult.DomainErrorMessage);
+                        ("Could not add item-photo.");
             }
 
-            var dwellerItemPersistence = _dwellerItemMappingService.MapToPersistence(dwellerItem);
 
-            if (!await _dwellerItemCommandRepository.AddDwellerItem(dwellerItemPersistence))
+            if (!await _dwellerItemCommandRepository.AddDwellerItem(dwellerItem))
                 return await response.ErrorResponse
-                          (response, "Item could not be added to database.", _logger);
+                          ("Item could not be added to database.");
 
-            var establishOwnerShip = new BorrowedItemEntity(house, dwellerItemPersistence, true);
+            var establishOwnerShip = new BorrowedItemEntity(cmd.DwellingId, dwellerItem.Id, true);
 
             if (!await _dwellerItemCommandRepository.RegisterItemStatus(establishOwnerShip))
                 return await response.ErrorResponse
-                            (response, "Ownership of item could not be established.", _logger);
+                            ("Ownership of item could not be established.");
 
-            return await response.SuccessResponse(response);
+            return await response.SuccessResponse();
         }
 
-        public async Task<ServiceResponse<bool>> DeleteDwellerItem(Guid itemId)
+        public async Task<DwellerResponse<bool>> DeleteDwellerItem(Guid itemId)
         {
-            ServiceResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
 
             var dwellerItem = await _dwellerItemQueryRepository.GetDwellerItem(itemId);
             if (dwellerItem == null)
                 return await response.ErrorResponse
-                        (response, "Item could not be found.", _logger);
+                        ("Item could not be found.");
 
 
             if (!await _dwellerItemCommandRepository.RemoveDwellerItem(dwellerItem))
                 return await response.ErrorResponse
-                         (response, "Could not delete item from database.", _logger);
+                         ("Could not delete item from database.");
 
-            return await response.SuccessResponse(response);
+            return await response.SuccessResponse();
         }
     }
 }

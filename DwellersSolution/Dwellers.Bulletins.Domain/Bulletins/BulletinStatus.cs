@@ -1,6 +1,6 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins.DomainEvents;
 using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain;
 using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
@@ -33,7 +33,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 
         internal void ModifyBulletinStatus(Status status, BulletinId bulletinId)
         {
-            CheckRule(new StatusHasNotChanged(_status, status));
+            DwellerValidation(new StatusHasNotChanged(_status, status));
 
             _status = status;
             if(status == Status.Done)

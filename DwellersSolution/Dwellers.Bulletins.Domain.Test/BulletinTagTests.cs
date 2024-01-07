@@ -29,7 +29,7 @@ namespace Dwellers.Bulletins.Domain.Test
 
             // Assert
             Assert.False(result.IsSuccess);
-            Assert.Equal("There can not be two identical tags", result.DomainErrorMessage);
+            Assert.Equal("There can not be two identical tags", result.ErrorMessage);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Dwellers.Bulletins.Domain.Test
 
             // Assert
             Assert.True(result.IsSuccess);
-            Assert.Null(result.DomainErrorMessage);
+            Assert.Null(result.ErrorMessage);
         }
     }
 }

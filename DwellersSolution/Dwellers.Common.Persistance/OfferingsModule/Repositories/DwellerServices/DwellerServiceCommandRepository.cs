@@ -1,6 +1,7 @@
 ﻿using Dwellers.Common.Data.Context;
 using Dwellers.Common.Data.Models.DwellerServices;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
+using Dwellers.Offerings.Domain.DwellerServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -40,11 +41,12 @@ namespace Dwellers.Common.Persistance.OfferingsModule.Repositories.DwellerServic
                 return 0;
             }
         }
-        public async Task<bool> AddDwellerService(DwellerServiceEntity service)
+        public async Task<bool> AddDwellerService(DwellerService service)
         {
-            await _context.DwellerServices.AddAsync(service);
-            int result = await SaveActions();
-            return result > 0;
+            return true;
+            //await _context.DwellerServices.AddAsync(service);
+            //int result = await SaveActions();
+            //return result > 0;
         }
 
         public Task<bool> RegisterProvidedService(ProvidedServiceEntity service)

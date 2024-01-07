@@ -1,8 +1,8 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
 using SharedKernel.Infrastructure.Configuration.Commands;
-using static SharedKernel.Application.ServiceResponse.EmptySuccessfulCommandResponse;
+using SharedKernel.ServiceResponse;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace Dwellers.Bulletins.Application.Bulletins.Commands.AddBulletin
 {
@@ -18,10 +18,10 @@ namespace Dwellers.Bulletins.Application.Bulletins.Commands.AddBulletin
             _logger = logger;
             _bulletinRepository = bulletinRepository;
         }
-        public async Task<ServiceResponse<DwellerUnit>> Handle
+        public async Task<DwellerResponse<DwellerUnit>> Handle
             (AddBulletinCommand cmd, CancellationToken cancellation)
         {
-            ServiceResponse<DwellerUnit> response = new();
+            DwellerResponse<DwellerUnit> response = new();
             try
             {
                 var bulletin = Bulletin.BulletinPostFactory.CreateNewBulletin
@@ -31,15 +31,15 @@ namespace Dwellers.Bulletins.Application.Bulletins.Commands.AddBulletin
                 if(! await _bulletinRepository.AddBulletin(bulletin))
                 {
                     return await response.ErrorResponse
-                        (response, "Bulletin could not be persisted", _logger);
+                        ("Bulletin could not be persisted");
                 }
 
-                return await response.SuccessResponse(response, new DwellerUnit());
+                return await response.SuccessResponse(new DwellerUnit());
             }
             catch (Exception ex)
             {
                 return await response.ErrorResponse
-                    (response, "Could not create bulletin", _logger, ex.Message);
+                    ("Could not create bulletin");
             }
 
         }

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dwellers.Bulletins.Domain\Dwellers.Bulletins.Domain.csproj" />
+    <ProjectReference Include="..\Dwellers.DwellerCore.Domain\Dwellers.DwellerCore.Domain.csproj" />
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 

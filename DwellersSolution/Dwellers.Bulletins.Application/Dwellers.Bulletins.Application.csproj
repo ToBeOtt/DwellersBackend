@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Bulletins\Test\" />
+    <Folder Include="Bulletins\Queries\" />
   </ItemGroup>
 
 </Project>

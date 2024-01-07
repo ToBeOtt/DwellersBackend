@@ -1,7 +1,7 @@
 ﻿using Dwellers.Common.Data.Models.DwellerItems;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Offerings.Services.DwellerItems
 {
@@ -18,28 +18,28 @@ namespace Dwellers.Offerings.Services.DwellerItems
             _dwellerItemQueryRepository = dwellerItemQueryRepository;
         }
 
-        public async Task<ServiceResponse<DwellerItemEntity>> ProvideDwellerItem(Guid itemId)
+        public async Task<DwellerResponse<DwellerItemEntity>> ProvideDwellerItem(Guid itemId)
         {
-            ServiceResponse<DwellerItemEntity> response = new();
+            DwellerResponse<DwellerItemEntity> response = new();
 
             var item = await _dwellerItemQueryRepository.GetDwellerItem(itemId);
             if (item == null)
-                return await response.ErrorResponse(response, "No item could be found or registered", _logger);
+                return await response.ErrorResponse("No item could be found or registered");
 
-            return await response.SuccessResponse(response, item);
+            return await response.SuccessResponse(item);
         }
 
-        public async Task<ServiceResponse<ICollection<DwellerItemEntity>>> ProvideAllDwellerItems
+        public async Task<DwellerResponse<ICollection<DwellerItemEntity>>> ProvideAllDwellerItems
             (Guid houseId)
         {
-            ServiceResponse<ICollection<DwellerItemEntity>> response = new();
+            DwellerResponse<ICollection<DwellerItemEntity>> response = new();
 
             var itemList = await _dwellerItemQueryRepository.GetAllDwellerItems(houseId);
             if (itemList == null)
                 return await response.ErrorResponse
-                    (response, "No items found or registered", _logger, "Items null or not available from database.");
+                    ("No items found or registered");
 
-            return await response.SuccessResponse(response, itemList);
+            return await response.SuccessResponse(itemList);
         }
     }
 }

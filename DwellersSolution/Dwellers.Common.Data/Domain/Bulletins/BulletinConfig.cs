@@ -32,7 +32,7 @@ namespace Dwellers.Common.Data.Domain.Bulletins
 
             builder.Property<bool>("_isArchived").HasColumnName("IsArchived");
             builder.Property<DateTime>("isCreated").HasColumnName("IsCreated");
-            builder.Property<DateTime?>("_isModified").HasColumnName("IsModified");
+            builder.Property<DateTime>("_isModified").HasColumnName("IsModified");
 
             builder.Property<string>("_userId").HasColumnName("UserId");
 

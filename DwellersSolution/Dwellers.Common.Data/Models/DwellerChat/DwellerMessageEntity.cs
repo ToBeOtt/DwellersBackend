@@ -1,6 +1,4 @@
-﻿using Dwellers.Common.Data.Models.Household;
-
-namespace Dwellers.Common.Data.Models.DwellerChat
+﻿namespace Dwellers.Common.Data.Models.DwellerChat
 {
     public class DwellerMessageEntity
     {
@@ -9,23 +7,20 @@ namespace Dwellers.Common.Data.Models.DwellerChat
         public DateTime Timestamp { get; set; }
         public bool IsRead { get; set; }
 
-        public DwellerUserEntity User { get; set; }
-        public string UserId { get; set; }
-
+        public string DwellerId { get; set; }
         public Guid ConversationId { get; set; }
-        public DwellerConversationEntity Conversation { get; set; }
 
         public bool Archived { get; private set; }
         public DateTime IsCreated { get; private set; }
         public DateTime? IsModified { get; private set; }
 
         public DwellerMessageEntity() { }
-        public DwellerMessageEntity(string message, DwellerUserEntity user, DwellerConversationEntity conversation)
+        public DwellerMessageEntity(string message, string dwellerId, Guid conversationId)
         {
             Id = Guid.NewGuid();
             MessageText = message;
-            User = user;
-            Conversation = conversation;
+            DwellerId = dwellerId;
+            ConversationId = conversationId;
         }
     }
 }

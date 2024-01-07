@@ -32,10 +32,8 @@
     <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Data\Dwellers.Common.Data.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
-    <ProjectReference Include="..\Dwellers.Household.Application\Dwellers.Household.csproj" />
-    <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.Household.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Notes.Contracts\Dwellers.Notes.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Notes\Dwellers.Notes.csproj" />
+    <ProjectReference Include="..\Dwellers.DwellerCore.Application\Dwellers.DwellerCore.csproj" />
+    <ProjectReference Include="..\Dwellers.DwellerCore.Contracts\Dwellers.DwellerCore.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings\Dwellers.Offerings.csproj" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using Dwellers.Calendar.Contracts.Commands;
 using Dwellers.Calendar.Domain.Entites.ValueObjects;
-using SharedKernel.Domain.DomainModels;
-using SharedKernel.Domain.DomainResponse;
+using SharedKernel.Domain;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Calendar.Domain.Entites
 {
@@ -27,35 +27,30 @@ namespace Dwellers.Calendar.Domain.Entites
             IsArchived = false;
         }
 
-        public async Task<DomainResponse<bool>> SetScopeFromUI(string scope)
+        public async Task<DwellerResponse<bool>> SetScopeFromUI(string scope)
         {
-            DomainResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
 
             int parsedScope = int.Parse(scope);
             if (parsedScope < 0 || parsedScope > 2)
             {
-                response.IsSuccess = false;
-                response.DomainErrorMessage = "Could not set scope.";
-                return response;
+                return await response.ErrorResponse("Could not set scope.");
             }
             var scopeResponse = await SetScopeFromDB(parsedScope);
             return scopeResponse;
         }
 
-        public async Task<DomainResponse<bool>> SetScopeFromDB(int scope)
+        public async Task<DwellerResponse<bool>> SetScopeFromDB(int scope)
         {
-            DomainResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
             try
             {
                 EventScope = Visibility.FromDbValue(scope);
-                response.IsSuccess = true;
-                return response;
+                return await response.SuccessResponse();
             }
             catch (ArgumentException ex)
             {
-                response.IsSuccess = false;
-                response.DomainErrorMessage = ex.Message;
-                return response;
+                return await response.ErrorResponse(ex.Message);
             }
         }
     }

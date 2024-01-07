@@ -37,8 +37,8 @@ namespace DwellersApi.Controllers.Household
                 Desc: request.Desc,
                 EventDate: request.EventDate,
                 EventScope: request.EventScope,
-                UserId: userIdClaim.Value,
-                HouseId: new Guid(houseIdClaim.Value));
+                DwellerId: userIdClaim.Value,
+                DwellingId: new Guid(houseIdClaim.Value));
 
             var addEventResult = await _mediator.Send(cmd);
             return Ok(addEventResult);

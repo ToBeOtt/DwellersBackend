@@ -1,7 +1,7 @@
 ﻿using Dwellers.Common.Data.Models.DwellerServices;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Offerings.Services.DwellerServices
 {
@@ -18,28 +18,28 @@ namespace Dwellers.Offerings.Services.DwellerServices
             _dwellerServiceQueryRepository = dwellerServiceQueryRepository;
         }
 
-        public async Task<ServiceResponse<DwellerServiceEntity>> ProvideDwellerService(Guid houseId)
+        public async Task<DwellerResponse<DwellerServiceEntity>> ProvideDwellerService(Guid houseId)
         {
-            ServiceResponse<DwellerServiceEntity> response = new();
+            DwellerResponse<DwellerServiceEntity> response = new();
 
             var service = await _dwellerServiceQueryRepository.GetDwellerService(houseId);
             if (service == null)
                 return await response.ErrorResponse
-                           (response, "No service could be found or registered", _logger);
+                           ("No service could be found or registered");
 
-            return await response.SuccessResponse(response, service);
+            return await response.SuccessResponse(service);
         }
 
-        public async Task<ServiceResponse<ICollection<DwellerServiceEntity>>> ProvideAllDwellerServices(Guid houseId)
+        public async Task<DwellerResponse<ICollection<DwellerServiceEntity>>> ProvideAllDwellerServices(Guid houseId)
         {
-            ServiceResponse<ICollection<DwellerServiceEntity>> response = new();
+            DwellerResponse<ICollection<DwellerServiceEntity>> response = new();
 
             var serviceList = await _dwellerServiceQueryRepository.GetAllDwellerServices(houseId);
             if (serviceList == null)
                 return await response.ErrorResponse
-                        (response, "No services found or registered.", _logger);
+                        ("No services found or registered.");
 
-            return await response.SuccessResponse(response, serviceList);
+            return await response.SuccessResponse(serviceList);
         }
     }
 }

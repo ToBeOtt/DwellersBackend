@@ -27,17 +27,17 @@ namespace Dwellers.Common.Persistance.ChatModule.Repositories
         {
             return 
                 await _context.DwellerMessages
-                .Where(dm => dm.Conversation.Id == conversationId)
+                .Where(dm => dm.ConversationId == conversationId)
                 .ToListAsync();
         }
 
-        public async Task<DwellerConversationEntity> GetHouseholdConversation(Guid houseId)
+        public async Task<DwellerConversationEntity> GetHouseholdConversation(Guid dwellingId)
         {
             return 
                 await _context.DwellerConversations
-                .Include(dc => dc.HouseConversations)
-                .Where(dc => dc.HouseConversations
-                    .Any(hc => hc.HouseId == houseId))
+                .Include(dc => dc.DwellingConversationEntity)
+                .Where(dc => dc.DwellingConversationEntity
+                    .Any(hc => hc.DwellingId == dwellingId))
                     .SingleOrDefaultAsync();
         } 
     }

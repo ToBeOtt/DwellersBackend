@@ -1,4 +1,5 @@
-﻿using Dwellers.Common.Data.Models.Household;
+﻿using Dwellers.DwellerCore.Domain.Entities.Dwellers;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 
 namespace Dwellers.Common.Data.Models.DwellerEvents
 {
@@ -15,8 +16,8 @@ namespace Dwellers.Common.Data.Models.DwellerEvents
         public DateTime IsCreated { get; private set; }
         public DateTime? IsModified { get; private set; }
 
-        public DwellerUserEntity User { get; set; }
-        public HouseEntity House { get; set; }
+        public Dweller Dweller { get; set; }
+        public Dwelling Dwelling { get; set; }
 
         public DwellerEventEntity()
         {

@@ -5,7 +5,7 @@
         string Desc,
         string EventScope,
         DateTime EventDate,
-        string UserId,
-        Guid HouseId
+        string DwellerId,
+        Guid DwellingId
         );
 }

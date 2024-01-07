@@ -1,6 +1,7 @@
 ﻿using Dwellers.Common.Data.Context;
 using Dwellers.Common.Data.Models.DwellerItems;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerItems;
+using Dwellers.Offerings.Domain.DwellerItems;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -40,19 +41,20 @@ namespace Dwellers.Common.Persistance.OfferingsModule.Repositories.DwellerItems
                 return 0;
             }
         }
-        public async Task<bool> AddDwellerItem(DwellerItemEntity item)
+        public async Task<bool> AddDwellerItem(DwellerItem item)
         {
-            try
-            {
-                await _context.DwellerItems.AddAsync(item);
-                int result = await SaveActions();
-                return result > 0;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error while adding DwellerItem: " + ex.Message);
-                return false;
-            }
+            return true;
+            //try
+            //{
+            //    await _context.DwellerItems.AddAsync(item);
+            //    int result = await SaveActions();
+            //    return result > 0;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Error while adding DwellerItem: " + ex.Message);
+            //    return false;
+            //}
         }
 
         public async Task<bool> RemoveDwellerItem(DwellerItemEntity dwellerItem)

@@ -3,8 +3,9 @@ using Dwellers.Common.Data.Models.DwellerChat;
 using Dwellers.Common.Data.Models.DwellerEvents;
 using Dwellers.Common.Data.Models.DwellerItems;
 using Dwellers.Common.Data.Models.DwellerServices;
-using Dwellers.Common.Data.Models.Household;
-using Dwellers.Common.Data.Models.Notes;
+using Dwellers.DwellerCore.Domain.Entities;
+using Dwellers.DwellerCore.Domain.Entities.Dwellers;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dwellers.Common.Data.Context
@@ -15,20 +16,17 @@ namespace Dwellers.Common.Data.Context
             : base(options)
         {
         }
-        public DbSet<DwellerUserEntity> Users { get; set; } 
+        public DbSet<Dweller> Dwellers { get; set; } 
 
-        public DbSet<HouseUserEntity> HouseUsers { get; set; }
-        public DbSet<HouseEntity> Houses { get; set; } 
+        public DbSet<DwellingInhabitant> DwellingInhabitants { get; set; }
+        public DbSet<Dwelling> Dwellings { get; set; } 
 
         public DbSet<DwellerMessageEntity> DwellerMessages { get; set; }
         public DbSet<DwellerConversationEntity> DwellerConversations { get; set; }
-        public DbSet<HouseConversationEntity> HouseConversations { get; set; }
+        public DbSet<DwellingConversationEntity> DwellingConversations { get; set; }
 
 
         public DbSet<Bulletin> Bulletins { get; set; }
-
-
-        public DbSet<NoteEntity> Notes { get; set; } 
 
         public DbSet<DwellerEventEntity> DwellerEvents { get; set; } 
 

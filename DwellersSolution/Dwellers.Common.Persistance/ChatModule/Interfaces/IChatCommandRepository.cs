@@ -6,6 +6,6 @@ namespace Dwellers.Common.Persistance.ChatModule.Interfaces
     {
         Task<bool> PersistMessage(DwellerMessageEntity message);
         Task<bool> PersistConversation(DwellerConversationEntity conversation);
-        Task<bool> PersistHouseConversation(HouseConversationEntity houseConversation);
+        Task<bool> PersistHouseConversation(DwellingConversationEntity houseConversation);
     }
 }

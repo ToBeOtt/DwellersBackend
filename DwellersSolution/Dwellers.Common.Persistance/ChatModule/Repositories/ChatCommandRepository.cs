@@ -53,9 +53,9 @@ namespace Dwellers.Common.Persistance.ChatModule.Repositories
             int result = await SaveActions();
             return result > 0;
         }
-        public async Task<bool> PersistHouseConversation(HouseConversationEntity houseConversation)
+        public async Task<bool> PersistHouseConversation(DwellingConversationEntity houseConversation)
         {
-            _context.HouseConversations.AddAsync(houseConversation);
+            _context.DwellingConversations.AddAsync(houseConversation);
             int result = await SaveActions();
             return result > 0;
         }

@@ -51,19 +51,6 @@ namespace SharedKernel.Exceptions
                 DwellersDomainException domainException =>
                     new ErrorResponse(domainException.ExceptionCode, domainException.Message),
 
-
-                DwellersValidationException validationException => new ErrorResponse(
-                    validationException.ExceptionCode,
-                    validationException.Message,
-                    validationException.ValidationMessages),
-
-
-                ValidationException validationException => new SharedKernel.Exceptions.Common.ErrorResponse(
-                    validationException.Errors,
-                    validationException.Message,
-                    -1),
-
-
                 DwellersAppException appException => new ErrorResponse(appException.ExceptionCode,
                     appException.Message),
                 _ => new ErrorResponse(-1, ex.Message),

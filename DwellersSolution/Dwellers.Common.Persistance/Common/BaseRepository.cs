@@ -1,6 +1,7 @@
 ﻿using Dwellers.Common.Data.Context;
 using Microsoft.EntityFrameworkCore.Storage;
-using SharedKernel.Application;
+using SharedKernel;
+using System.Data;
 
 namespace Dwellers.Common.Persistance.Common
 {
@@ -34,7 +35,9 @@ namespace Dwellers.Common.Persistance.Common
             }
         }
 
-        public ITransaction BeginTransaction()
+
+        public async Task<ITransaction> BeginTransactionAsync
+        (IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
         {
             if (_transaction == null)
             {

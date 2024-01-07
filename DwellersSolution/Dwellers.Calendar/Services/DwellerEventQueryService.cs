@@ -2,7 +2,7 @@
 using Dwellers.Common.Data.Models.DwellerEvents;
 using Dwellers.Common.Persistance.CalendarModule.Interfaces;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Calendar.Services
 {
@@ -18,43 +18,43 @@ namespace Dwellers.Calendar.Services
             _logger = logger;
             _dwellerEventsQueryRepository = dwellerEventsQueryRepository;
         }
-        public async Task<ServiceResponse<DwellerEventEntity>> FetchEvent
+        public async Task<DwellerResponse<DwellerEventEntity>> FetchEvent
            (GetEventQuery query)
         {
-            ServiceResponse<DwellerEventEntity> response = new();
+            DwellerResponse<DwellerEventEntity> response = new();
 
             var dwellerEvent = await _dwellerEventsQueryRepository.GetEvent(query.EventId);
             if (dwellerEvent == null)
                 return await response.ErrorResponse
-                        (response, "No events found or registered.", _logger);
+                        ("No events found or registered.");
 
-            return await response.SuccessResponse(response, dwellerEvent);
+            return await response.SuccessResponse(dwellerEvent);
         }
 
-        public async Task<ServiceResponse<ICollection<DwellerEventEntity>>> FetchAllEvents
+        public async Task<DwellerResponse<ICollection<DwellerEventEntity>>> FetchAllEvents
             (Guid houseId)
         {
-            ServiceResponse<ICollection<DwellerEventEntity>> response = new();
+            DwellerResponse<ICollection<DwellerEventEntity>> response = new();
 
             var eventList = await _dwellerEventsQueryRepository.GetAllEvents(houseId);
             if (eventList == null)
                 return await response.ErrorResponse
-                           (response, "No events found or registered.", _logger);
+                           ("No events found or registered.");
 
-            return await response.SuccessResponse(response, eventList);
+            return await response.SuccessResponse(eventList);
         }
 
-        public async Task<ServiceResponse<ICollection<DwellerEventEntity>>> FetchUpcomingEvents
+        public async Task<DwellerResponse<ICollection<DwellerEventEntity>>> FetchUpcomingEvents
             (GetUpcomingEventsQuery query)
         {
-            ServiceResponse<ICollection<DwellerEventEntity>> response = new();
+            DwellerResponse<ICollection<DwellerEventEntity>> response = new();
 
             var eventList = await _dwellerEventsQueryRepository.GetUpcomingEvents(query.HouseId);
             if (eventList == null)
                 return await response.ErrorResponse
-                        (response, "No upcoming events can be found.", _logger);
+                        ("No upcoming events can be found.");
         
-           return await response.SuccessResponse(response, eventList);;
+           return await response.SuccessResponse(eventList);;
         }
     }
 }

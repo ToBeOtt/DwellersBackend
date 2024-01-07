@@ -1,4 +1,4 @@
-﻿using SharedKernel.Domain.DomainModels;
+﻿using SharedKernel.Domain;
 using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
 
 namespace Dwellers.Bulletins.Domain.Bulletins.DomainEvents

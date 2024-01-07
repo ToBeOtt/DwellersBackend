@@ -1,6 +1,6 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins.DomainEvents;
 using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinPriority;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinScope;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinStatus;
@@ -91,7 +91,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         {
             foreach(var tag in tags) 
             {
-                CheckRule(new InputNotNullOrEmpty<BulletinTag>(tag));
+                DwellerValidation(new InputNotNullOrEmpty<BulletinTag>(tag));
                 _tags.Add(tag);
             }
         }

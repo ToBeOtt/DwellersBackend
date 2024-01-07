@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
+﻿using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
 {

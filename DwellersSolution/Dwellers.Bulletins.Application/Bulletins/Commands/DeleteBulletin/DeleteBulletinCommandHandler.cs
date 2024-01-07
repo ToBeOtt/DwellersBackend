@@ -1,8 +1,8 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
 using SharedKernel.Infrastructure.Configuration.Commands;
-using static SharedKernel.Application.ServiceResponse.EmptySuccessfulCommandResponse;
+using SharedKernel.ServiceResponse;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace Dwellers.Bulletins.Application.Bulletins.Commands.DeleteBulletin
 {
@@ -18,9 +18,9 @@ namespace Dwellers.Bulletins.Application.Bulletins.Commands.DeleteBulletin
             _logger = logger;
             _bulletinRepo = bulletinRepo;
         }
-        public async Task<ServiceResponse<DwellerUnit>> Handle(DeleteBulletinCommand cmd, CancellationToken cancellation)
+        public async Task<DwellerResponse<DwellerUnit>> Handle(DeleteBulletinCommand cmd, CancellationToken cancellation)
         {
-            ServiceResponse<DwellerUnit> response = new();
+            DwellerResponse<DwellerUnit> response = new();
 
             var bulletin = await _bulletinRepo.GetById(cmd.Id);
 
@@ -28,9 +28,9 @@ namespace Dwellers.Bulletins.Application.Bulletins.Commands.DeleteBulletin
 
             if (!await _bulletinRepo.DeleteBulletin(bulletin))
                 return await response.ErrorResponse
-                    (response, "Could not persist entity.", _logger);
+                    ("Could not persist entity.");
 
-            return await response.SuccessResponse(response, new DwellerUnit());
+            return await response.SuccessResponse(new DwellerUnit());
         }
     }
 }

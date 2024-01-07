@@ -1,6 +1,4 @@
-﻿using SharedKernel.Domain.DomainModels;
-
-namespace Dwellers.Common.Data.Models.DwellerChat
+﻿namespace Dwellers.Common.Data.Models.DwellerChat
 {
     public class DwellerConversationEntity
     {
@@ -11,7 +9,7 @@ namespace Dwellers.Common.Data.Models.DwellerChat
         public DateTime IsCreated { get; private set; }
         public DateTime? IsModified { get; private set; }
 
-        public ICollection<HouseConversationEntity> HouseConversations { get; set; }
+        public ICollection<DwellingConversationEntity> DwellingConversationEntity { get; set; }
 
         public DwellerConversationEntity(string name)
         {

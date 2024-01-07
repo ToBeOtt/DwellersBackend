@@ -1,6 +1,6 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using SharedKernel.Domain.DomainModels;
-using SharedKernel.Domain.DomainResponse;
+using SharedKernel.Domain;
+using SharedKernel.ServiceResponse;
 using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
@@ -38,23 +38,23 @@ namespace Dwellers.Bulletins.Domain.Bulletins
                     tag.ToUpper();
                     newListOfTags.Add(new BulletinTag(tag, bulletinId));
                 }
-                CheckRule(new NoDuplicateTagsMayExist(newListOfTags, null));
+                DwellerValidation(new NoDuplicateTagsMayExist(newListOfTags, null));
                 return newListOfTags;
             }
         }
 
-        internal DomainResponse<bool> AddTagToCollection
+        internal async Task<DwellerResponse<bool>> AddTagToCollection
             (List<BulletinTag> currentTags, string newTag, BulletinId id)
         {
-            DomainResponse<bool> response = new();
-            //CheckRule(new NoDuplicateTagsMayExist(currentTags, newTag));
+            DwellerResponse<bool> response = new();
+            DwellerValidation(new NoDuplicateTagsMayExist(currentTags, newTag));
 
             var outcome = DwellerValidation(new DomainIsBroken(currentTags, newTag));
             if(!outcome.IsSuccess)
-                return response.ErrorResponse(outcome, outcome.DomainErrorMessage);
+                return await response.ErrorResponse(outcome.ErrorMessage);
 
             CreateNewTag(newTag, id);
-            return response;
+            return await response.SuccessResponse();
         }
     }
 }

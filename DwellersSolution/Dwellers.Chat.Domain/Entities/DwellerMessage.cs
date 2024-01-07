@@ -1,4 +1,4 @@
-﻿using SharedKernel.Domain.DomainModels;
+﻿using SharedKernel.Domain;
 
 namespace Dwellers.Chat.Domain.Entities
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain;
 using System.Collections.Concurrent;
 
 namespace SharedKernel.Infrastructure

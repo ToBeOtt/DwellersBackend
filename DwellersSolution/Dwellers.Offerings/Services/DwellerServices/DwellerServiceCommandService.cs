@@ -1,11 +1,9 @@
 ﻿using Dwellers.Common.Data.Models.DwellerServices;
-using Dwellers.Common.Persistance.HouseholdModule.Interfaces.Houses;
 using Dwellers.Common.Persistance.OfferingsModule.Interfaces.DwellerServices;
 using Dwellers.Offerings.Contracts.Commands;
 using Dwellers.Offerings.Domain.DwellerServices;
-using Dwellers.Offerings.Mappings.DwellerServices;
 using Microsoft.Extensions.Logging;
-using SharedKernel.Application.ServiceResponse;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Offerings.Services.DwellerServices
 {
@@ -14,53 +12,41 @@ namespace Dwellers.Offerings.Services.DwellerServices
         private readonly ILogger<DwellerServiceCommandService> _logger;
         private readonly IDwellerServiceQueryRepository _dwellerServiceQueryRepository;
         private readonly IDwellerServiceCommandRepository _dwellerServiceCommandRepository;
-        private readonly IHouseQueryRepository _houseQueryRepository;
-        private readonly DwellerServiceMappingService _mapping;
-
+        
         public DwellerServiceCommandService(
             ILogger<DwellerServiceCommandService> logger,
             IDwellerServiceQueryRepository dwellerServiceQueryRepository,
-            IDwellerServiceCommandRepository dwellerServiceCommandRepository,
-            IHouseQueryRepository houseQueryRepository,
-            DwellerServiceMappingService mapping)
+            IDwellerServiceCommandRepository dwellerServiceCommandRepository)
         {
             _logger = logger;
             _dwellerServiceQueryRepository = dwellerServiceQueryRepository;
             _dwellerServiceCommandRepository = dwellerServiceCommandRepository;
-            _houseQueryRepository = houseQueryRepository;
-            _mapping = mapping;
         }
 
-        public async Task<ServiceResponse<bool>> CreateAndPersistService
+        public async Task<DwellerResponse<bool>> CreateAndPersistService
             (AddDwellerServiceCommand cmd)
         {
-            ServiceResponse<bool> response = new();
-
-            var house = await _houseQueryRepository.GetHouseById(cmd.HouseId);
-            if (house is null)
-                return await response.ErrorResponse
-                           (response, "Could not find household to which item belong.", _logger);
+            DwellerResponse<bool> response = new();
 
             var dwellerService = new DwellerService(cmd.Name, cmd.Description);
 
             var scopeSet = await dwellerService.SetServiceScope(cmd.ServiceScope);
             if (!scopeSet.IsSuccess)
                 return await response.ErrorResponse
-                        (response, "Something went wrong with adding the service.", _logger, scopeSet.DomainErrorMessage);
+                        ("Something went wrong with adding the service.");
 
-            var persistanceService = _mapping.MapToPersistence(dwellerService);
 
-            if (!await _dwellerServiceCommandRepository.AddDwellerService(persistanceService))
+            if (!await _dwellerServiceCommandRepository.AddDwellerService(dwellerService))
                 return await response.ErrorResponse
-                        (response, "Something went wrong with adding the service.", _logger);
+                        ("Something went wrong with adding the service.");
 
-            var establishProvider = new ProvidedServiceEntity(house, persistanceService, true);
+            var establishProvider = new ProvidedServiceEntity(cmd.DwellingId, dwellerService.Id, true);
 
             if (!await _dwellerServiceCommandRepository.RegisterProvidedService(establishProvider))
                 return await response.ErrorResponse
-                        (response, "Something went wrong with adding the service.", _logger, scopeSet.DomainErrorMessage);
+                        ("Something went wrong with adding the service.");
 
-            return await response.SuccessResponse(response);
+            return await response.SuccessResponse();
         }
     }
 }

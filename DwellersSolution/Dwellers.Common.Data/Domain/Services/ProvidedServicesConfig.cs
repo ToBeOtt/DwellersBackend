@@ -1,4 +1,6 @@
-﻿using Dwellers.Common.Data.Models.DwellerServices;
+﻿using Dwellers.Common.Data.Models.DwellerItems;
+using Dwellers.Common.Data.Models.DwellerServices;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,13 +10,30 @@ namespace Dwellers.Common.Data.Domain.Services
     {
         public void Configure(EntityTypeBuilder<ProvidedServiceEntity> builder)
         {
-            builder.HasOne(ds => ds.Service)
-                .WithMany(ps => ps.ProvidedServices)
-                .HasForeignKey(ds => ds.ServiceId);
+            builder.ToTable("BorrowedItems");
 
-            builder.HasOne(h => h.House)
-                .WithMany(ps => ps.ProvidedServices)
-                .HasForeignKey(h => h.HouseId);
+            builder.HasKey(bi => bi.Id);
+
+            // Define the properties
+            builder.Property(bi => bi.DwellingId).IsRequired();
+            builder.Property(bi => bi.ServiceId).IsRequired();
+            builder.Property(bi => bi.IsProvider);
+            builder.Property(bi => bi.Note);
+            builder.Property(bi => bi.ServiceReturned);
+            builder.Property(bi => bi.Archived);
+            builder.Property(bi => bi.IsCreated);
+            builder.Property(bi => bi.IsModified);
+
+            // Configure relationships using shadow properties
+            builder.HasOne<Dwelling>().WithMany()
+                .HasForeignKey(bi => bi.DwellingId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne<DwellerServiceEntity>().WithMany()
+                .HasForeignKey(bi => bi.ServiceId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Dwellers.Common.Persistance.OfferingsModule.Repositories.DwellerItems
         {
             return await _context.DwellerItems
                                 .Include(di => di.BorrowedItems)
-                                .Where(di => di.BorrowedItems.Any(bi => bi.HouseId == houseId))
+                                .Where(di => di.BorrowedItems.Any(bi => bi.DwellingId == houseId))
                                 .ToListAsync();
         }
 

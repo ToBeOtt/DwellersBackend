@@ -1,8 +1,6 @@
-﻿using Dwellers.Common.Data.Models.Household;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Dwellers.Common.Data.Models.DwellerEvents;
 using Microsoft.EntityFrameworkCore;
-using Dwellers.Common.Data.Models.DwellerEvents;
-using Dwellers.Bulletins.Domain.Bulletins;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dwellers.Common.Data.Domain.Events
 {

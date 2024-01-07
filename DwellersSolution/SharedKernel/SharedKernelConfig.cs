@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using SharedKernel.Infrastructure.Configuration.Queries;
 
-namespace Dwellers.Bulletins.Application
+namespace SharedKernel
 {
     public static class SharedKernelConfig
     {
@@ -15,24 +15,24 @@ namespace Dwellers.Bulletins.Application
             services.AddTransient<IQueryDispatcher, QueryDispatcher>();
             services.AddTransient<IQueryHandlerFactory, QueryHandlerFactory>();
 
-            services.Scan(selector =>
-            {
-                selector.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
-                        .AddClasses(filter =>
-                        {
-                            filter.AssignableTo(typeof(IQueryHandler<,>));
-                        })
-                        .AsImplementedInterfaces()
-                        .WithTransientLifetime();
+            //services.Scan(selector =>
+            //{
+            //    selector.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+            //            .AddClasses(filter =>
+            //            {
+            //                filter.AssignableTo(typeof(IQueryHandler<,>));
+            //            })
+            //            .AsImplementedInterfaces()
+            //            .WithTransientLifetime();
 
-                selector.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
-                        .AddClasses(filter =>
-                        {
-                            filter.AssignableTo(typeof(ICommandHandler<,>));
-                        })
-                        .AsImplementedInterfaces()
-                        .WithTransientLifetime();
-            });
+            //    selector.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
+            //            .AddClasses(filter =>
+            //            {
+            //                filter.AssignableTo(typeof(ICommandHandler<,>));
+            //            })
+            //            .AsImplementedInterfaces()
+            //            .WithTransientLifetime();
+            //});
      
             return services;
         }
