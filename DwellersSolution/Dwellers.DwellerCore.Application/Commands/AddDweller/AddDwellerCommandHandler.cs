@@ -1,6 +1,4 @@
-﻿using Azure;
-using Dwellers.Bulletins.Domain.Bulletins;
-using Dwellers.DwellerCore.Contracts.Commands;
+﻿using Dwellers.DwellerCore.Contracts.Commands;
 using Dwellers.DwellerCore.Domain.Entities.Dwellers;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Infrastructure.Configuration.Commands;

@@ -2,5 +2,6 @@
 {
     public record SaveMessageRequest (
         string Message,
+        string DwellerId,
         Guid ConversationId);
 }

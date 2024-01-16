@@ -86,7 +86,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<HouseholdHub>("/householdHub", options =>
+    endpoints.MapHub<DwellersHub>("/dwellersHub", options =>
     {
         options.TransportMaxBufferSize = 1024;
         options.LongPolling.PollTimeout = TimeSpan.FromSeconds(30);
@@ -95,7 +95,5 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapControllers();
-
-
 
 app.Run();

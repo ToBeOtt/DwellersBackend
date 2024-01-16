@@ -1,4 +1,5 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins;
+using Dwellers.Chat.Domain.Entities;
 using Dwellers.Common.Data.Models.DwellerChat;
 using Dwellers.Common.Data.Models.DwellerEvents;
 using Dwellers.Common.Data.Models.DwellerItems;
@@ -21,10 +22,9 @@ namespace Dwellers.Common.Data.Context
         public DbSet<DwellingInhabitant> DwellingInhabitants { get; set; }
         public DbSet<Dwelling> Dwellings { get; set; } 
 
-        public DbSet<DwellerMessageEntity> DwellerMessages { get; set; }
-        public DbSet<DwellerConversationEntity> DwellerConversations { get; set; }
-        public DbSet<DwellingConversationEntity> DwellingConversations { get; set; }
-
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Conversation> Conversations { get; set; }
+        public DbSet<MemberInConversation> MemberInConversations { get; set; }
 
         public DbSet<Bulletin> Bulletins { get; set; }
 

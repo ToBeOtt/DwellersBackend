@@ -14,7 +14,7 @@ namespace Dwellers.DwellerCore.Application
             services.AddHttpContextAccessor();  
 
             services.AddTransient<DwellingServices>();
-            services.AddTransient<IDwellerCoreQueries, DwellerCoreQueries>();
+            //services.AddTransient<IDwellerCoreQueries, DwellerCoreQueries>();
          
             return services;
         }

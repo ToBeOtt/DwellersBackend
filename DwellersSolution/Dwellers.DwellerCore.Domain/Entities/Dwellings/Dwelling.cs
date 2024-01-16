@@ -42,7 +42,7 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
             _invitationCode = Guid.NewGuid();
         }
 
-        public static class DwellerHouseFactory
+        public static class DwellingFactory
         {
             public static async Task<Dwelling> Create(
                     string name, string? description)
@@ -52,7 +52,6 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
                 return dwelling;
             }
         }
-
 
         internal async Task<bool> ValidateName(string name)
         {

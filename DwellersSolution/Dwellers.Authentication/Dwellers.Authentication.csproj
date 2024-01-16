@@ -29,7 +29,7 @@
     <ProjectReference Include="..\Dwellers.Authentication.Contracts\Dwellers.Authentication.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
-    <ProjectReference Include="..\Dwellers.Household.Contracts\Dwellers.DwellerCore.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.DwellerCore.Contracts\Dwellers.DwellerCore.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
   </ItemGroup>
 

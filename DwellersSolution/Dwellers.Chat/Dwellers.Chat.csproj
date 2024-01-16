@@ -23,8 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
     <ProjectReference Include="..\Dwellers.Chat.Domain\Dwellers.Chat.Domain.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\GetConversation\" />
   </ItemGroup>
 
 </Project>

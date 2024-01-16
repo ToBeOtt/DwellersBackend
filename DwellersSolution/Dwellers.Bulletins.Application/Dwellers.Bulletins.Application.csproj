@@ -13,9 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dwellers.Bulletins.Domain\Dwellers.Bulletins.Domain.csproj" />
     <ProjectReference Include="..\Dwellers.Bulletins.Contracts\Dwellers.Bulletins.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Bulletins.Domain\Dwellers.Bulletins.Domain.csproj" />
     <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
     <ProjectReference Include="..\Dwellers.Offerings.Domain\Dwellers.Offerings.Domain.csproj" />
   </ItemGroup>

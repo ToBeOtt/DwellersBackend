@@ -23,24 +23,24 @@ namespace Dwellers.Chat.Services
             _chatQueryRepository = chatQueryRepository;
         }
 
-        public async Task<DwellerResponse<bool>> SaveMessage
-            (string messageText, string userId, Guid conversationId)
-        {
-            DwellerResponse<bool> response = new();
+        //public async Task<DwellerResponse<bool>> SaveMessage
+        //    (string messageText, string userId, Guid conversationId)
+        //{
+        //    DwellerResponse<bool> response = new();
 
-            var conversation = await _chatQueryRepository.GetConversation(conversationId);
-            if (conversation is null)
-                return await response.ErrorResponse
-                       ("Chat not found or empty.");
+        //    var conversation = await _chatQueryRepository.GetConversation(conversationId);
+        //    if (conversation is null)
+        //        return await response.ErrorResponse
+        //               ("Chat not found or empty.");
 
-            DwellerMessageEntity message = new DwellerMessageEntity(messageText, userId, conversation.Id);
+        //    DwellerMessageEntity message = new DwellerMessageEntity(messageText, userId, conversation.Id);
 
-            if (!await _chatCommandRepository.PersistMessage(message))
-                return await response.ErrorResponse
-                        ("Message could not be sent.");
+        //    if (!await _chatCommandRepository.PersistMessage(message))
+        //        return await response.ErrorResponse
+        //                ("Message could not be sent.");
             
-            return await response.SuccessResponse();
-        }
+        //    return await response.SuccessResponse();
+        //}
 
         public async Task<DwellerResponse<bool>> EstablishConversation
             (Guid dwellingId, string houseName)
