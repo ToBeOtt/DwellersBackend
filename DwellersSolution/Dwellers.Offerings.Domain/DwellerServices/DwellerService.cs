@@ -13,6 +13,8 @@ namespace Dwellers.Offerings.Domain.DwellerServices
         public VisibilityScope ServiceScope { get; private set; }
         public bool ServiceStatus { get; private set; }
 
+        public ICollection<ProvidedService> ProvidedServices { get; set; }
+
         public bool IsArchived { get; set; }
         public DateTime IsCreated { get; set; }
         public DateTime? IsModified { get; set; }

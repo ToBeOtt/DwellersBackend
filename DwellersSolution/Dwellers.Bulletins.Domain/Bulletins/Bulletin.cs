@@ -1,5 +1,6 @@
-﻿using Dwellers.Bulletins.Domain.Bulletins.DomainEvents;
-using Dwellers.Bulletins.Domain.Bulletins.Rules;
+﻿using Dwellers.Bulletins.Domain.Bulletins.Rules;
+using Dwellers.DwellerCore.Domain.Entities.Dwellers;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using SharedKernel.Domain;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinPriority;
 using static Dwellers.Bulletins.Domain.Bulletins.BulletinScope;
@@ -8,83 +9,82 @@ using static Dwellers.Bulletins.Domain.Bulletins.BulletinTag;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
 {
-    public class Bulletin : BaseEntity, IAggregateRoot
+    public class Bulletin : BaseEntity
     {
-        public readonly record struct BulletinId(Guid Value);
-        public BulletinId Id { get; private set; }
+        public Guid Id { get; private set; }
 
-        private string _title;
-        private string _text;
+        public string Title { get; set; }
+        public string Text { get; set; }
 
-        private List<BulletinTag> _tags;
-        private BulletinStatus _status;
-        private BulletinPriority _priority;
-        private BulletinScope _scope;
+        public List<BulletinTag> Tags { get; set; }
+        public BulletinStatus Status { get; set; }
+        public BulletinPriority Priority { get; set; }
+        public BulletinScope Scope { get; set; }
 
-        private List<Guid> _houseIds;
-        private string _userId;
+        public ICollection<Dwelling> Dwellings { get;  set; }
+        public Dweller Dweller { get; set; }
 
-        private bool _isArchived;
-        private DateTime _isCreated;
-        private DateTime _isModified;
+        public bool IsArchived { get; set; }
+        public DateTime IsCreated { get; set; }
+        public DateTime IsModified { get; set; }
 
         public Bulletin() { }
 
         private Bulletin(
-            string userId,
+            Dweller dweller,
             string title,
             string text,
             List<string> tags,
             string bulletinPriority,
             string bulletinStatus,
-            List<Guid>? houseList,
+            List<Dwelling> listOfDwellings,
             string visibility
             )
         {
-            Id = new BulletinId(Guid.NewGuid());
-            _userId = userId;
-            _title = title;
-            _text = text;
-            _priority = BulletinPriorityFactory.CreateNewPriority(bulletinPriority);
-            _status = BulletinStatusFactory.CreateNewStatus(bulletinStatus);
-            _tags = BulletinTagFactory.CreateNewCollectionOfTags(tags, Id);
-            _scope = BulletinScopeFactory.SetBulletinScope(Id, houseList, visibility);
-            _isArchived = false;
-            _isCreated = DateTime.Now;
+            Id = Guid.NewGuid();
+            Dweller = dweller;
+            Title = title;
+            Text = text;
+            Priority = BulletinPriorityFactory.CreateNewPriority(bulletinPriority);
+            Status = BulletinStatusFactory.CreateNewStatus(bulletinStatus);
+            Tags = BulletinTagFactory.CreateNewCollectionOfTags(tags, this);
+            Scope = BulletinScopeFactory.SetBulletinScope(listOfDwellings, this, visibility);
+            IsArchived = false;
+            IsCreated = DateTime.Now;
         }
         public static class BulletinPostFactory
         {
            public static Bulletin CreateNewBulletin(
-                string userId,
+                Dweller dweller,
                 string title,
                 string text,
                 List<string> tags,
                 string bulletinPriority,
                 string bulletinStatus,
-                List<Guid>? houseList,
+                List<Dwelling> liftOfDwellings,
                 string visibility)
             {
                 return new Bulletin(
-                    userId,
+                    dweller,
                     title,
                     text,
                     tags,
                     bulletinPriority,
                     bulletinStatus,
-                    houseList,
+                    liftOfDwellings,
                     visibility);
             }
         }
 
-        public void StatusUpdateToDone(BulletinStatusChangedToDoneDomainEvent @event)
+        public void StatusUpdateToDone(/*BulletinStatusChangedToDoneDomainEvent @event*/)
         {
-            _isArchived = true;
+            IsArchived = true;
         }
 
         public void ArchiveBulletin(Bulletin bulletin)
         {
-            _isArchived = true;
-            _isModified = DateTime.Now;
+            IsArchived = true;
+            IsModified = DateTime.Now;
         }
 
         public void AddTags(List<BulletinTag> tags)
@@ -92,7 +92,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             foreach(var tag in tags) 
             {
                 DwellerValidation(new InputNotNullOrEmpty<BulletinTag>(tag));
-                _tags.Add(tag);
+                Tags.Add(tag);
             }
         }
     }

@@ -6,32 +6,19 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
 {
     public class DwellingGallery : ValueObject
     {
-        private byte[] _dwellingImage;
-        private DwellingId _dwellingId;
+        public Guid Id { get; set; }
+        public byte[] DwellingImage { get; set; }
 
-        private DwellingGallery() { }
-        private DwellingGallery(byte[] image, DwellingId dwellingId)
+        public Guid DwellingId { get; set; }
+        public Dwelling? Dwelling { get; set; }
+
+
+        public DwellingGallery() { }
+        internal DwellingGallery(byte[] image, Dwelling dwelling)
         {
-            _dwellingImage = image;
-            _dwellingId = dwellingId;
-        }
-
-        internal static DwellingGallery CreateNewGalleryEntryFactory(IFormFile image, DwellingId dwellingId)
-        {
-            try
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    image.CopyToAsync(memoryStream);
-                    byte[] imageData = memoryStream.ToArray();
-
-                    return new DwellingGallery(imageData, dwellingId);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            Id = Guid.NewGuid();
+            DwellingImage = image;
+            Dwelling = dwelling;
         }
     }
 }

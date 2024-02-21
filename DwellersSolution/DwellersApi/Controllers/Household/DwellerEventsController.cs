@@ -1,10 +1,13 @@
-﻿using Dwellers.Calendar.Contracts.Commands;
-using Dwellers.Calendar.Contracts.Queries;
-using Dwellers.Calendar.Contracts.Requests;
-using MediatR;
+﻿using Dwellers.Common.Application.Contracts.Commands.Bulletins;
+using Dwellers.Common.Application.Contracts.Commands.DwellerEvents;
+using Dwellers.Common.Application.Contracts.Queries.DwellerEvents;
+using Dwellers.Common.Application.Contracts.Requests.DwellerEvents;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Infrastructure.Configuration.Commands;
 using System.Security.Authentication;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace DwellersApi.Controllers.Household
 {
@@ -13,17 +16,18 @@ namespace DwellersApi.Controllers.Household
     [Route("events")]
     public class DwellerEventsController : ControllerBase
     {
-        private readonly ISender _mediator;
+        private readonly ICommandHandlerFactory _commandHandler;
 
         public DwellerEventsController(
-            ISender mediator)
+          ICommandHandlerFactory commandHandler)
         {
-            _mediator = mediator;
+            _commandHandler = commandHandler;
         }
 
         [HttpPost("AddEvent")]
         public async Task<IActionResult> AddEvent(AddEventRequest request)
         {
+
             var userIdClaim = User.FindFirst("UserId");
             var houseIdClaim = User.FindFirst("HouseId");
             
@@ -37,22 +41,37 @@ namespace DwellersApi.Controllers.Household
                 Desc: request.Desc,
                 EventDate: request.EventDate,
                 EventScope: request.EventScope,
-                DwellerId: userIdClaim.Value,
+            DwellerId: userIdClaim.Value,
                 DwellingId: new Guid(houseIdClaim.Value));
 
-            var addEventResult = await _mediator.Send(cmd);
-            return Ok(addEventResult);
+            var handler = _commandHandler.GetHandler<AddEventCommand, DwellerUnit>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
+
         }
 
         [HttpGet("GetEvent")]
         public async Task<IActionResult> GetEvent(Guid eventId)
         {
 
-            var cmd = new GetEventQuery(
+            var query = new GetEventQuery(
                 EventId: eventId);
 
-            var getEventResult = await _mediator.Send(cmd);
-            return Ok(getEventResult);
+            var handler = _commandHandler.GetHandler<GetEventQuery, DwellerUnit>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("GetAllEvents")]
@@ -65,11 +84,18 @@ namespace DwellersApi.Controllers.Household
                 throw new InvalidCredentialException();
             }
 
-            var cmd = new GetAllEventsQuery(
+            var query = new GetAllEventsQuery(
                 HouseId: new Guid(houseIdClaim.Value));
 
-            var getAllEventsResult = await _mediator.Send(cmd);
-            return Ok(getAllEventsResult);
+            var handler = _commandHandler.GetHandler<GetAllEventsQuery, DwellerUnit>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("GetUpcomingEvents")]
@@ -82,11 +108,18 @@ namespace DwellersApi.Controllers.Household
                 throw new InvalidCredentialException();
             }
 
-            var cmd = new GetUpcomingEventsQuery(
+            var query = new GetUpcomingEventsQuery(
                 HouseId: new Guid(houseIdClaim.Value));
 
-            var getUpcomingEventsResult = await _mediator.Send(cmd);
-            return Ok(getUpcomingEventsResult);
+            var handler = _commandHandler.GetHandler<GetUpcomingEventsQuery, DwellerUnit>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
     }
 }

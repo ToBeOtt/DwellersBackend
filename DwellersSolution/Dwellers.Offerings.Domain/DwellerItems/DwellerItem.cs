@@ -15,6 +15,8 @@ namespace Dwellers.Offerings.Domain.DwellerItems
         public byte[]? ItemPhoto { get; private set; }
         public bool ItemStatus { get; private set; }
 
+        public ICollection<BorrowedItem> BorrowedItems { get; set; }
+
         public bool IsArchived { get; set; }
         public DateTime IsCreated { get; set; }
         public DateTime? IsModified { get; set; }
@@ -34,16 +36,16 @@ namespace Dwellers.Offerings.Domain.DwellerItems
             IsCreated = DateTime.UtcNow;
             IsArchived = false;
         }
-        public async Task<DwellerResponse<bool>> SetItemScope(string scope)
+        public async Task SetItemScope(string scope)
         {
             DwellerResponse<bool> response = new();
             if (Enum.TryParse(scope, out VisibilityScope itemscope))
             {
                 ItemScope = itemscope;
-                return await response.SuccessResponse();
+                await response.SuccessResponse();
             }
 
-            return await response.ErrorResponse("Scope could not be parsed to enum.");
+            await response.ErrorResponse("Scope could not be parsed to enum.");
         }
 
         public async Task<DwellerResponse<bool>> SetItemPhoto(IFormFile photo)

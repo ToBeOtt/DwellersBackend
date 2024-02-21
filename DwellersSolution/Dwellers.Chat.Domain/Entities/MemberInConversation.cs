@@ -1,26 +1,30 @@
-﻿using SharedKernel.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Dwellers.Chat.Domain.Entities.Conversation;
+﻿using Dwellers.DwellerCore.Domain.Entities.Dwellings;
+using SharedKernel.Domain;
 
 namespace Dwellers.Chat.Domain.Entities
 {
     public sealed class MemberInConversation : ValueObject
     {
-        private Guid _id;
-        private ConversationId _conversationId;
-        private Guid _dwellingId;
-        private DateTime _addedToConversation;
+        public Guid Id { get; set; }
 
-        internal MemberInConversation(ConversationId conversationId, Guid dwellingId)
+        public Guid DwellingId { get; set; }
+        public Dwelling Dwelling { get; set; }  
+        public Guid ConversationId { get; set; }
+        public DwellerConversation Conversation { get; set; }
+
+        public bool Archived { get; private set; }
+        public DateTime IsCreated { get; private set; }
+        public DateTime? IsModified { get; private set; }
+
+        public MemberInConversation()
         {
-            _id = Guid.NewGuid();
-            _conversationId = conversationId;
-            _dwellingId = dwellingId;
-            _addedToConversation = DateTime.UtcNow;
+
+        }
+        internal MemberInConversation(Dwelling dwelling, DwellerConversation conversation)
+        {
+            Id = Guid.NewGuid();
+            Dwelling = dwelling;
+            Conversation = conversation;
         }
     }
 }

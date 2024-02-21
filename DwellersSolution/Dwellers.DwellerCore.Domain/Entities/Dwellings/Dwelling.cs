@@ -1,45 +1,34 @@
-﻿using Dwellers.DwellerCore.Domain.DomainServices;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using SharedKernel.Domain;
 using SharedKernel.ServiceResponse;
 
 namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
 {
-    public sealed class Dwelling : BaseEntity, IAggregateRoot
+    public sealed class Dwelling : BaseEntity
     {
-        // Response and services
-        private GetAllDwellingNames _getNames;
+        public Guid Id { get; set; }
+        public Guid InvitationCode { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public byte[]? DwellingProfilePhoto { get; set; }
+        public List<DwellingGallery>? DwellingGallery { get; set; } = new List<DwellingGallery>();
 
+        public List<DwellingInhabitant>? DwellingInhabitantList { get; set; }
 
-        // model properties
-        public readonly record struct DwellingId(Guid Value);
-
-        public DwellingId Id;
-        private Guid _invitationCode;
-        private string _name;
-        private string? _description;
-        private byte[] _dwellingProfilePhoto;
-        private List<DwellingGallery> _dwellingGallery;
-
-        private List<DwellingInhabitant> _dwellingInhabitantList;
-
-        private bool _isArchived;
-        private DateTime _isCreated;
-        private DateTime _isModified;
-
-        private Dwelling() { }
-        private Dwelling(
-            string name,
-            string? description)
+        public bool IsArchived { get; set; } 
+        public DateTime IsCreated { get; set; }
+        public DateTime IsModified { get; set; }
+        public Dwelling() { }
+        private Dwelling(string? name, string? description)
         {
-            Id = new DwellingId(Guid.NewGuid());
+             Id = Guid.NewGuid();
             
-            _name = name;
-            _description = description;
+            Name = name;
+            Description = description;
 
-            _isCreated = DateTime.Now;
-            _isArchived = false;
-            _invitationCode = Guid.NewGuid();
+            IsCreated = DateTime.Now;
+            IsArchived = false;
+            InvitationCode = Guid.NewGuid();
         }
 
         public static class DwellingFactory
@@ -48,59 +37,30 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
                     string name, string? description)
             {
                 var dwelling = new Dwelling(name, description);
-                await dwelling.ValidateName(name);
                 return dwelling;
             }
         }
-
-        internal async Task<bool> ValidateName(string name)
+        
+        internal async Task AddProfilePhoto(IFormFile file)
         {
-            var existingNames = await _getNames.FetchAllDwellingNames();
-            if (!existingNames.Contains(name))
-            {
-                _name = name;
-                return true;
-            }
-            else
-            return false;
+            DwellingProfilePhoto = await ConvertIFormFileToByteArray(file);
         }
 
-        protected async Task<bool> SetHousePhoto(IFormFile photo)
+        internal async Task<byte[]> ConvertIFormFileToByteArray(IFormFile file)
         {
             DwellerResponse<bool> response = new();
 
-            try
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await photo.CopyToAsync(memoryStream);
-                    byte[] imageData = memoryStream.ToArray();
-
-                    _dwellingProfilePhoto = imageData;
-                    response.IsSuccess = true;
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public string GetName()
-        {
-            return _name;
-        }
-
-        public string GetDescription()
-        {
-            return _description;
+            using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+            byte[] imageData = memoryStream.ToArray();
+            return imageData;
         }
         
-        public DwellingGallery AddImageToGallery(IFormFile image)
+        internal async Task<DwellingGallery> AddImageToGallery(IFormFile image, Dwelling dwelling)
         {
-            var galleryImage = DwellingGallery.CreateNewGalleryEntryFactory(image, this.Id);
-            return galleryImage;
+            var imageToByteArray = await ConvertIFormFileToByteArray(image);
+            var dwellingGallery = new DwellingGallery(imageToByteArray, dwelling);
+            return dwellingGallery;
         }
     }
 }

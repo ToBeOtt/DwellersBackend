@@ -1,6 +1,6 @@
 ﻿using SharedKernel.Exceptions;
 
-namespace Dwellers.DwellerCore.Domain.Exceptions
+namespace Dwellers.Common.Application.Domain.Exceptions
 {
     public class NotValidNameException : DwellersAppException
     {

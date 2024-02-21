@@ -1,32 +1,30 @@
-﻿using SharedKernel.Domain;
-using static Dwellers.DwellerCore.Domain.Entities.Dwellings.Dwelling;
+﻿using Dwellers.DwellerCore.Domain.Entities.Dwellers;
+using Dwellers.DwellerCore.Domain.Entities.Dwellings;
+using SharedKernel.Domain;
 
 namespace Dwellers.DwellerCore.Domain.Entities
 {
     public class DwellingInhabitant : ValueObject
     {
-        private Guid _dwellingInhabitantId;
-        private string _dwellerId;
-        private DwellingId _dwellingId;
+        public Guid Id { get; set; }
+        public Guid DwellingId { get; set; }
+        public Dwelling Dwelling { get; set; }
 
-        private DwellingInhabitant() { }
-        internal DwellingInhabitant(string dwellerUserId, DwellingId dwellingId)
+        public Guid DwellerId { get; set; }
+        public Dweller Dweller{ get; set; }
+
+        public DwellingInhabitant() { }
+        internal DwellingInhabitant(Dwelling dwelling, Dweller dweller)
         {
-            _dwellingInhabitantId = Guid.NewGuid();
-
-            // Check for Duplicate name in dwelling-roster
-            _dwellerId = dwellerUserId;
-            _dwellingId = dwellingId;
+            Id = Guid.NewGuid();
+            Dwelling = dwelling;
+            Dweller = dweller;
         }
-
         public static class DwellingInhabitantFactory
         {
-            public static async Task<DwellingInhabitant> Create(
-                    string dwellerUserId,
-                    DwellingId DwellingId
-                    )
+            public static async Task<DwellingInhabitant> Create(Dwelling Dwelling, Dweller dweller)
             {
-                return new DwellingInhabitant(dwellerUserId, DwellingId);
+                return new DwellingInhabitant(Dwelling, dweller);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using Dwellers.DwellerCore.Contracts.Commands;
+﻿using Dwellers.Common.Application.Contracts.Commands.Dwellers;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using SharedKernel.Infrastructure.Configuration.Queries;

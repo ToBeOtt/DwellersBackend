@@ -1,10 +1,10 @@
-﻿using Dwellers.DwellerCore.Contracts.Queries;
-using Dwellers.DwellerCore.Contracts.Result;
+﻿using Dwellers.Common.Application.Contracts.Queries.Dwellers;
+using Dwellers.Common.Application.Contracts.Results.Dwellers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
 
-namespace DwellersApi.Controllers.DwellerCoreModule
+namespace DwellersApi.Controllers.Common.ApplicationModule
 {
     [ApiController]
     [Authorize]

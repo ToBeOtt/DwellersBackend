@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -9,33 +9,23 @@
   <ItemGroup>
     <PackageReference Include="mapster" Version="7.3.0" />
     <PackageReference Include="mapster.dependencyinjection" Version="1.0.0" />
-    <PackageReference Include="MediatR" Version="12.1.1" />
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog" Version="3.0.1" />
-    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Dwellers.Authentication\Dwellers.Authentication.csproj" />
-    <ProjectReference Include="..\Dwellers.Bulletins.Application\Dwellers.Bulletins.Application.csproj" />
-    <ProjectReference Include="..\Dwellers.Bulletins.Contracts\Dwellers.Bulletins.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Calendar.Contracts\Dwellers.Calendar.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Calendar\Dwellers.Calendar.csproj" />
-    <ProjectReference Include="..\Dwellers.Chat.Contracts\Dwellers.Chat.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Chat\Dwellers.Chat.csproj" />
-    <ProjectReference Include="..\Dwellers.Common.Data\Dwellers.Common.Data.csproj" />
-    <ProjectReference Include="..\Dwellers.Common.Persistance\Dwellers.Common.Persistance.csproj" />
-    <ProjectReference Include="..\Dwellers.DwellerCore.Application\Dwellers.DwellerCore.csproj" />
-    <ProjectReference Include="..\Dwellers.DwellerCore.Contracts\Dwellers.DwellerCore.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Offerings.Contracts\Dwellers.Offerings.Contracts.csproj" />
-    <ProjectReference Include="..\Dwellers.Offerings\Dwellers.Offerings.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.Application\Dwellers.Common.Application.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.Application\Dwellers.Common.Application.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.Application.Contracts\Dwellers.Common.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Dwellers.Common.Infrastructure\Dwellers.Common.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

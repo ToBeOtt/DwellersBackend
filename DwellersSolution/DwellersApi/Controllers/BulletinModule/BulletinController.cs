@@ -1,7 +1,7 @@
-﻿using Dwellers.Bulletins.Application.Bulletins.Commands.AddBulletin;
+﻿using Dwellers.Common.Application.Contracts.Commands.Bulletins;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
-using static Dwellers.Bulletins.Contracts.Request.BulletinRequests;
+using static Dwellers.Common.Application.Contracts.Requests.Bulletins.BulletinRequests;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace DwellersApi.Controllers.BulletinModule

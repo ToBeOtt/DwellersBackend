@@ -1,5 +1,5 @@
-﻿using SharedKernel.Domain;
-using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
+﻿using Dwellers.DwellerCore.Domain.Entities.Dwellings;
+using SharedKernel.Domain;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
 {
@@ -13,31 +13,29 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 
     public class BulletinScope : BaseEntity
     {
-        public readonly record struct ScopeId(Guid Value);
-        private ScopeId _scopeId;
+        public Guid Id { get; set; }
+        public Visibility Visibility { get; set; }
 
-        private BulletinId _bulletinId;
-        private List<ScopedHouse> _listOfHouses = new List<ScopedHouse>();
-        private Visibility _visibility;
+        public Bulletin Bulletin { get; set; }
+        public Dwelling Dwelling { get; set; }
 
-        private BulletinScope() { }
-        private BulletinScope(
-            BulletinId bulletinId,
-            List<Guid>? houseList,
-            string visibility
-            )
+
+        List<ScopedDwelling> DwellingsInScope { get; set; } = new List<ScopedDwelling>();
+
+        public BulletinScope() { }
+        internal BulletinScope(List<Dwelling> listOfDwellings, Bulletin bulletin, string visibility)
         {
-            _scopeId = new ScopeId(Guid.NewGuid());
-            _bulletinId = bulletinId;
+            Id = Guid.NewGuid();
+            Bulletin = bulletin;
 
-            foreach(var house in houseList)
+            foreach(var dwelling in listOfDwellings)
             {
-                _listOfHouses.Add(new ScopedHouse(_scopeId, house));
+                DwellingsInScope.Add(new ScopedDwelling(bulletin, dwelling));
             }
-            _visibility = Visibility.Custom;
+            Visibility = Visibility.Custom;
             // Raise event for selected houses that a bulletin has been posted
 
-            if ((houseList.Count <= 0 || houseList == null) && visibility !=  null)
+            if ((DwellingsInScope.Count <= 0 || DwellingsInScope == null) && visibility !=  null)
             {
                 ConvertVisibilityFromUIValue(visibility);
             }      
@@ -46,12 +44,12 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public static class BulletinScopeFactory
         {
             public static BulletinScope SetBulletinScope(
-                    BulletinId bulletinId,
-                    List<Guid>? houseList,
-                    string? visibility
+                    List<Dwelling> liftOfDwellings,
+                    Bulletin bulletin,
+                    string visibility
                     )
             {
-                return new BulletinScope(bulletinId, houseList, visibility);
+                return new BulletinScope(liftOfDwellings, bulletin, visibility);
             }
         }
 
@@ -61,7 +59,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 
             if (Enum.IsDefined(typeof(Visibility), parsedValue))
             {
-                _visibility = (Visibility)parsedValue;
+                Visibility = (Visibility)parsedValue;
             }
             else
             {

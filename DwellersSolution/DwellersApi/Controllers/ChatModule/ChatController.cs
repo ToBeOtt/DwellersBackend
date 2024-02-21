@@ -1,12 +1,9 @@
-﻿using Dwellers.Bulletins.Application.Bulletins.Commands.AddBulletin;
-using Dwellers.Chat.Contracts.Commands;
-using Dwellers.Chat.Contracts.Queries;
-using Dwellers.Chat.Contracts.Requests;
-using Dwellers.Chat.Contracts.Result;
-using Dwellers.Chat.Services;
+﻿using Dwellers.Common.Application.Contracts.Commands.Chats;
+using Dwellers.Common.Application.Contracts.Queries.Chats;
+using Dwellers.Common.Application.Contracts.Requests.Chats;
+using Dwellers.Common.Application.Contracts.Results.Chats;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using System.Security.Authentication;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;

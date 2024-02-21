@@ -1,35 +1,31 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using SharedKernel.Domain;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.DwellerCore.Domain.Entities.Dwellers
 {
     public sealed class Dweller : BaseEntity
     {
-        // model properties
-        public string Id { get; set; }
-        private string _alias;
-        private string _email;
-        private byte[]? _profilePhoto;
+        public string? Id { get; set; } 
+        public string? Alias { get; set; }
+        public string? Email { get; set; }
+        public byte[]? ProfilePhoto { get; set; }
 
-        private bool _isArchived;
-        private DateTime _isCreated;
-        private DateTime _isModified;
+        public bool? IsArchived { get; set; }
+        public DateTime? IsCreated { get; set; }
+        public DateTime? IsModified { get; set; }
 
-        private Dweller() { }
-        private Dweller(
-            string id,
-            string alias,
-            string email)
+        public Dweller() { }
+        private Dweller(string id, string alias, string email)
         {
             Id = id;
 
-            _alias = alias;
-            _email = email;
-
-            _isCreated = DateTime.Now;
-            _isArchived = false;
+            Alias = alias;
+            Email = email;
+            IsCreated = DateTime.Now;
+            IsArchived = false;
         }
-
         public static class DwellerFactory
         {
             public static async Task<Dweller> Create(
@@ -40,32 +36,22 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellers
             }
         }
 
-        public async Task<bool> SetProfilePhoto(IFormFile photo)
+        public async Task<bool> SetProfilePhoto(IFormFile file)
         {
-            try
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await photo.CopyToAsync(memoryStream);
-                    byte[] imageData = memoryStream.ToArray();
 
-                    _profilePhoto = imageData;
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
+            ProfilePhoto = await ConvertIFormFileToByteArray(file);
+            if (ProfilePhoto.IsNullOrEmpty())
                 return false;
-            }
-        }
 
-        public string GetAlias()
-        {
-            return _alias;
+            else
+                return true;
         }
-        public string GetEmail()
+        internal static async Task<byte[]> ConvertIFormFileToByteArray(IFormFile file)
         {
-            return _email;
+            using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+            byte[] imageData = memoryStream.ToArray();
+            return imageData;
         }
     }
 }

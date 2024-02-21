@@ -1,9 +1,12 @@
 ﻿using Dwellers.Authentication.Application.Services;
 using Dwellers.Authentication.Contracts.Requests;
-using Dwellers.Chat.Services;
-using Dwellers.DwellerCore.Contracts.Commands;
-using Dwellers.DwellerCore.Contracts.Queries;
-using Dwellers.DwellerCore.Contracts.Result;
+using Dwellers.Common.Application.Contracts.Commands.Chats;
+using Dwellers.Common.Application.Contracts.Commands.Dwellers;
+using Dwellers.Common.Application.Contracts.Commands.Dwellings;
+using Dwellers.Common.Application.Contracts.Commands.Offerings;
+using Dwellers.Common.Application.Contracts.Queries.Dwellings;
+using Dwellers.Common.Application.Contracts.Results.Dwellings;
+using Dwellers.Common.Application.Interfaces.Chats;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
@@ -14,19 +17,19 @@ namespace DwellersApi.Controllers.Authentication
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ChatCommandServices _chatCommandServices;
+        private readonly IChatCommandRepository _chatCommandRepository;
         private readonly RegistrationService _registrationService;
         private readonly AuthenticationService _authenticationService;
         private readonly ICommandHandlerFactory _commandHandler;
 
         public AuthenticationController(
-            ChatCommandServices chatCommandServices,
+            IChatCommandRepository chatCommandRepository,
             RegistrationService registrationService,
             AuthenticationService authenticationService,
             ICommandHandlerFactory commandHandler
            )
         {
-            _chatCommandServices = chatCommandServices;
+            _chatCommandRepository = chatCommandRepository;
             _registrationService = registrationService;
             _authenticationService = authenticationService;
             _commandHandler = commandHandler;
@@ -61,26 +64,27 @@ namespace DwellersApi.Controllers.Authentication
         [HttpPost("RegisterDwellingForDweller")]
         public async Task<IActionResult> RegisterDwellingForDweller(RegisterDwellingRequest request)
         {
+            // Connect dwelling to the new dweller
             var cmd = new AttachDwellingToDwellerCommand(
                 Name: request.Name,
                 Description: request.Description,
                 Email: request.Email);
 
-            var handler = _commandHandler.GetHandler<AttachDwellingToDwellerCommand, AttachDwellingToDwellerResult>();
-            var registerDwellingResult = await handler.Handle(cmd, new CancellationToken());
+            var registerHandler = _commandHandler.GetHandler<AttachDwellingToDwellerCommand, AttachDwellingToDwellerResult>();
+            var registerDwellingResult = await registerHandler.Handle(cmd, new CancellationToken());
             if (!registerDwellingResult.IsSuccess)
-            {
                 return BadRequest(registerDwellingResult.ErrorMessage);
-            }
 
-            var establishConversationResult = await _chatCommandServices.EstablishConversation
-                (registerDwellingResult.Data.DwellingId,
-                 registerDwellingResult.Data.Name);
-            
-            if(!establishConversationResult.IsSuccess)
-            {
+            // Sets up a new conversation for the dwelling upon registration
+            var cmdForConversation = new EstablishConversationCommand(
+                            ListOfDwellingIds: [Guid.NewGuid()],                           
+                            DwellingName: request.Name);
+
+            var conversationHandler = _commandHandler.GetHandler<EstablishConversationCommand, DwellerUnit>();
+            var establishConversationResult = await conversationHandler.Handle(cmdForConversation, new CancellationToken());
+
+            if (!establishConversationResult.IsSuccess)
                 return BadRequest(establishConversationResult.ErrorMessage);
-            }
 
             return Ok();
         }

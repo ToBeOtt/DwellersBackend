@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using SharedKernel.Infrastructure.Configuration.Queries;
 
@@ -15,25 +14,6 @@ namespace SharedKernel
             services.AddTransient<IQueryDispatcher, QueryDispatcher>();
             services.AddTransient<IQueryHandlerFactory, QueryHandlerFactory>();
 
-            //services.Scan(selector =>
-            //{
-            //    selector.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
-            //            .AddClasses(filter =>
-            //            {
-            //                filter.AssignableTo(typeof(IQueryHandler<,>));
-            //            })
-            //            .AsImplementedInterfaces()
-            //            .WithTransientLifetime();
-
-            //    selector.FromAssemblies(AppDomain.CurrentDomain.GetAssemblies())
-            //            .AddClasses(filter =>
-            //            {
-            //                filter.AssignableTo(typeof(ICommandHandler<,>));
-            //            })
-            //            .AsImplementedInterfaces()
-            //            .WithTransientLifetime();
-            //});
-     
             return services;
         }
     }
