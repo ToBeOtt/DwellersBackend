@@ -37,7 +37,6 @@ namespace Dwellers.Chat.Domain.Entities
             }
             return memberList;
         }
-
     }
 }
 

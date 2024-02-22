@@ -12,13 +12,14 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 
     public class BulletinStatus : BaseEntity
     {
-        private Status _status;
+        public Guid Id { get; set; }
+        public Status Status { get; set; }
 
         private BulletinStatus() { }
         private BulletinStatus(string statusValue)
         {
             var status = ConvertPriorityFromUIValue(statusValue);
-            _status = status;
+            Status = status;
         }
 
         internal static class BulletinStatusFactory
@@ -31,9 +32,9 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 
         internal void ModifyBulletinStatus(Status status, Bulletin bulletin)
         {
-            DwellerValidation(new StatusHasNotChanged(_status, status));
+            DwellerValidation(new StatusHasNotChanged(Status, status));
 
-            _status = status;
+            Status = status;
             if(status == Status.Done)
             {
                 //var @event = new BulletinStatusChangedToDoneDomainEvent(bulletin);
@@ -45,7 +46,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         {
             if (Enum.IsDefined(typeof(Status), dbValue))
             {
-                _status = (Status)dbValue;
+                Status = (Status)dbValue;
             }
             else
             {

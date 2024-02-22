@@ -38,16 +38,14 @@ namespace Dwellers.Common.Application.Commands.Dwellings.AttachDwellerToDwelling
             DwellerResponse<AttachDwellerToDwellingResult> response = new();
             try
             {
-                var dweller = await _dwellerQueryRepository.GetDwellerByEmail(cmd.Email);
+                var dweller = await _dwellerQueryRepository.GetDwellerByEmailAsync(cmd.Email);
 
                 var dwelling = await _dwellingQueryRepository.GetDwellingById(cmd.Invitation); // WRONG
 
                 var dwellingInhabitant = await DwellingInhabitant.DwellingInhabitantFactory.Create
                     (dwelling, dweller);
 
-                await _dwellingCommandRepository.AddDwellerInhabitant(dwellingInhabitant);
-
-                await _dwellingCommandRepository.Save();
+                await _dwellingCommandRepository.AddDwellerInhabitantAsync(dwellingInhabitant);
 
                 return await response.SuccessResponse
                     (new AttachDwellerToDwellingResult(
@@ -56,6 +54,7 @@ namespace Dwellers.Common.Application.Commands.Dwellings.AttachDwellerToDwelling
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error while executing AttachDwellerToDwellingHandler: {ex.Message}", ex.Message);
                 return await response.ErrorResponse("Dweller could not be attached to dwelling.");
             }
         }

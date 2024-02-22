@@ -31,7 +31,7 @@ namespace Dwellers.Common.Application.Commands.Bulletins.DeleteBulletin
 
             bulletin.ArchiveBulletin(bulletin);
 
-            if (!await _bulletinCommandRepository.DeleteBulletin(bulletin))
+            if (!await _bulletinCommandRepository.DeleteBulletinAsync(bulletin))
                 return await response.ErrorResponse
                     ("Could not persist entity.");
 

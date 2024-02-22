@@ -4,8 +4,8 @@ namespace Dwellers.Common.Application.Interfaces.Chats
 {
     public interface IChatCommandRepository
     {
-        Task<bool> PersistMessage(DwellerMessage message);
-        Task<bool> PersistConversation(DwellerConversation conversation);
-        Task<bool> PersistMembersInConversation(List<MemberInConversation> listOfMembers);
+        Task<bool> AddMessageAsync(DwellerMessage message);
+        Task<bool> AddConversationAsync(DwellerConversation conversation);
+        Task<bool> AddMembersInConversationAsync(List<MemberInConversation> listOfMembers);
     }
 }

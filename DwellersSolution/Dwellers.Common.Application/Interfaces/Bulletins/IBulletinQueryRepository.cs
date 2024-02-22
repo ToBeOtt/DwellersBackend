@@ -4,6 +4,7 @@ namespace Dwellers.Common.Application.Interfaces.Bulletins
 {
     public interface IBulletinQueryRepository
     {
-        Task<Bulletin> GetById(Guid id);
+        Task<Bulletin> GetByIdAsync(Guid id);
+        Task<List<Bulletin>> GetDashboardBulletinsAsync(Guid id);
     }
 }

@@ -12,49 +12,32 @@ namespace Dwellers.Common.Persistance.Repositories.Bulletins.Repositories
         private readonly DwellerDbContext _context = context;
         private readonly ILogger<BulletinCommandRepository> _logger = logger;
 
-        public async Task<int> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
-        public async Task<bool> AddBulletin(Bulletin bulletin)
+        public async Task<bool> AddBulletinAsync(Bulletin bulletin)
         {
             try
             {
                 _ = _context.Bulletins.AddAsync(bulletin);
-                var result = await _context.SaveChangesAsync();
-                if (result > 0)
-                    return true;
-                else
-                    return false;
+                return await _context.SaveChangesAsync() > 0;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError(ex, "Error executing AddBulletinAsync: {exMessage}", ex.Message);
                 return false;
             }
         }   
-        public async Task<bool> DeleteBulletin(Bulletin bulletin)
+        public async Task<bool> DeleteBulletinAsync(Bulletin bulletin)
         {
             try
             {
-                _ = _context.Bulletins.AddAsync(bulletin);
-                var result = await _context.SaveChangesAsync();
-                if (result > 0)
-                    return true;
-                else 
-                    return false;
+                _context.Bulletins.Remove(bulletin);
+                return await _context.SaveChangesAsync() > 0;
             }
            catch(Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError(ex, "Error executing DeleteBulletinAsync: {exMessage}", ex.Message);
                 return false;
             }
                
-        }
-
-        public async Task<SaveChangesEventArgs> SaveChanges(SaveChangesEventArgs args)
-        {
-            throw new NotImplementedException();
         }
     }
 }

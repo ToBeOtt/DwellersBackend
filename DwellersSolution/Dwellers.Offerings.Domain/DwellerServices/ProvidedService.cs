@@ -1,10 +1,4 @@
 ﻿using Dwellers.DwellerCore.Domain.Entities.Dwellings;
-using Dwellers.Offerings.Domain.DwellerItems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dwellers.Offerings.Domain.DwellerServices
 {

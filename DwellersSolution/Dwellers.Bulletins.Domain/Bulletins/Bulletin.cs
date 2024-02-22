@@ -16,7 +16,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public string Title { get; set; }
         public string Text { get; set; }
 
-        public List<BulletinTag> Tags { get; set; }
+        public ICollection<BulletinTag> Tags { get; set; }
         public BulletinStatus Status { get; set; }
         public BulletinPriority Priority { get; set; }
         public BulletinScope Scope { get; set; }

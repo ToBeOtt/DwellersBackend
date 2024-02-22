@@ -12,34 +12,37 @@ using System.Threading.Tasks;
 
 namespace Dwellers.Common.Infrastructure.Repositories.DwellerCore.Repositories.Dwellers
 {
-    public class DwellerCommandRepository : IDwellerCommandRepository
+    public class DwellerCommandRepository(DwellerDbContext context, ILogger<DwellerCommandRepository> logger) : IDwellerCommandRepository
     {
-        private readonly DwellerDbContext _context;
-        private readonly ILogger<DwellerCommandRepository> _logger;
+        private readonly DwellerDbContext _context = context;
+        private readonly ILogger<DwellerCommandRepository> _logger = logger;
 
-        public DwellerCommandRepository(DwellerDbContext context, ILogger<DwellerCommandRepository> logger)
-        {
-            _context = context;
-            _logger = logger;
-        }
-
-        public async Task<bool> AddDweller(Dweller dweller)
+        public async Task<bool> AddDwellerAsync(Dweller dweller)
         {
             try
             {
                 await _context.Dwellers.AddAsync(dweller);
-                return true;
-            }
+                return await _context.SaveChangesAsync() > 0;
+    }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex.Message);
+                _logger.LogError(ex, "An error occurred while executing GetDwellerByEmail: {ErrorMessage}", ex.Message);
                 return false;
             }
         }
 
-        public async Task<bool> DeleteDweller(Dweller dweller)
+        public async Task<bool> DeleteDwellerAsync(Dweller dweller)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Dwellers.Remove(dweller);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while executing DeleteDwellerAsync: {ErrorMessage}", ex.Message);
+                return false;
+            }
         }
     }
 }

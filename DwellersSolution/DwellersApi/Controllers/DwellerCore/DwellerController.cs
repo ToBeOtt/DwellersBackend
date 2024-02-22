@@ -1,4 +1,7 @@
 ﻿using Dwellers.Common.Application.Contracts.Commands.Dwellers;
+using Dwellers.Common.Application.Contracts.Queries.Dwellers;
+using Dwellers.Common.Application.Contracts.Requests.Dwellers;
+using Dwellers.Common.Application.Contracts.Results.Dwellers;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using SharedKernel.Infrastructure.Configuration.Queries;
@@ -6,21 +9,21 @@ using SharedKernel.ServiceResponse;
 using System.Security.Authentication;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
-namespace DwellersApi.Controllers
+namespace DwellersApi.Controllers.DwellerCore
 {
     [ApiController]
     //[Authorize]
-    [Route("user")]
-    public class UserController : ControllerBase
+    [Route("dweller")]
+    public class DwellerController : ControllerBase
     {
         private readonly ICommandHandlerFactory _commandHandler;
         private readonly IQueryHandlerFactory _queryHandler;
 
-        public UserController(
+        public DwellerController(
             ICommandHandlerFactory commandHandler,
             IQueryHandlerFactory queryHandler
             )
-        { 
+        {
             _commandHandler = commandHandler;
             _queryHandler = queryHandler;
         }
@@ -37,9 +40,25 @@ namespace DwellersApi.Controllers
 
             var cmd = new SetDwellerProfilePhotoCommand(
                 DwellerId: userIdClaim.Value,
-            DwellerPhoto: profilePhoto);
+                DwellerPhoto: profilePhoto);
 
             var handler = _commandHandler.GetHandler<SetDwellerProfilePhotoCommand, DwellerResponse<DwellerUnit>>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetDwellerDetails")]
+        public async Task<IActionResult> GetDwellerDetails(GetDwellerDetailsRequest request)
+        {
+            var userIdClaim = User.FindFirst("UserId") ?? throw new InvalidCredentialException();
+            var dwellingIdClaim = User.FindFirst("HouseId") ?? throw new InvalidCredentialException();
+
+            var cmd = new GetDwellerDetailsQuery(
+                DwellerId: userIdClaim.Value,
+                DwellingId: new Guid(dwellingIdClaim.Value));
+
+            var handler = _commandHandler.GetHandler<GetDwellerDetailsQuery, GetDwellerDetailsResult>();
             var result = await handler.Handle(cmd, new CancellationToken());
 
             return Ok(result);

@@ -12,14 +12,15 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 
     public class BulletinPriority : ValueObject
     {
-        private Priority _priority;
+        public Guid Id { get; set; }
+        public Priority Priority {  get; set; }
 
         public BulletinPriority() { }
         private BulletinPriority(string strPriority)
         {
             DwellerValidation(new StringIsNotNull(strPriority));
             var priority = ConvertPriorityFromUIValue(strPriority);
-            _priority = priority;
+            Priority = priority;
         }
 
         internal static class BulletinPriorityFactory
@@ -34,7 +35,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         {
             if (Enum.IsDefined(typeof(Priority), dbValue))
             {
-                _priority = (Priority)dbValue;
+                Priority = (Priority)dbValue;
             }
             else
             {

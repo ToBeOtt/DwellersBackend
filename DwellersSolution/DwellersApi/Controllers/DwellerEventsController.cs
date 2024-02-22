@@ -9,7 +9,7 @@ using System.Security.Authentication;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
-namespace DwellersApi.Controllers.Household
+namespace DwellersApi.Controllers
 {
     [ApiController]
     [Authorize]
@@ -30,7 +30,7 @@ namespace DwellersApi.Controllers.Household
 
             var userIdClaim = User.FindFirst("UserId");
             var houseIdClaim = User.FindFirst("HouseId");
-            
+
             if (userIdClaim is null || houseIdClaim is null)
             {
                 throw new InvalidCredentialException();
@@ -41,7 +41,7 @@ namespace DwellersApi.Controllers.Household
                 Desc: request.Desc,
                 EventDate: request.EventDate,
                 EventScope: request.EventScope,
-            DwellerId: userIdClaim.Value,
+                DwellerId: userIdClaim.Value,
                 DwellingId: new Guid(houseIdClaim.Value));
 
             var handler = _commandHandler.GetHandler<AddEventCommand, DwellerUnit>();

@@ -16,11 +16,11 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public Guid Id { get; set; }
         public Visibility Visibility { get; set; }
 
+        public Guid BulletinId { get; set; }
         public Bulletin Bulletin { get; set; }
-        public Dwelling Dwelling { get; set; }
 
 
-        List<ScopedDwelling> DwellingsInScope { get; set; } = new List<ScopedDwelling>();
+        List<ScopedDwelling> DwellingsInScope { get; set; } = [];
 
         public BulletinScope() { }
         internal BulletinScope(List<Dwelling> listOfDwellings, Bulletin bulletin, string visibility)
@@ -33,7 +33,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
                 DwellingsInScope.Add(new ScopedDwelling(bulletin, dwelling));
             }
             Visibility = Visibility.Custom;
-            // Raise event for selected houses that a bulletin has been posted
+            // Raise event for selected dwellings that a bulletin has been posted
 
             if ((DwellingsInScope.Count <= 0 || DwellingsInScope == null) && visibility !=  null)
             {
@@ -44,12 +44,12 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public static class BulletinScopeFactory
         {
             public static BulletinScope SetBulletinScope(
-                    List<Dwelling> liftOfDwellings,
+                    List<Dwelling> listOfDwellings,
                     Bulletin bulletin,
                     string visibility
                     )
             {
-                return new BulletinScope(liftOfDwellings, bulletin, visibility);
+                return new BulletinScope(listOfDwellings, bulletin, visibility);
             }
         }
 

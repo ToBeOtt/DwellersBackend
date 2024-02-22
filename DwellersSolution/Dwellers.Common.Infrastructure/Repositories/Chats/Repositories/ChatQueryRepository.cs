@@ -18,7 +18,7 @@ namespace Dwellers.Common.Persistance.Repositories.Chats.Repositories
         public async Task<DwellerConversation> GetConversation(Guid conversationId)
         {
             return
-                await _context.Conversations
+                await _context.DwellerConversations
                 .Where(c => c.Id == conversationId)
                 .SingleOrDefaultAsync();
         }
@@ -26,7 +26,7 @@ namespace Dwellers.Common.Persistance.Repositories.Chats.Repositories
         public async Task<ICollection<DwellerMessage>> GetConversationMessages(Guid conversationId)
         {
             return
-                await _context.Messages
+                await _context.DwellerMessages
                 .Where(m => m.Id == conversationId)
                 .ToListAsync();
         }
@@ -34,7 +34,7 @@ namespace Dwellers.Common.Persistance.Repositories.Chats.Repositories
         public async Task<DwellerConversation> GetDwellingConversation(Guid dwellingId)
         {
             return
-                await _context.Conversations
+                await _context.DwellerConversations
                 .Where(hc => hc.Id == dwellingId)
                     .SingleOrDefaultAsync();
         }

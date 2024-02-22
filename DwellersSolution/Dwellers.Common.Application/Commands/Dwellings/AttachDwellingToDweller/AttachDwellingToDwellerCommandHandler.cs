@@ -34,18 +34,17 @@ namespace Dwellers.Common.Application.Commands.Dwellings.AttachDwellingToDweller
             {
                 var dwelling = await DwellingFactory.Create(cmd.Name, cmd.Description);
                 if (dwelling == null)
-                    throw new InvalidOperationException("Dwelling not found.");
+                    return await response.ErrorResponse("Dwelling not found.");
 
-                var dweller = await _dwellerQueryRepository.GetDwellerByEmail(cmd.Email);
+                var dweller = await _dwellerQueryRepository.GetDwellerByEmailAsync(cmd.Email);
                 if (dweller == null)
-                    throw new InvalidOperationException("Dweller not found.");
+                    return await response.ErrorResponse("Dweller not found.");
 
-                await _dwellingCommandRepository.AddDwelling(dwelling);
+                await _dwellingCommandRepository.AddDwellingAsync(dwelling);
 
                 var dwellingInhabitant = await DwellingInhabitant.DwellingInhabitantFactory.Create(dwelling, dweller);
 
-                await _dwellingCommandRepository.AddDwellerInhabitant(dwellingInhabitant);
-                await _dwellingCommandRepository.Save();
+                await _dwellingCommandRepository.AddDwellerInhabitantAsync(dwellingInhabitant);
 
                 return await response.SuccessResponse
                      (new AttachDwellingToDwellerResult(

@@ -30,14 +30,12 @@ namespace Dwellers.Common.Infrastructure.Repositories.DwellerCore.Repositories.D
 
         public async Task<List<Dwelling>> GetAllDwellingsByListOfIds(List<Guid> listOfDwellings)
         {
-            var list = new List<Dwelling>();
-            foreach(var id  in listOfDwellings)
-            {
-                var dwelling = await _context.Dwellings.Where(d => d.Id == id).SingleOrDefaultAsync();
-                if (dwelling != null)
-                    list.Add(dwelling);
-            }
-            return list;
+            var dwellings = await _context.Dwellings
+                                           .Where(d => listOfDwellings
+                                           .Contains(d.Id))
+                                           .ToListAsync();
+
+            return dwellings;
         }
     }
 }

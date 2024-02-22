@@ -1,4 +1,5 @@
-﻿using SharedKernel.Domain;
+﻿using Microsoft.Graph.Models;
+using SharedKernel.Domain;
 
 namespace Dwellers.DwellersEvents.Domain.Entites.ValueObjects
 {
@@ -11,8 +12,10 @@ namespace Dwellers.DwellersEvents.Domain.Entites.ValueObjects
 
     public class Visibility : ValueObject
     {
+        public Guid Id { get; set; }
         public VisibilityScope Scope { get; }
 
+        public Visibility() { }
         public Visibility(VisibilityScope scope)
         {
             Scope = scope;

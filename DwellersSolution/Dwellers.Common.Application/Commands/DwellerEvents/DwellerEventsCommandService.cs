@@ -32,7 +32,7 @@ namespace Dwellers.Common.Application.Commands.DwellerEvents
         {
             DwellerResponse<bool> response = new();
             var dwelling = await _dwellingQueryRepository.GetDwellingById(cmd.DwellingId);
-            var dweller = await _dwellerQueryQueries.GetDwellerById(cmd.DwellerId);
+            var dweller = await _dwellerQueryQueries.GetDwellerByIdAsync(cmd.DwellerId);
 
             var dwellerEvent = new DwellerEvent(cmd.Title, cmd.Desc, dwelling, dweller);
             await dwellerEvent.SetScopeFromUI(cmd.EventScope);

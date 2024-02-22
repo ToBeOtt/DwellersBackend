@@ -25,7 +25,7 @@ namespace Dwellers.Common.Application.Commands.Dwellers.UpdateDweller
         {
             DwellerResponse<DwellerUnit> response = new();
 
-            var dweller = await _dwellerQueryRepository.GetDwellerById(cmd.DwellerId);
+            var dweller = await _dwellerQueryRepository.GetDwellerByIdAsync(cmd.DwellerId);
             if (dweller is null)
                 return await response.ErrorResponse
                     ("User could not be found.");

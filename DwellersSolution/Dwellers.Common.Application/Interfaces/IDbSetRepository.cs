@@ -18,9 +18,9 @@ namespace Dwellers.Common.Application.Interfaces
         DbSet<DwellingInhabitant> DwellingInhabitants { get; set; }
 
         // Chat
-        DbSet<DwellerConversation> Conversations { get; set; }
+        DbSet<DwellerConversation> DwellerConversations { get; set; }
         DbSet<MemberInConversation> MemberInConversations { get; set; }
-        DbSet<DwellerMessage> Messages { get; set; }
+        DbSet<DwellerMessage> DwellerMessages { get; set; }
 
         // Events
         DbSet<DwellerEvent> DwellerEvents { get; set; }

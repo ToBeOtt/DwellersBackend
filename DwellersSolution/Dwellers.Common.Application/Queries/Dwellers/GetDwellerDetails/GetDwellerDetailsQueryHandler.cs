@@ -31,7 +31,7 @@ namespace Dwellers.Common.Application.Queries.Dwellers.GetDwellerDetails
         {
             DwellerResponse<GetDwellerDetailsResult> response = new();
 
-            var dweller = await _dwellerQueryRepository.GetDwellerById(query.DwellerId);
+            var dweller = await _dwellerQueryRepository.GetDwellerByIdAsync(query.DwellerId);
             if (dweller is null)
                 return await response.ErrorResponse("Dweller details could not be fetched.");
 
@@ -39,10 +39,6 @@ namespace Dwellers.Common.Application.Queries.Dwellers.GetDwellerDetails
             if (dwelling is null)
                 return await response.ErrorResponse
                     ("Dwelling could not be fetched.");
-
-            GetDwellerDetailsResult data = new(
-                DwellerId: dweller.Id,
-                DwellingId: dwelling.Id);
 
             return await response.SuccessResponse(
                 new(DwellerId: dweller.Id,

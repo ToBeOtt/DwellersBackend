@@ -26,17 +26,17 @@ namespace Dwellers.Common.Application.Commands.Chats.EstablishConversation
         {
             DwellerResponse<DwellerUnit> response = new();
             
-            DwellerConversation conversation = new("${cmd.DwellingName} chat");
+            DwellerConversation conversation = new($"{cmd.DwellingName} chat");
 
             var listOfDwellings = await GetDwellingsFromGuids(cmd.ListOfDwellingIds);
             var listOfConversationMembers = await GetDwellingForConversation(listOfDwellings, conversation);
 
             //persist conversation member
-            if (!await _chatCommandRepository.PersistConversation(conversation))
+            if (!await _chatCommandRepository.AddConversationAsync(conversation))
                 return await response.ErrorResponse
                         ("Conversation could not be created.");
 
-            if (!await _chatCommandRepository.PersistMembersInConversation(listOfConversationMembers))
+            if (!await _chatCommandRepository.AddMembersInConversationAsync(listOfConversationMembers))
                 return await response.ErrorResponse
                         ("Members could not be added to conversation.");
 
@@ -51,7 +51,7 @@ namespace Dwellers.Common.Application.Commands.Chats.EstablishConversation
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError(ex, "Error executing GetDwellingsFromGuids: {ex.Message}", ex.Message);
                 return [];
             }
         }
@@ -63,7 +63,7 @@ namespace Dwellers.Common.Application.Commands.Chats.EstablishConversation
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
+                _logger.LogError(ex, "Error executing AttachMemberToConversation: {ex.Message}", ex.Message);
                 return [];
             }
         }

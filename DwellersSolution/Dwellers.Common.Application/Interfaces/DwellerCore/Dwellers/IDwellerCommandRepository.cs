@@ -4,7 +4,7 @@ namespace Dwellers.Common.Application.Interfaces.DwellerCore.Dwellers
 {
     public interface IDwellerCommandRepository
     {
-        Task<bool> AddDweller(Dweller dweller);
-        Task<bool> DeleteDweller(Dweller dweller);
+        Task<bool> AddDwellerAsync(Dweller dweller);
+        Task<bool> DeleteDwellerAsync(Dweller dweller);
     }
 }

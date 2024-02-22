@@ -9,7 +9,7 @@
           string BulletinStatus,
           string BulletinPriority,
           string Visibility,
-          List<Guid>? ChosenHouses
+          List<Guid>? ChosenDwellings
           );
 
     }

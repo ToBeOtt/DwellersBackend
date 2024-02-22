@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Dwellers.Authentication.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialAuthMigration : Migration
+    public partial class InitialAuth : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

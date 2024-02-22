@@ -8,7 +8,7 @@ using SharedKernel.Infrastructure.Configuration.Commands;
 using System.Security.Authentication;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
-namespace DwellersApi.Controllers.ChatModule
+namespace DwellersApi.Controllers
 {
     [ApiController]
     [Authorize]
@@ -60,7 +60,7 @@ namespace DwellersApi.Controllers.ChatModule
                 throw new InvalidCredentialException();
 
             var query = new GetConversationQuery(
-               DwellingId: new Guid(dwellingIdClaim.Value)); 
+               DwellingId: new Guid(dwellingIdClaim.Value));
 
             var handler = _commandHandler.GetHandler<GetConversationQuery, GetConversationResult>();
             var result = await handler.Handle(query, new CancellationToken());

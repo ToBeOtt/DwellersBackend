@@ -1,37 +1,47 @@
 ﻿using Dwellers.Common.Application.Interfaces.DwellerCore.Dwellers;
 using Dwellers.Common.Infrastructure.Context;
 using Dwellers.DwellerCore.Domain.Entities.Dwellers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace Dwellers.Common.Infrastructure.Repositories.DwellerCore.Repositories.Dwellers
 {
-    public class DwellerQueryRepository : IDwellerQueryRepository
+    public class DwellerQueryRepository(DwellerDbContext context, ILogger<DwellerQueryRepository> logger) : IDwellerQueryRepository
     {
-        private readonly DwellerDbContext _context;
+        private readonly DwellerDbContext _context = context;
+        private readonly ILogger<DwellerQueryRepository> _logger = logger;
 
-        public DwellerQueryRepository(DwellerDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task<List<string>> GetAllDwellers()
+        public async Task<List<string>> GetAllDwellersAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Dweller> GetDwellerById(string id)
+        public async Task<Dweller?> GetDwellerByIdAsync(string id)
         {
-            return _context.Dwellers.Where(u => u.Id == id).SingleOrDefault();
+            try
+            {
+                return await _context.Dwellers.Where(u => u.Id == id).SingleOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while executing GetDwellerByEmail: {ErrorMessage}", ex.Message);
+                return null;
+            }
+            
         }
 
-        public async Task<Dweller> GetDwellerByEmail(string email)
+        public async Task<Dweller?> GetDwellerByEmailAsync(string email)
         {
-            throw new NotImplementedException();
-            //return _context.Dwellers.Where(u => u.Email == email).SingleOrDefault();
+            try
+            {
+                return await _context.Dwellers.Where(u => u.Email == email).SingleOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while executing GetDwellerByEmail: {ErrorMessage}", ex.Message);
+                return null;
+            }
         }
     }
 }

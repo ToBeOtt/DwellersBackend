@@ -4,8 +4,8 @@ namespace Dwellers.Common.Application.Interfaces.DwellerCore.Dwellers
 {
     public interface IDwellerQueryRepository
     {
-        Task<List<string>> GetAllDwellers();
-        Task<Dweller> GetDwellerById(string id);
-        Task<Dweller> GetDwellerByEmail(string email);
+        Task<List<string>> GetAllDwellersAsync();
+        Task<Dweller?> GetDwellerByIdAsync(string id);
+        Task<Dweller?> GetDwellerByEmailAsync(string email);
     }
 }

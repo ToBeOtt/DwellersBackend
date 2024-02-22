@@ -10,7 +10,7 @@ namespace Dwellers.DwellerCore.Domain.Entities
         public Guid DwellingId { get; set; }
         public Dwelling Dwelling { get; set; }
 
-        public Guid DwellerId { get; set; }
+        public string DwellerId { get; set; }
         public Dweller Dweller{ get; set; }
 
         public DwellingInhabitant() { }

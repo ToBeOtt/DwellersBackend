@@ -19,12 +19,7 @@ namespace Dwellers.Offerings.Domain.DwellerServices
         public DateTime IsCreated { get; set; }
         public DateTime? IsModified { get; set; }
 
-        public DwellerService() 
-        {
-            Id = Guid.NewGuid();
-            IsCreated = DateTime.UtcNow;
-            IsArchived = false;
-        }
+        public DwellerService() { }
 
         public DwellerService(string name, string desc)
         {

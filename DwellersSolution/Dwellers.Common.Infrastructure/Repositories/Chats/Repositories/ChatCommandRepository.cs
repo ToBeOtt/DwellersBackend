@@ -18,35 +18,35 @@ namespace Dwellers.Common.Persistance.Repositories.Chats.Repositories
             _logger = logger;
         }
 
-        public async Task<bool> PersistMessage(DwellerMessage message)
+        public async Task<bool> AddMessageAsync(DwellerMessage message)
         {
             try
             {
-                await _context.Messages.AddAsync(message);
-                return true;
+                await _context.DwellerMessages.AddAsync(message);
+                return _context.SaveChanges() > 0;
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex.Message);
+                _logger.LogError(ex, "Error executing AddMessageAsync: {ex.Message}", ex.Message);
                 return false;
             }
         }
 
-        public async Task<bool> PersistConversation(DwellerConversation conversation)
+        public async Task<bool> AddConversationAsync(DwellerConversation conversation)
         {
             try
             {
-                await _context.Conversations.AddAsync(conversation);
-                return true;
+                await _context.DwellerConversations.AddAsync(conversation);
+                return _context.SaveChanges() > 0;
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex.Message);
+                _logger.LogError(ex, "Error executing AddConversationAsync: {ex.Message}", ex.Message);
                 return false;
             } 
         }
 
-        public async Task<bool> PersistMembersInConversation(List<MemberInConversation> listOfMembers)
+        public async Task<bool> AddMembersInConversationAsync(List<MemberInConversation> listOfMembers)
         {
             try
             {
@@ -54,11 +54,11 @@ namespace Dwellers.Common.Persistance.Repositories.Chats.Repositories
                 {
                     await _context.MemberInConversations.AddAsync(member);
                 }
-                return true;
+                return _context.SaveChanges() > 0;
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex.Message);
+                _logger.LogError(ex, "Error executing AddMembersInConversationAsync: {ex.Message}", ex.Message);
                 return false;
             }
             

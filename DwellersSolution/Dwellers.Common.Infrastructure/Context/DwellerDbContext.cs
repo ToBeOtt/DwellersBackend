@@ -23,9 +23,9 @@ namespace Dwellers.Common.Infrastructure.Context
         public DbSet<DwellingInhabitant> DwellingInhabitants { get; set; }
 
         // Chats
-        public DbSet<DwellerConversation> Conversations { get; set; }
+        public DbSet<DwellerConversation> DwellerConversations { get; set; }
         public DbSet<MemberInConversation> MemberInConversations { get; set; }
-        public DbSet<DwellerMessage> Messages { get; set; }
+        public DbSet<DwellerMessage> DwellerMessages { get; set; }
 
         // Events
         public DbSet<DwellersEvents.Domain.Entites.DwellerEvent> DwellerEvents { get; set; }

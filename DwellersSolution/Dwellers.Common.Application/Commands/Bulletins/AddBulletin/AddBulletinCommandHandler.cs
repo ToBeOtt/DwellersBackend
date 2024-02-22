@@ -34,14 +34,14 @@ namespace Dwellers.Common.Application.Commands.Bulletins.AddBulletin
             DwellerResponse<DwellerUnit> response = new();
             try
             {
-                var dweller = await _dwellerQueryRepository.GetDwellerById(cmd.UserId);
-                var listOfDwellings = await _dwellingQueryRepository.GetAllDwellingsByListOfIds(cmd.ChosenHouses);
+                var dweller = await _dwellerQueryRepository.GetDwellerByIdAsync(cmd.UserId);
+                var listOfDwellings = await _dwellingQueryRepository.GetAllDwellingsByListOfIds(cmd.ChosenDwellings);
 
                 var bulletin = Bulletin.BulletinPostFactory.CreateNewBulletin
                     (dweller, cmd.Title, cmd.Text, cmd.BulletinTags, cmd.BulletinPriority,
                      cmd.BulletinStatus, listOfDwellings, cmd.Visibility);
 
-                await _bulletinCommandRepository.AddBulletin(bulletin);
+                await _bulletinCommandRepository.AddBulletinAsync(bulletin);
 
                 return await response.SuccessResponse(new DwellerUnit());
             }

@@ -16,10 +16,7 @@ namespace Dwellers.Chat.Domain.Entities
         public DateTime IsCreated { get; private set; }
         public DateTime? IsModified { get; private set; }
 
-        public MemberInConversation()
-        {
-
-        }
+        public MemberInConversation() { }
         internal MemberInConversation(Dwelling dwelling, DwellerConversation conversation)
         {
             Id = Guid.NewGuid();

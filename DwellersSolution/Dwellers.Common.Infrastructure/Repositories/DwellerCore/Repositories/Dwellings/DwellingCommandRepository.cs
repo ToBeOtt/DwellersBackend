@@ -17,23 +17,46 @@ namespace Dwellers.Common.Infrastructure.Repositories.DwellerCore.Repositories.D
             _context = context;
             _logger = logger;
         }
-        public async Task Save()
+
+        public async Task<bool> AddDwellingAsync(Dwelling Dwelling)
         {
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Dwellings.AddAsync(Dwelling);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch(Exception ex) 
+            {
+                _logger.LogError(ex, "Dwelling could not be saved to database. {ex.Message}", ex.Message);
+                return false;
+            }  
         }
-        public async Task AddDwelling(Dwelling Dwelling)
+        public async Task<bool> AddDwellerInhabitantAsync(DwellingInhabitant DwellerInhabitant)
         {
-            throw new NotImplementedException();
-        }
-        public async Task AddDwellerInhabitant(DwellingInhabitant DwellerInhabitant)
-        {
-            await _context.DwellingInhabitants.AddAsync(DwellerInhabitant);
+            try
+            {
+                await _context.DwellingInhabitants.AddAsync(DwellerInhabitant);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Dweller could not be added and saved to database. {ex.Message}", ex.Message);
+                return false;
+            }    
         }
 
-        public async Task DeleteDwelling(Dwelling Dwelling)
+        public async Task<bool> DeleteDwellingAsync(Dwelling Dwelling)
         {
-            throw new NotImplementedException();
-            //await _context.Dwellings.Remove(Dwelling);
+            try
+            {
+                _context.Dwellings.Remove(Dwelling);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Dwelling could not be deleted from database. {ex.Message}", ex.Message);
+                return false;
+            }
         }
     }
 }

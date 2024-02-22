@@ -27,7 +27,7 @@ namespace Dwellers.Common.Application.Queries.Dwellings.GetDwellingByEmail
         {
             DwellerResponse<GetDwellingByEmailResult> response = new();
 
-            var dweller = await _dwellerQueryRepository.GetDwellerByEmail(query.Email);
+            var dweller = await _dwellerQueryRepository.GetDwellerByEmailAsync(query.Email);
 
             //var dwellerInhabitant = await _dwellerQueryRepository.GetDwellerInhabitantByDwellerId(dweller.Id);
 

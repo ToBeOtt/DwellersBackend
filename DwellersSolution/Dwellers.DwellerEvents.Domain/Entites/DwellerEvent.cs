@@ -21,6 +21,7 @@ namespace Dwellers.DwellersEvents.Domain.Entites
         public Dwellers.DwellerCore.Domain.Entities.Dwellers.Dweller Dweller { get; set; }
         public Dwelling Dwelling { get; set; }
 
+        public DwellerEvent() { }
         public DwellerEvent(string title, string desc, Dwelling dwelling, DwellerCore.Domain.Entities.Dwellers.Dweller dweller)
         {
             Id = Guid.NewGuid();

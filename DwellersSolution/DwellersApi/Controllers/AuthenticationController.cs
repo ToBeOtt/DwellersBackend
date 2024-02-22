@@ -9,33 +9,27 @@ using Dwellers.Common.Application.Contracts.Results.Dwellings;
 using Dwellers.Common.Application.Interfaces.Chats;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
+using SharedKernel.Infrastructure.Configuration.Queries;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
-namespace DwellersApi.Controllers.Authentication
+namespace DwellersApi.Controllers
 {
     [ApiController]
     [Route("auth")]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController(
+        IChatCommandRepository chatCommandRepository,
+        RegistrationService registrationService,
+        AuthenticationService authenticationService,
+        ICommandHandlerFactory commandHandler,
+        IQueryHandlerFactory queryHandler) : ControllerBase
     {
-        private readonly IChatCommandRepository _chatCommandRepository;
-        private readonly RegistrationService _registrationService;
-        private readonly AuthenticationService _authenticationService;
-        private readonly ICommandHandlerFactory _commandHandler;
+        private readonly IChatCommandRepository _chatCommandRepository = chatCommandRepository;
+        private readonly RegistrationService _registrationService = registrationService;
+        private readonly AuthenticationService _authenticationService = authenticationService;
+        private readonly ICommandHandlerFactory _commandHandler = commandHandler;
+        private readonly IQueryHandlerFactory _queryHandler = queryHandler;
 
-        public AuthenticationController(
-            IChatCommandRepository chatCommandRepository,
-            RegistrationService registrationService,
-            AuthenticationService authenticationService,
-            ICommandHandlerFactory commandHandler
-           )
-        {
-            _chatCommandRepository = chatCommandRepository;
-            _registrationService = registrationService;
-            _authenticationService = authenticationService;
-            _commandHandler = commandHandler;
-        }
-
-    // REGISTRATION
+        // REGISTRATION
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
@@ -77,7 +71,7 @@ namespace DwellersApi.Controllers.Authentication
 
             // Sets up a new conversation for the dwelling upon registration
             var cmdForConversation = new EstablishConversationCommand(
-                            ListOfDwellingIds: [Guid.NewGuid()],                           
+                            ListOfDwellingIds: [registerDwellingResult.Data.DwellingId],
                             DwellingName: request.Name);
 
             var conversationHandler = _commandHandler.GetHandler<EstablishConversationCommand, DwellerUnit>();
@@ -107,30 +101,27 @@ namespace DwellersApi.Controllers.Authentication
             return Ok(result);
         }
 
-    // LOGIN
+        // LOGIN
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
             var query = new GetDwellingByEmailQuery(
                 Email: request.Email);
 
-            var handler = _commandHandler.GetHandler<GetDwellingByEmailQuery, GetDwellingByEmailResult>();
+            var handler = _queryHandler.GetHandler<GetDwellingByEmailQuery, GetDwellingByEmailResult>();
             var result = await handler.Handle(query, new CancellationToken());
 
             if (!result.IsSuccess)
-            {
                 return BadRequest(result.ErrorMessage);
-            }
 
             // pass along dwellingID to pass it token-generation.
             var loginResult = await _authenticationService.Login
-                (request.Email, request.Password, result.Data.DwellingId); 
-            if(!result.IsSuccess)
-            {
-                return Unauthorized(result.ErrorMessage);
-            }
+                (request.Email, request.Password, result.Data.DwellingId);
 
-            return Ok(result.Data);
+            if (!loginResult.IsSuccess)
+                return Unauthorized(result.ErrorMessage);
+
+            return Ok(loginResult.Data);
         }
     }
 }

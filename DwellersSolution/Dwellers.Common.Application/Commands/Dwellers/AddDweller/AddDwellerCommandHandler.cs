@@ -27,7 +27,7 @@ namespace Dwellers.Common.Application.Commands.Dwellers.AddDweller
 
             var dweller = await Dweller.DwellerFactory.Create(cmd.DwellerId, cmd.Alias, cmd.Email);
 
-            if (!await _dwellerCommandRepository.AddDweller(dweller))
+            if (await _dwellerCommandRepository.AddDwellerAsync(dweller))
                 return await response.SuccessResponse(new DwellerUnit());
 
             else

@@ -4,7 +4,7 @@ using SharedKernel.Infrastructure.Configuration.Commands;
 using static Dwellers.Common.Application.Contracts.Requests.Bulletins.BulletinRequests;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
-namespace DwellersApi.Controllers.BulletinModule
+namespace DwellersApi.Controllers
 {
 
     [ApiController]
@@ -40,7 +40,7 @@ namespace DwellersApi.Controllers.BulletinModule
                       BulletinStatus: request.BulletinStatus,
                       BulletinPriority: request.BulletinPriority,
                       Visibility: request.Visibility,
-                      ChosenHouses: request.ChosenHouses
+                      ChosenDwellings: request.ChosenDwellings
             ); ;
 
             var handler = _commandHandler.GetHandler<AddBulletinCommand, DwellerUnit>();

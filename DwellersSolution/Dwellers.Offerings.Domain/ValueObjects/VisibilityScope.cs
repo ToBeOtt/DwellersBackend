@@ -11,7 +11,9 @@ namespace Dwellers.Offerings.Domain.ValueObjects
 
     public class Visibility : ValueObject
     {
+        public Guid Id { get; set; }
         public VisibilityScope Scope { get; }
+        public Visibility() { }
 
         public Visibility(VisibilityScope scope)
         {

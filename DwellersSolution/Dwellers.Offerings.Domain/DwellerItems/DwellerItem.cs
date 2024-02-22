@@ -21,13 +21,7 @@ namespace Dwellers.Offerings.Domain.DwellerItems
         public DateTime IsCreated { get; set; }
         public DateTime? IsModified { get; set; }
 
-        public DwellerItem()
-        {
-            Id = Guid.NewGuid();
-            IsCreated = DateTime.UtcNow;
-            IsArchived = false;
-        }
-
+        public DwellerItem() { }
         public DwellerItem(string name, string desc)
         {
             Id = Guid.NewGuid();

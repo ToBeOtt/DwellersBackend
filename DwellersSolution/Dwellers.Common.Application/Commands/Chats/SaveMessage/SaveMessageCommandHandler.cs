@@ -36,7 +36,7 @@ namespace Dwellers.Common.Application.Commands.Chats.SaveMessage
             // Create new message
             DwellerMessage message = new(cmd.MessageText, cmd.DwellerId, cmd.ConversationId);
 
-            if (!await _chatCommandRepository.PersistMessage(message))
+            if (!await _chatCommandRepository.AddMessageAsync(message))
                 return await response.ErrorResponse("Message could not be sent.");
 
             return await response.SuccessResponse();
