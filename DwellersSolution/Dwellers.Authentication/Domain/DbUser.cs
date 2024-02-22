@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using SharedKernel.Domain.DomainResponse;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Authentication.Domain
 {
@@ -10,9 +10,9 @@ namespace Dwellers.Authentication.Domain
 
         public DbUser() { }
 
-        public async Task<DomainResponse<bool>> CreateUser(string email, string alias)
+        public async Task<DwellerResponse<bool>> CreateUser(string email, string alias)
         {
-            DomainResponse<bool> domainResponse = new();
+            DwellerResponse<bool> DwellerResponse = new();
 
             var emailResponse = await SetEmail(email);
             if (!emailResponse.IsSuccess) return (emailResponse);
@@ -20,29 +20,29 @@ namespace Dwellers.Authentication.Domain
             var aliasResponse = await SetAlias(alias);
             if (!aliasResponse.IsSuccess) return (aliasResponse);
 
-            return domainResponse.SuccessResponse(domainResponse);
+            return await DwellerResponse.SuccessResponse();
         }
 
-        public async Task<DomainResponse<bool>> SetEmail(string email)
+        public async Task<DwellerResponse<bool>> SetEmail(string email)
         {
-            DomainResponse<bool> domainResponse = new();
+            DwellerResponse<bool> DwellerResponse = new();
             if (this.UserName != null && this.UserName != email)
-                return domainResponse.ErrorResponse(domainResponse, "Email is not the same as username.");
+                return await DwellerResponse.ErrorResponse("Email is not the same as username.");
 
             Email = email;
             UserName = email;
 
-            return domainResponse.SuccessResponse(domainResponse);
+            return await DwellerResponse.SuccessResponse();
         }
 
-        public async Task<DomainResponse<bool>> SetAlias(string alias)
+        public async Task<DwellerResponse<bool>> SetAlias(string alias)
         {
-            DomainResponse<bool> domainResponse = new();
+            DwellerResponse<bool> DwellerResponse = new();
             if (alias.IsNullOrEmpty())
-                return domainResponse.ErrorResponse(domainResponse, "Username is not the same as username.");
+                return await DwellerResponse.ErrorResponse("Username is not the same as username.");
 
             Alias = alias;
-            return domainResponse.SuccessResponse(domainResponse);
+            return await DwellerResponse.SuccessResponse();
         }
     }
 }

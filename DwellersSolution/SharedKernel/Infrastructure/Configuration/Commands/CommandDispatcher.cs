@@ -1,12 +1,11 @@
-﻿using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using SharedKernel.Application.ServiceResponse;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.ServiceResponse;
 
 namespace SharedKernel.Infrastructure.Configuration.Commands
 {
     public interface ICommandDispatcher
     {
-        Task<ServiceResponse<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation);
+        Task<DwellerResponse<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation);
     }
 
     public class CommandDispatcher : ICommandDispatcher
@@ -18,13 +17,13 @@ namespace SharedKernel.Infrastructure.Configuration.Commands
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public async Task<ServiceResponse<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
+        public async Task<DwellerResponse<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
         {
             var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand, TCommandResult>>();
             var result = await handler.Handle(command, cancellation);
 
-            var response = new ServiceResponse<TCommandResult>();
-            return await response.SuccessResponse(response);
+            var response = new DwellerResponse<TCommandResult>();
+            return await response.SuccessResponse();
         }
     }
 }

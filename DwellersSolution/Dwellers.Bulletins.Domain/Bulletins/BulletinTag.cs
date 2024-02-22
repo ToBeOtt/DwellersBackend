@@ -1,60 +1,56 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using SharedKernel.Domain.DomainModels;
-using SharedKernel.Domain.DomainResponse;
-using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
+using SharedKernel.Domain;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
 {
     public class BulletinTag : ValueObject
     {
-        private string _tag;
-        private BulletinId _bulletinId;
+        public Guid Id { get; set; }
+        public string Tag { get; set; }
+        public Guid BulletinId { get; set; }
+        public Bulletin Bulletin { get; set; }
 
-        private BulletinTag() { }
-        internal BulletinTag CreateNewTag(string newTag, BulletinId bulletinId)
+
+        public BulletinTag() { }
+        internal BulletinTag CreateNewTag(string newTag, Bulletin bulletin)
         {
-             return new BulletinTag(newTag, bulletinId);
+             return new BulletinTag(newTag, bulletin);
         }
-
-        private BulletinTag(string newTag, BulletinId bulletinId)
+        private BulletinTag(string newTag, Bulletin bulletin)
         {
-            _tag = newTag;
-            _bulletinId = bulletinId;
-        }
-
-        public string GetTag()
-        {
-            return _tag;
+            Tag = newTag;
+            Bulletin = bulletin;
         }
 
         public static class BulletinTagFactory
         {
             public static List<BulletinTag> CreateNewCollectionOfTags
-                (List<string> newTags, BulletinId bulletinId)
+                (List<string> newTags, Bulletin bulletin)
             {
                 List<BulletinTag> newListOfTags = new();
                 foreach (var tag in newTags)
                 {
                     tag.ToUpper();
-                    newListOfTags.Add(new BulletinTag(tag, bulletinId));
+                    newListOfTags.Add(new BulletinTag(tag, bulletin));
                 }
-                CheckRule(new NoDuplicateTagsMayExist(newListOfTags, null));
+                DwellerValidation(new NoDuplicateTagsMayExist(newListOfTags, null));
                 return newListOfTags;
             }
         }
 
-        internal DomainResponse<bool> AddTagToCollection
-            (List<BulletinTag> currentTags, string newTag, BulletinId id)
+        internal async Task<DwellerResponse<bool>> AddTagToCollection
+            (List<BulletinTag> currentTags, string newTag, Bulletin bulletin)
         {
-            DomainResponse<bool> response = new();
-            //CheckRule(new NoDuplicateTagsMayExist(currentTags, newTag));
+            DwellerResponse<bool> response = new();
+            DwellerValidation(new NoDuplicateTagsMayExist(currentTags, newTag));
 
             var outcome = DwellerValidation(new DomainIsBroken(currentTags, newTag));
             if(!outcome.IsSuccess)
-                return response.ErrorResponse(outcome, outcome.DomainErrorMessage);
+                return await response.ErrorResponse(outcome.ErrorMessage);
 
-            CreateNewTag(newTag, id);
-            return response;
+            CreateNewTag(newTag, bulletin);
+            return await response.SuccessResponse();
         }
     }
 }

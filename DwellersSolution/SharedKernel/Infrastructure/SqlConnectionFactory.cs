@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
-using SharedKernel.Application.Data;
+using SharedKernel.Application;
 using System.Data;
 
 

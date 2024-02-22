@@ -1,17 +1,14 @@
 using Dwellers.Authentication;
-using Dwellers.Bulletins.Application;
-using Dwellers.Calendar;
-using Dwellers.Chat;
-using Dwellers.Chat.Hubs;
-using Dwellers.Common.Data;
-using Dwellers.Common.Persistance;
-using Dwellers.Household.Application;
-using Dwellers.Notes;
-using Dwellers.Offerings;
+using Dwellers.Common.Application;
+using Dwellers.Common.Application.Commands.Chats.Hubs;
+using Dwellers.Common.Infrastructure;
 using DwellersApi;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.OpenApi.Models;
+using SharedKernel;
 using SharedKernel.Exceptions;
+using SharedKernel.Infrastructure.Configuration.Commands;
+using SharedKernel.Infrastructure.Configuration.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,22 +16,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCoreServices();
 
 // Persistence and DA
-builder.Services.AddDataServices(builder.Configuration);
-builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Auth
 builder.Services.AddAuthenticationServices(builder.Configuration);
 
 // Shared kernel
 builder.Services.AddSharedKernelServices(builder.Configuration);
-
-// Modules
-builder.Services.AddHouseholdModuleServices(builder.Configuration);
-builder.Services.AddOfferingsModuleServices(builder.Configuration);
-builder.Services.AddChatModuleServices(builder.Configuration);
-builder.Services.AddNotesModuleServices(builder.Configuration);
-builder.Services.AddCalendarModuleServices(builder.Configuration);
-builder.Services.AddBulletinModuleServices(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration);
 
 
 // DEVELOPMENT -- for authentication testing 
@@ -85,7 +74,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<HouseholdHub>("/householdHub", options =>
+    endpoints.MapHub<DwellersHub>("/dwellersHub", options =>
     {
         options.TransportMaxBufferSize = 1024;
         options.LongPolling.PollTimeout = TimeSpan.FromSeconds(30);
@@ -94,6 +83,5 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapControllers();
-
 
 app.Run();

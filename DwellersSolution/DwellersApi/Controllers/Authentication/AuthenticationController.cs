@@ -1,11 +1,15 @@
 ﻿using Dwellers.Authentication.Application.Services;
 using Dwellers.Authentication.Contracts.Requests;
-using Dwellers.Chat.Services;
-using Dwellers.Household.Contracts.Commands;
-using Dwellers.Household.Contracts.Requests;
-using Dwellers.Household.Services;
-using MediatR;
+using Dwellers.Common.Application.Contracts.Commands.Chats;
+using Dwellers.Common.Application.Contracts.Commands.Dwellers;
+using Dwellers.Common.Application.Contracts.Commands.Dwellings;
+using Dwellers.Common.Application.Contracts.Commands.Offerings;
+using Dwellers.Common.Application.Contracts.Queries.Dwellings;
+using Dwellers.Common.Application.Contracts.Results.Dwellings;
+using Dwellers.Common.Application.Interfaces.Chats;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Infrastructure.Configuration.Commands;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace DwellersApi.Controllers.Authentication
 {
@@ -13,31 +17,22 @@ namespace DwellersApi.Controllers.Authentication
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly ISender _mediator;
-        private readonly ChatCommandServices _chatCommandServices;
+        private readonly IChatCommandRepository _chatCommandRepository;
         private readonly RegistrationService _registrationService;
         private readonly AuthenticationService _authenticationService;
-        private readonly HouseServices _houseServices;
-        private readonly UserServices _userServices;
-        private readonly HouseRegisterService _houseRegService;
+        private readonly ICommandHandlerFactory _commandHandler;
 
         public AuthenticationController(
-            ISender mediator, 
-            ChatCommandServices chatCommandServices,
+            IChatCommandRepository chatCommandRepository,
             RegistrationService registrationService,
             AuthenticationService authenticationService,
-            HouseServices houseServices,
-            UserServices userServices,
-            HouseRegisterService houseRegService
+            ICommandHandlerFactory commandHandler
            )
         {
-            _mediator = mediator;
-            _chatCommandServices = chatCommandServices;
+            _chatCommandRepository = chatCommandRepository;
             _registrationService = registrationService;
             _authenticationService = authenticationService;
-            _houseServices = houseServices;
-            _userServices = userServices;
-            _houseRegService = houseRegService;
+            _commandHandler = commandHandler;
         }
 
     // REGISTRATION
@@ -49,31 +44,16 @@ namespace DwellersApi.Controllers.Authentication
 
             if (!identityUser.IsSuccess) return BadRequest(identityUser.ErrorMessage);
 
-            var dwellerUser = await _userServices.CreateDwellerUser
-                (identityUser.Data.DbUser.Id, request.Email, request.Alias);
+            var cmd = new AddDwellerCommand(
+                DwellerId: identityUser.Data.DbUser.Id,
+                Alias: request.Alias,
+                Email: request.Email
+                );
 
-            if (!dwellerUser.IsSuccess) return BadRequest(dwellerUser.ErrorResponse);
+            var handler = _commandHandler.GetHandler<AddDwellerCommand, DwellerUnit>();
+            var result = await handler.Handle(cmd, new CancellationToken());
 
-            return Ok(identityUser.Data);
-        }
-
-        [HttpPost("RegisterHouse")]
-        public async Task<IActionResult> RegisterHouse(RegisterHouseRequest request)
-        {
-            var cmd = new RegisterHouseCommand(
-                Name: request.Name,
-                Description: request.Description,
-                Email: request.Email);
-
-            var regResult = await _houseRegService.AttachHouseToUser(cmd);
-
-            // Convert Guid? from registerHouseResponseDTO to a set Guid.
-            Guid houseID = (Guid)regResult.Data.HouseId;
-            var result = await _chatCommandServices.EstablishConversation
-                (houseID,
-                 regResult.Data.Name);
-            
-            if(!result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.ErrorMessage);
             }
@@ -81,29 +61,70 @@ namespace DwellersApi.Controllers.Authentication
             return Ok(result);
         }
 
-        [HttpPost("RegisterMemberToHouse")]
-        public async Task<IActionResult> RegisterMemberToHouse(RegisterMemberToHouseRequest request)
+        [HttpPost("RegisterDwellingForDweller")]
+        public async Task<IActionResult> RegisterDwellingForDweller(RegisterDwellingRequest request)
         {
-            var cmd = new RegisterMemberToHouseCommand(
+            // Connect dwelling to the new dweller
+            var cmd = new AttachDwellingToDwellerCommand(
+                Name: request.Name,
+                Description: request.Description,
+                Email: request.Email);
+
+            var registerHandler = _commandHandler.GetHandler<AttachDwellingToDwellerCommand, AttachDwellingToDwellerResult>();
+            var registerDwellingResult = await registerHandler.Handle(cmd, new CancellationToken());
+            if (!registerDwellingResult.IsSuccess)
+                return BadRequest(registerDwellingResult.ErrorMessage);
+
+            // Sets up a new conversation for the dwelling upon registration
+            var cmdForConversation = new EstablishConversationCommand(
+                            ListOfDwellingIds: [Guid.NewGuid()],                           
+                            DwellingName: request.Name);
+
+            var conversationHandler = _commandHandler.GetHandler<EstablishConversationCommand, DwellerUnit>();
+            var establishConversationResult = await conversationHandler.Handle(cmdForConversation, new CancellationToken());
+
+            if (!establishConversationResult.IsSuccess)
+                return BadRequest(establishConversationResult.ErrorMessage);
+
+            return Ok();
+        }
+
+        [HttpPost("RegisterDwellerToDwelling")]
+        public async Task<IActionResult> RegisterDwellerToDwelling(RegisterDwellerToDwellingRequest request)
+        {
+            var cmd = new AttachDwellerToDwellingCommand(
                 Invitation: request.Invitation,
                 Email: request.Email);
 
-            var memberRegResult = await _houseRegService.AttachMemberToHouse(cmd);
-            return Ok(memberRegResult);
+            var handler = _commandHandler.GetHandler<AttachDwellerToDwellingCommand, AttachDwellerToDwellingResult>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.ErrorMessage);
+            }
+
+            return Ok(result);
         }
 
     // LOGIN
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            var idResult = await _houseServices.ServeGuidToAuthentication(request.Email);
-            if (!idResult.IsSuccess)
+            var query = new GetDwellingByEmailQuery(
+                Email: request.Email);
+
+            var handler = _commandHandler.GetHandler<GetDwellingByEmailQuery, GetDwellingByEmailResult>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
             {
-                return BadRequest();
+                return BadRequest(result.ErrorMessage);
             }
 
-            var result = await _authenticationService.Login
-                (request.Email, request.Password, idResult.Data); // pass along houseID to pass it token-generation.
+            // pass along dwellingID to pass it token-generation.
+            var loginResult = await _authenticationService.Login
+                (request.Email, request.Password, result.Data.DwellingId); 
             if(!result.IsSuccess)
             {
                 return Unauthorized(result.ErrorMessage);

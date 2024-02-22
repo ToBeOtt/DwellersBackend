@@ -1,5 +1,5 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using SharedKernel.Domain.DomainModels;
+using SharedKernel.Domain;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
 {
@@ -17,7 +17,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public BulletinPriority() { }
         private BulletinPriority(string strPriority)
         {
-            CheckRule(new StringIsNotNull(strPriority));
+            DwellerValidation(new StringIsNotNull(strPriority));
             var priority = ConvertPriorityFromUIValue(strPriority);
             _priority = priority;
         }

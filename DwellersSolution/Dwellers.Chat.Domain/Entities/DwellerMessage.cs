@@ -1,34 +1,31 @@
-﻿using SharedKernel.Domain.DomainModels;
+﻿using SharedKernel.Domain;
 
 namespace Dwellers.Chat.Domain.Entities
 {
-    public class DwellerMessage : BaseEntity
+    public sealed class DwellerMessage : BaseEntity
     {
         public Guid Id { get; set; }
         public string MessageText { get; set; }
         public DateTime Timestamp { get; set; }
         public bool IsRead { get; set; }
-        public string UserId { get; set; }
 
-        public bool IsArchived { get; set; }
-        public DateTime IsCreated { get; set; }
-        public DateTime? IsModified { get; set; }
+        public string DwellerId { get; set; }
+        public Guid ConversationId { get; set; }
 
-        public DwellerMessage()
-        {
-        }
+        public bool Archived { get; private set; }
+        public DateTime IsCreated { get; private set; }
+        public DateTime? IsModified { get; private set; }
 
-        public DwellerMessage(
-            string userID,
-            string messageText)
+        public DwellerMessage() { }
+        public DwellerMessage(string message, string dwellerId, Guid conversationId)
         {
             Id = Guid.NewGuid();
-            UserId = userID;
-            MessageText = messageText;
-            Timestamp = DateTime.Now;
-            IsRead = false;
-            IsCreated = DateTime.Now;
-            IsArchived = false;
+            MessageText = message;
+            DwellerId = dwellerId;
+            ConversationId = conversationId;
         }
+
+
     }
 }
+

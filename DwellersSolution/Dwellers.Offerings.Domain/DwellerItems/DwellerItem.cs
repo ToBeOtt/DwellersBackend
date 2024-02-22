@@ -1,7 +1,7 @@
 ﻿using Dwellers.Offerings.Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
-using SharedKernel.Domain.DomainModels;
-using SharedKernel.Domain.DomainResponse;
+using SharedKernel.Domain;
+using SharedKernel.ServiceResponse;
 
 namespace Dwellers.Offerings.Domain.DwellerItems
 {
@@ -14,6 +14,8 @@ namespace Dwellers.Offerings.Domain.DwellerItems
         public VisibilityScope ItemScope { get; private set; }
         public byte[]? ItemPhoto { get; private set; }
         public bool ItemStatus { get; private set; }
+
+        public ICollection<BorrowedItem> BorrowedItems { get; set; }
 
         public bool IsArchived { get; set; }
         public DateTime IsCreated { get; set; }
@@ -34,21 +36,21 @@ namespace Dwellers.Offerings.Domain.DwellerItems
             IsCreated = DateTime.UtcNow;
             IsArchived = false;
         }
-        public async Task<DomainResponse<bool>> SetItemScope(string scope)
+        public async Task SetItemScope(string scope)
         {
-            DomainResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
             if (Enum.TryParse(scope, out VisibilityScope itemscope))
             {
                 ItemScope = itemscope;
-                return response.SuccessResponse(response);
+                await response.SuccessResponse();
             }
 
-            return response.ErrorResponse(response, "Scope could not be parsed to enum.");
+            await response.ErrorResponse("Scope could not be parsed to enum.");
         }
 
-        public async Task<DomainResponse<bool>> SetItemPhoto(IFormFile photo)
+        public async Task<DwellerResponse<bool>> SetItemPhoto(IFormFile photo)
         {
-            DomainResponse<bool> response = new();
+            DwellerResponse<bool> response = new();
 
             try
             {
@@ -58,12 +60,12 @@ namespace Dwellers.Offerings.Domain.DwellerItems
                     byte[] imageData = memoryStream.ToArray();
 
                     ItemPhoto = imageData;
-                    return response.SuccessResponse(response);
+                    return await response.SuccessResponse();
                 }
             }
             catch (Exception ex)
             {
-                return response.ErrorResponse(response, ex.Message);
+                return await response.ErrorResponse(ex.Message);
             }
         }
     }

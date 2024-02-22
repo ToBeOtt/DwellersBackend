@@ -1,9 +1,10 @@
-﻿using Dwellers.Household.Contracts.Commands;
-using MediatR;
+﻿using Dwellers.Common.Application.Contracts.Commands.Dwellers;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using SharedKernel.Infrastructure.Configuration.Queries;
+using SharedKernel.ServiceResponse;
 using System.Security.Authentication;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace DwellersApi.Controllers
 {
@@ -12,18 +13,14 @@ namespace DwellersApi.Controllers
     [Route("user")]
     public class UserController : ControllerBase
     {
-        private readonly ISender _mediator;
         private readonly ICommandHandlerFactory _commandHandler;
         private readonly IQueryHandlerFactory _queryHandler;
 
         public UserController(
-            ISender mediator,
             ICommandHandlerFactory commandHandler,
             IQueryHandlerFactory queryHandler
             )
-        {
-            
-            _mediator = mediator;
+        { 
             _commandHandler = commandHandler;
             _queryHandler = queryHandler;
         }
@@ -38,12 +35,14 @@ namespace DwellersApi.Controllers
                 throw new InvalidCredentialException();
             }
 
-            var cmd = new UpdateUserCommand(
-                UserId: userIdClaim.Value,
-                ProfilePhoto: profilePhoto);
+            var cmd = new SetDwellerProfilePhotoCommand(
+                DwellerId: userIdClaim.Value,
+            DwellerPhoto: profilePhoto);
 
-            var UpdateUserResult = await _mediator.Send(cmd);
-            return Ok(UpdateUserResult);
+            var handler = _commandHandler.GetHandler<SetDwellerProfilePhotoCommand, DwellerResponse<DwellerUnit>>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
+            return Ok(result);
         }
     }
 }

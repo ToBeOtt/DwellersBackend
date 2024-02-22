@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.ServiceResponse;
 
 namespace SharedKernel.Infrastructure.Configuration.Queries
 {
     public interface IQueryDispatcher
     {
-        Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation);
+        Task<DwellerResponse<TQueryResult>> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation);
     }
     class QueryDispatcher : IQueryDispatcher
     {
@@ -12,7 +13,7 @@ namespace SharedKernel.Infrastructure.Configuration.Queries
 
         public QueryDispatcher(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
-        public Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation)
+        public Task<DwellerResponse<TQueryResult>> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation)
         {
             var handler = _serviceProvider.GetRequiredService<IQueryHandler<TQuery, TQueryResult>>();
             return handler.Handle(query, cancellation);

@@ -1,11 +1,14 @@
-﻿using Dwellers.Offerings.Contracts.Commands;
-using Dwellers.Offerings.Contracts.Queries;
-using Dwellers.Offerings.Contracts.Requests;
+﻿using Dwellers.Common.Application.Contracts.Commands.DwellerEvents;
+using Dwellers.Common.Application.Contracts.Commands.Offerings;
+using Dwellers.Common.Application.Contracts.Queries.Offerings;
+using Dwellers.Common.Application.Contracts.Requests.Offerings;
 using Dwellers.Offerings.Services.DwellerItems;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Infrastructure.Configuration.Commands;
 using System.Security.Authentication;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 
 namespace DwellersApi.Controllers.Household
@@ -15,13 +18,14 @@ namespace DwellersApi.Controllers.Household
     [Route("providing")]
     public class ItemsAndServicesController : ControllerBase
     {
-        private readonly ISender _mediator;
         private readonly DwellerItemCommandService _dwellerItemCommandService;
 
+        private readonly ICommandHandlerFactory _commandHandler;
+
         public ItemsAndServicesController(
-            DwellerItemCommandService dwellerItemCommandService)
+          ICommandHandlerFactory commandHandler)
         {
-            _dwellerItemCommandService = dwellerItemCommandService;
+            _commandHandler = commandHandler;
         }
 
         // DWELLER-ITEMS
@@ -36,18 +40,21 @@ namespace DwellersApi.Controllers.Household
             }
 
             var cmd = new AddDwellerItemCommand(
-                HouseId: new Guid(houseIdClaim.Value),
+                DwellingId: new Guid(houseIdClaim.Value),
                 Name: Request.Form["name"],
                 Desc: Request.Form["description"],
                 ItemScope: Request.Form["itemScope"],
                 ItemPhoto: itemPhoto);
 
-            var result = await _dwellerItemCommandService.CreateAndPersistItem(cmd);
+            var handler = _commandHandler.GetHandler<AddDwellerItemCommand, DwellerUnit>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
             if (!result.IsSuccess)
             {
-                return BadRequest(result.ErrorMessage); 
+                return BadRequest();
             }
-            return Ok(result.Data);
+
+            return Ok(result);
         }
 
         [HttpPost("RemoveDwellerItem")]
@@ -56,18 +63,32 @@ namespace DwellersApi.Controllers.Household
             var cmd = new RemoveDwellerItemCommand(
                 ItemId: request.ItemId);
 
-            var removeDwellerItemResult = await _mediator.Send(cmd);
-            return Ok(removeDwellerItemResult);
+            var handler = _commandHandler.GetHandler<RemoveDwellerItemCommand, DwellerUnit>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("GetDwellerItem")]
         public async Task<IActionResult> GetDwellerItems(Guid itemId)
         {
-            var cmd = new GetDwellerItemQuery(
+            var query = new GetDwellerItemQuery(
                 ItemId: itemId);
-    
-            var getAllDwellerItemsResult = await _mediator.Send(cmd);
-            return Ok(getAllDwellerItemsResult);
+
+            var handler = _commandHandler.GetHandler<GetDwellerItemQuery, DwellerUnit>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
 
@@ -81,11 +102,18 @@ namespace DwellersApi.Controllers.Household
                 throw new InvalidCredentialException();
             }
 
-            var cmd = new GetAllDwellerItemsQuery(
+            var query = new GetAllDwellerItemsQuery(
                 HouseId: new Guid(houseIdClaim.Value));
 
-            var getAllDwellerItemsResult = await _mediator.Send(cmd);
-            return Ok(getAllDwellerItemsResult);
+            var handler = _commandHandler.GetHandler<GetAllDwellerItemsQuery, DwellerUnit>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
         // DWELLER-SERVICES
@@ -93,37 +121,46 @@ namespace DwellersApi.Controllers.Household
         public async Task<IActionResult> AddDwellerService(AddDwellerServiceRequest request)
         {
             var houseIdClaim = User.FindFirst("HouseId");
-
             if (houseIdClaim is null)
-            {
                 throw new InvalidCredentialException();
-            }
 
             var cmd = new AddDwellerServiceCommand(
-                HouseId: new Guid(houseIdClaim.Value),
+                DwellingId: new Guid(houseIdClaim.Value),
                 Name: request.Name,
                 Description: request.Description,
                 ServiceScope: request.ServiceScope);
 
-            var addDwellerServiceResult = await _mediator.Send(cmd);
-            return Ok(addDwellerServiceResult);
+            var handler = _commandHandler.GetHandler<AddDwellerServiceCommand, DwellerUnit>();
+            var result = await handler.Handle(cmd, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("GetAllDwellerServices")]
         public async Task<IActionResult> GetAllDwellerServices()
         {
             var houseIdClaim = User.FindFirst("HouseId");
-
             if (houseIdClaim is null)
-            {
                 throw new InvalidCredentialException();
-            }
+           
 
-            var cmd = new GetAllDwellerServicesQuery(
+            var query = new GetAllDwellerServicesQuery(
                 HouseId: new Guid(houseIdClaim.Value));
 
-            var getAllDwellerServicesResult = await _mediator.Send(cmd);
-            return Ok(getAllDwellerServicesResult);
+            var handler = _commandHandler.GetHandler<GetAllDwellerServicesQuery, DwellerUnit>();
+            var result = await handler.Handle(query, new CancellationToken());
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
         }
     }
 }

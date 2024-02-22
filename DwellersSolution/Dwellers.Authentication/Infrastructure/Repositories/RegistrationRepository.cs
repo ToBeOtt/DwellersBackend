@@ -30,7 +30,10 @@ namespace Dwellers.Authentication.Infrastructure.Repositories
 
         public async Task<bool> CheckNoUserExist(string email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
+            var result = await _context.Users.AnyAsync(u => u.Email == email);
+            if(result.Equals(true))
+                return true;
+            else return false;
         }
     }
 }

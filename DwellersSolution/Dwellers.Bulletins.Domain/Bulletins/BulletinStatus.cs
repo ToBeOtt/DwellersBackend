@@ -1,7 +1,5 @@
-﻿using Dwellers.Bulletins.Domain.Bulletins.DomainEvents;
-using Dwellers.Bulletins.Domain.Bulletins.Rules;
-using SharedKernel.Domain.DomainModels;
-using static Dwellers.Bulletins.Domain.Bulletins.Bulletin;
+﻿using Dwellers.Bulletins.Domain.Bulletins.Rules;
+using SharedKernel.Domain;
 
 namespace Dwellers.Bulletins.Domain.Bulletins
 {
@@ -31,15 +29,15 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             }
         }
 
-        internal void ModifyBulletinStatus(Status status, BulletinId bulletinId)
+        internal void ModifyBulletinStatus(Status status, Bulletin bulletin)
         {
-            CheckRule(new StatusHasNotChanged(_status, status));
+            DwellerValidation(new StatusHasNotChanged(_status, status));
 
             _status = status;
             if(status == Status.Done)
             {
-                var @event = new BulletinStatusChangedToDoneDomainEvent(bulletinId);
-                this.AddDomainEvent(@event);
+                //var @event = new BulletinStatusChangedToDoneDomainEvent(bulletin);
+                //this.AddDomainEvent(@event);
             }
         }
 
