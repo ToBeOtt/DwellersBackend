@@ -4,6 +4,8 @@ using Dwellers.Common.Application.Interfaces;
 using Dwellers.DwellerCore.Domain.Entities;
 using Dwellers.DwellerCore.Domain.Entities.Dwellers;
 using Dwellers.DwellerCore.Domain.Entities.Dwellings;
+using Dwellers.DwellersEvents.Domain.Entites;
+using Dwellers.DwellersEvents.Domain.Entites.ValueObjects;
 using Dwellers.Offerings.Domain.DwellerItems;
 using Dwellers.Offerings.Domain.DwellerServices;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +30,9 @@ namespace Dwellers.Common.Infrastructure.Context
         public DbSet<DwellerMessage> DwellerMessages { get; set; }
 
         // Events
-        public DbSet<DwellersEvents.Domain.Entites.DwellerEvent> DwellerEvents { get; set; }
-        
+        public DbSet<DwellerEvent> DwellerEvents { get; set; }
+        public DbSet<DwellerScope> DwellerScopes { get; set; }
+
         // Bulletins
         public DbSet<Bulletin> Bulletins { get; set; }
         public DbSet<BulletinPriority> BulletinPriorities { get; set; }

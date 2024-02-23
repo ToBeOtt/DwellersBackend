@@ -15,23 +15,36 @@ using Dwellers.Common.Infrastructure.Repositories.Offerings.Repositories.Dweller
 using Dwellers.Common.Persistance.Repositories.Bulletins.Repositories;
 using Dwellers.Common.Persistance.Repositories.Chats.Repositories;
 using Dwellers.Common.Persistance.Repositories.DwellerEvents.Repositories;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Dwellers.Common.Infrastructure
 {
     public static class InfrastructureConfig
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, 
+            IConfiguration configuration, IWebHostEnvironment environment)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection") ??
+            if (environment.IsDevelopment())
+            {
+                // Use in-memory database for development
+                services.AddDbContext<DwellerDbContext>(options =>
+                    options.UseInMemoryDatabase("DwellerDb"));
+            }
+
+            else
+            {
+                var connectionString = configuration.GetConnectionString("DefaultConnection") ??
                throw new InvalidOperationException("Connection string not found.");
 
-            services.AddDbContext<DwellerDbContext>(options => options.UseSqlServer(connectionString));
+                services.AddDbContext<DwellerDbContext>(options => options.UseSqlServer(connectionString));
+            }
 
             //Repositories
-
             services.AddTransient<IDwellerQueryRepository, DwellerQueryRepository>();
             services.AddTransient<IDwellerCommandRepository, DwellerCommandRepository>();
             services.AddTransient<IDwellingQueryRepository, DwellingQueryRepository>();

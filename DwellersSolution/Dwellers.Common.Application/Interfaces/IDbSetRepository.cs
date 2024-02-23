@@ -4,6 +4,7 @@ using Dwellers.DwellerCore.Domain.Entities;
 using Dwellers.DwellerCore.Domain.Entities.Dwellers;
 using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using Dwellers.DwellersEvents.Domain.Entites;
+using Dwellers.DwellersEvents.Domain.Entites.ValueObjects;
 using Dwellers.Offerings.Domain.DwellerItems;
 using Dwellers.Offerings.Domain.DwellerServices;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ namespace Dwellers.Common.Application.Interfaces
     public interface IDbSetRepository
     {
         // DwellerCore
-        DbSet<Dwellers.DwellerCore.Domain.Entities.Dwellers.Dweller> Dwellers { get; set; }
+        DbSet<Dweller> Dwellers { get; set; }
         DbSet<Dwelling> Dwellings { get; set; }
         DbSet<DwellingInhabitant> DwellingInhabitants { get; set; }
 
@@ -24,6 +25,7 @@ namespace Dwellers.Common.Application.Interfaces
 
         // Events
         DbSet<DwellerEvent> DwellerEvents { get; set; }
+        DbSet<DwellerScope> DwellerScopes { get; set; }
 
         // Bulletins
         DbSet<Bulletin> Bulletins { get; set; }

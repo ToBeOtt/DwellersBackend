@@ -11,22 +11,21 @@ namespace Dwellers.Offerings.Domain.DwellerItems
         public Guid DwellerItemId { get; set; }
         public DwellerItem DwellerItem { get; set; }    
 
-        public bool IsOwner { get; set; }
 
         public string? Note { get; set; }
-        public DateTime? Returned { get; set; }
 
-        public bool Archived { get; private set; }
+        public bool IsArchived { get; private set; }
         public DateTime IsCreated { get; private set; }
-        public DateTime? IsModified { get; private set; }
+        public DateTime? IsReturned { get; private set; }
 
         public BorrowedItem() { }
-        public BorrowedItem(Dwelling dwelling, DwellerItem dwellerItem, bool isOwner)
+        public BorrowedItem(Dwelling dwelling, DwellerItem dwellerItem)
         {
             Dwelling = dwelling;
             DwellerItem = dwellerItem;
-            IsOwner = isOwner;
-        }
 
+            IsArchived = false;
+            IsCreated = DateTime.Now;
+        }
     }
 }

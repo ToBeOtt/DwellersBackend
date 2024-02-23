@@ -6,7 +6,7 @@ namespace Dwellers.Authentication.Domain
 {
     public sealed class DbUser : IdentityUser
     {
-        public string Alias { get; private set; }
+        public string Alias { get; set; }
 
         public DbUser() { }
 

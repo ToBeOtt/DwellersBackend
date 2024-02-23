@@ -4,9 +4,9 @@
     Guid EventId);
 
     public record GetAllEventsQuery(
-   Guid HouseId);
+   Guid DwellingId);
 
     public record GetUpcomingEventsQuery(
-    Guid HouseId);
+    Guid DwellingId);
 
 }

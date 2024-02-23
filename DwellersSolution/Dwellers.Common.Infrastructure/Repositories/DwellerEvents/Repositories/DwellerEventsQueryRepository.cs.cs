@@ -24,18 +24,29 @@ namespace Dwellers.Common.Persistance.Repositories.DwellerEvents.Repositories
 
         public async Task<ICollection<DwellerEvent>> GetUpcomingEvents(Guid dwellingId)
         {
+
             return await _context.DwellerEvents
-               .Include(e => e.Dweller)
-               .Where(e => e.Dwelling != null && e.Dwelling.Id == dwellingId)
-               .Where(e => !e.IsArchived)
-               .OrderByDescending(e => e.EventDate)
-               .Take(10)
-               .ToListAsync();
+                    .Include(e => e.Dwelling)
+                    .Include(e => e.Dweller)
+                    .ToListAsync();
+
+            //return await _context.DwellerEvents
+            //   .Include(e => e.Dweller)
+            //   .Where(e => e.Dwelling != null && e.Dwelling.Id == dwellingId)
+            //   .Where(e => !e.IsArchived)
+            //   .OrderByDescending(e => e.EventDate)
+            //   .Take(10)
+            //   .ToListAsync();
         }
 
         public async Task<DwellerEvent> GetEvent(Guid eventId)
         {
-            return await _context.DwellerEvents.Where(e => e.Id == eventId).SingleOrDefaultAsync();
+            return await _context.DwellerEvents
+                .Where(e => e.Id == eventId)
+                .Include(e => e.Dwelling)
+                .Include(e => e.Dweller)
+                .Include(e => e.EventScope)
+                .SingleOrDefaultAsync();
         }
     }
 }

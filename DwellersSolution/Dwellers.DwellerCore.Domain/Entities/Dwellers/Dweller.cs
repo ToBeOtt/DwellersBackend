@@ -16,6 +16,8 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellers
         public DateTime? IsCreated { get; set; }
         public DateTime? IsModified { get; set; }
 
+        public DwellingInhabitant DwellingInhabitant { get; set; }
+
         public Dweller() { }
         private Dweller(string id, string alias, string email)
         {

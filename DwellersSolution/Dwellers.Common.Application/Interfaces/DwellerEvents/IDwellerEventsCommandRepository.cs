@@ -4,6 +4,7 @@ namespace Dwellers.Common.Application.Interfaces.DwellerEvents
 {
     public interface IDwellerEventsCommandRepository
     {
-        Task<bool> AddEvent(DwellerEvent dwellerEvent);
+        Task<bool> AddEventAsync(DwellerEvent dwellerEvent);
+        Task<bool> DeleteEventAsync(DwellerEvent dwellerEvent);  
     }
 }

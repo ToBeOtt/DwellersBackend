@@ -13,7 +13,7 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
         public byte[]? DwellingProfilePhoto { get; set; }
         public List<DwellingGallery>? DwellingGallery { get; set; } = new List<DwellingGallery>();
 
-        public List<DwellingInhabitant>? DwellingInhabitantList { get; set; }
+        public DwellingInhabitant DwellingInhabitant { get; set; }
 
         public bool IsArchived { get; set; } 
         public DateTime IsCreated { get; set; }
@@ -21,7 +21,7 @@ namespace Dwellers.DwellerCore.Domain.Entities.Dwellings
         public Dwelling() { }
         private Dwelling(string? name, string? description)
         {
-             Id = Guid.NewGuid();
+            Id = Guid.NewGuid();
             
             Name = name;
             Description = description;

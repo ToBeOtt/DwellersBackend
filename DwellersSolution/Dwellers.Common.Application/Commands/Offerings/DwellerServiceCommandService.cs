@@ -43,7 +43,7 @@ namespace Dwellers.Offerings.Services.DwellerServices
                 return await response.ErrorResponse
                         ("Something went wrong with adding the service.");
 
-            var dwelling = await _dwellingQueryRepository.GetDwellingById(cmd.DwellingId);
+            var dwelling = await _dwellingQueryRepository.GetDwellingByIdAsync(cmd.DwellingId);
 
             var establishProvider = new ProvidedService(dwelling, dwellerService, true);
 

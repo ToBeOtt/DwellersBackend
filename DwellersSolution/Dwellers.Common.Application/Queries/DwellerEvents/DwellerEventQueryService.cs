@@ -18,18 +18,6 @@ namespace Dwellers.Common.Application.Queries.DwellerEvents
             _logger = logger;
             _dwellerEventsQueryRepository = dwellerEventsQueryRepository;
         }
-        public async Task<DwellerResponse<DwellerEvent>> FetchEvent
-           (GetEventQuery query)
-        {
-            DwellerResponse<DwellerEvent> response = new();
-
-            var dwellerEvent = await _dwellerEventsQueryRepository.GetEvent(query.EventId);
-            if (dwellerEvent == null)
-                return await response.ErrorResponse
-                        ("No events found or registered.");
-
-            return await response.SuccessResponse(dwellerEvent);
-        }
 
         public async Task<DwellerResponse<ICollection<DwellerEvent>>> FetchAllEvents
             (Guid houseId)
@@ -42,19 +30,6 @@ namespace Dwellers.Common.Application.Queries.DwellerEvents
                            ("No events found or registered.");
 
             return await response.SuccessResponse(eventList);
-        }
-
-        public async Task<DwellerResponse<ICollection<DwellerEvent>>> FetchUpcomingEvents
-            (GetUpcomingEventsQuery query)
-        {
-            DwellerResponse<ICollection<DwellerEvent>> response = new();
-
-            var eventList = await _dwellerEventsQueryRepository.GetUpcomingEvents(query.HouseId);
-            if (eventList == null)
-                return await response.ErrorResponse
-                        ("No upcoming events can be found.");
-
-            return await response.SuccessResponse(eventList); ;
         }
     }
 }

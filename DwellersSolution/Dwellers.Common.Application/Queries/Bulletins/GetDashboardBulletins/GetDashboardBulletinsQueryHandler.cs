@@ -34,7 +34,7 @@ namespace Dwellers.Common.Application.Queries.Bulletins.GetDashboardBulletins
                 var dashboardBulletin = new DashboardBulletins(bulletin.Title, 
                     bulletin.Dweller.Alias,
                     bulletin.Text,
-                    bulletin.Scope.ToString(),
+                    bulletin.Scope.Visibility.ToString(),
                     bulletin.IsCreated.ToShortDateString(),
                     bulletin.IsModified.ToShortDateString());
                 listOfBulletinsDto.Add(dashboardBulletin);

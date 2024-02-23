@@ -22,9 +22,9 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             Status = status;
         }
 
-        internal static class BulletinStatusFactory
+        public static class BulletinStatusFactory
         {
-            internal static BulletinStatus CreateNewStatus(string strStatusValue)
+            public static BulletinStatus CreateNewStatus(string strStatusValue)
             {
                 return new BulletinStatus(strStatusValue);
             }

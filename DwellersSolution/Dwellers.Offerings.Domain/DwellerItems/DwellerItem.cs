@@ -1,4 +1,5 @@
-﻿using Dwellers.Offerings.Domain.ValueObjects;
+﻿using Dwellers.DwellerCore.Domain.Entities.Dwellings;
+using Dwellers.Offerings.Domain.ValueObjects;
 using Microsoft.AspNetCore.Http;
 using SharedKernel.Domain;
 using SharedKernel.ServiceResponse;
@@ -13,8 +14,9 @@ namespace Dwellers.Offerings.Domain.DwellerItems
 
         public VisibilityScope ItemScope { get; private set; }
         public byte[]? ItemPhoto { get; private set; }
-        public bool ItemStatus { get; private set; }
-
+        public bool IsBorrowed { get; set; }
+        
+        public Dwelling OwnerOfItem { get; private set; }
         public ICollection<BorrowedItem> BorrowedItems { get; set; }
 
         public bool IsArchived { get; set; }
@@ -22,24 +24,23 @@ namespace Dwellers.Offerings.Domain.DwellerItems
         public DateTime? IsModified { get; set; }
 
         public DwellerItem() { }
-        public DwellerItem(string name, string desc)
+        public DwellerItem(string name, string desc, Dwelling owner, string scope)
         {
             Id = Guid.NewGuid();
             Name = name;
             Description = desc;
+            OwnerOfItem = owner;
+            IsBorrowed = false;
+            SetItemScope(scope);   
+
             IsCreated = DateTime.UtcNow;
             IsArchived = false;
         }
-        public async Task SetItemScope(string scope)
+        public void SetItemScope(string scope)
         {
             DwellerResponse<bool> response = new();
             if (Enum.TryParse(scope, out VisibilityScope itemscope))
-            {
                 ItemScope = itemscope;
-                await response.SuccessResponse();
-            }
-
-            await response.ErrorResponse("Scope could not be parsed to enum.");
         }
 
         public async Task<DwellerResponse<bool>> SetItemPhoto(IFormFile photo)

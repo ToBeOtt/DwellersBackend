@@ -4,7 +4,7 @@ namespace Dwellers.Offerings.Domain.ValueObjects
 {
     public enum VisibilityScope
     {
-        Household,
+        Dwelling,
         Neightbourhood,
         All
     }

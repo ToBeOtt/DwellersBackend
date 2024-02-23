@@ -29,20 +29,18 @@ namespace Dwellers.Offerings.Services.DwellerItems
         public async Task<DwellerResponse<bool>> CreateAndPersistItem(AddDwellerItemCommand cmd)
         {
             DwellerResponse<bool> response = new();
+            var dwelling = await _dwellingQueryRepository.GetDwellingByIdAsync(cmd.DwellingId);
+            if (dwelling == null)
+                return await response.ErrorResponse("Owner of item could not be resolved.");
 
-            var dwellerItem = new DwellerItem(cmd.Name, cmd.Desc);
-
-            if(cmd.ItemScope != null)
-                await dwellerItem.SetItemScope(cmd.ItemScope);
-
+            var dwellerItem = new DwellerItem(cmd.Name, cmd.Desc, dwelling, cmd.ItemScope);
 
             if (cmd.ItemPhoto != null)
                 await dwellerItem.SetItemPhoto(cmd.ItemPhoto);
 
             await _dwellerItemCommandRepository.AddDwellerItem(dwellerItem);
 
-            var dwelling = await _dwellingQueryRepository.GetDwellingById(cmd.DwellingId);
-            var establishOwnerShip = new BorrowedItem(dwelling, dwellerItem, true);
+            var establishOwnerShip = new BorrowedItem(dwelling, dwellerItem);
 
             if (!await _dwellerItemCommandRepository.RegisterItemStatus(establishOwnerShip))
                 return await response.ErrorResponse
@@ -57,8 +55,7 @@ namespace Dwellers.Offerings.Services.DwellerItems
 
             var dwellerItem = await _dwellerItemQueryRepository.GetDwellerItem(itemId);
             if (dwellerItem == null)
-                return await response.ErrorResponse
-                        ("Item could not be found.");
+                return await response.ErrorResponse("Item could not be found.");
 
 
             if (!await _dwellerItemCommandRepository.RemoveDwellerItem(dwellerItem))

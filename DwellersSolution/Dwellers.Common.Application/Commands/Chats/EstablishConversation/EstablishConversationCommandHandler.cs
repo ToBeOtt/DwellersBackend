@@ -47,7 +47,7 @@ namespace Dwellers.Common.Application.Commands.Chats.EstablishConversation
         {
             try
             {
-                return await _dwellingQueryRepository.GetAllDwellingsByListOfIds(listOfDwellingIds);
+                return await _dwellingQueryRepository.GetAllDwellingsByListOfIdsAsync(listOfDwellingIds);
             }
             catch(Exception ex)
             {

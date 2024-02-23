@@ -11,17 +11,16 @@ namespace Dwellers.Bulletins.Domain.Bulletins
 {
     public class Bulletin : BaseEntity
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
         public string Text { get; set; }
 
-        public ICollection<BulletinTag> Tags { get; set; }
+        public List<BulletinTag> Tags { get; set; }
         public BulletinStatus Status { get; set; }
         public BulletinPriority Priority { get; set; }
         public BulletinScope Scope { get; set; }
 
-        public ICollection<Dwelling> Dwellings { get;  set; }
         public Dweller Dweller { get; set; }
 
         public bool IsArchived { get; set; }

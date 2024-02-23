@@ -11,10 +11,10 @@ namespace Dwellers.Common.Application.Interfaces.DwellerCore.Dwellings
     public interface IDwellingQueryRepository
     {
         Task<List<string>> GetAllDwellingNames();
-        Task<Dwelling> GetDwellingById(Guid id);
-        Task<Dwelling> GetDwellingByEmail(string email);
+        Task<Dwelling> GetDwellingByIdAsync(Guid id);
+        Task<Dwelling> GetDwellingByDwellingInhabitantAsync(string dwellerId);
 
-        Task<List<Dwelling>> GetAllDwellingsByListOfIds(List<Guid> listOfDwellings);
+        Task<List<Dwelling>> GetAllDwellingsByListOfIdsAsync(List<Guid> listOfDwellings);
         
     }
 }

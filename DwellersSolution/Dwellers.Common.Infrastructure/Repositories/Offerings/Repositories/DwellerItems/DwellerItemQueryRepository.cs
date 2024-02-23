@@ -13,11 +13,13 @@ namespace Dwellers.Common.Infrastructure.Repositories.Offerings.Repositories.Dwe
         {
             _context = context;
         }
-        public async Task<ICollection<DwellerItem>> GetAllDwellerItems(Guid houseId)
+        public async Task<ICollection<DwellerItem>> GetAllDwellerItems(Guid dwellingId)
         {
             return await _context.DwellerItems
                                 .Include(di => di.BorrowedItems)
-                                .Where(di => di.BorrowedItems.Any(bi => bi.DwellingId == houseId))
+                                .Where(di => di.BorrowedItems.Any
+                                (bi => bi.DwellingId == dwellingId &&
+                                    bi.IsArchived == false))
                                 .ToListAsync();
         }
 

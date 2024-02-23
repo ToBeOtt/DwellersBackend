@@ -32,7 +32,7 @@ namespace Dwellers.Common.Persistance.Repositories.Bulletins.Repositories
                 _context.Bulletins.Remove(bulletin);
                 return await _context.SaveChangesAsync() > 0;
             }
-           catch(Exception ex)
+            catch(Exception ex)
             {
                 _logger.LogError(ex, "Error executing DeleteBulletinAsync: {exMessage}", ex.Message);
                 return false;

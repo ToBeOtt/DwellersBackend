@@ -5,6 +5,6 @@
           );
 
     public record GetAllDwellerItemsQuery(
-          Guid HouseId
+          Guid DwellingId
           );
 }

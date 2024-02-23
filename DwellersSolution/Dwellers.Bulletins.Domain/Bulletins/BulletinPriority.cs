@@ -23,10 +23,10 @@ namespace Dwellers.Bulletins.Domain.Bulletins
             Priority = priority;
         }
 
-        internal static class BulletinPriorityFactory
+        public static class BulletinPriorityFactory
         {
-            internal static BulletinPriority CreateNewPriority(string strPriority)
-            {
+            public static BulletinPriority CreateNewPriority(string strPriority)
+           {
                 return new BulletinPriority(strPriority);
             }
         }

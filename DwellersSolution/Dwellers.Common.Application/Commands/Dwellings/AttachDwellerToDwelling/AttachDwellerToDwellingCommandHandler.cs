@@ -40,7 +40,7 @@ namespace Dwellers.Common.Application.Commands.Dwellings.AttachDwellerToDwelling
             {
                 var dweller = await _dwellerQueryRepository.GetDwellerByEmailAsync(cmd.Email);
 
-                var dwelling = await _dwellingQueryRepository.GetDwellingById(cmd.Invitation); // WRONG
+                var dwelling = await _dwellingQueryRepository.GetDwellingByIdAsync(cmd.Invitation); // WRONG
 
                 var dwellingInhabitant = await DwellingInhabitant.DwellingInhabitantFactory.Create
                     (dwelling, dweller);

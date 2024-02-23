@@ -27,7 +27,7 @@ namespace Dwellers.Common.Application.Commands.Bulletins.DeleteBulletin
         {
             DwellerResponse<DwellerUnit> response = new();
 
-            var bulletin = await _bulletinRepo.GetById(cmd.Id);
+            var bulletin = await _bulletinRepo.GetByIdAsync(cmd.Id);
 
             bulletin.ArchiveBulletin(bulletin);
 

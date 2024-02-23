@@ -19,8 +19,7 @@ namespace Dwellers.Bulletins.Domain.Bulletins
         public Guid BulletinId { get; set; }
         public Bulletin Bulletin { get; set; }
 
-
-        List<ScopedDwelling> DwellingsInScope { get; set; } = [];
+        public List<ScopedDwelling> DwellingsInScope { get; set; } = [];
 
         public BulletinScope() { }
         internal BulletinScope(List<Dwelling> listOfDwellings, Bulletin bulletin, string visibility)

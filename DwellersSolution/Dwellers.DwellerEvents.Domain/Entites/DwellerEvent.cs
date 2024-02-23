@@ -12,57 +12,47 @@ namespace Dwellers.DwellersEvents.Domain.Entites
         public string Title { get; private set; }
         public string Description { get; private set; }
 
-        public DateTime EventDate { get; private set; }
-        public Visibility? EventScope { get; private set; }
+        public DateTime EventDate { get; set; }
+        public DwellerScope? EventScope { get; private set; }
         public bool IsArchived { get; set; }
         public DateTime IsCreated { get; set; }
         public DateTime? IsModified { get; set; }
 
-        public Dwellers.DwellerCore.Domain.Entities.Dwellers.Dweller Dweller { get; set; }
+        public Dweller Dweller { get; set; }
         public Dwelling Dwelling { get; set; }
 
         public DwellerEvent() { }
-        public DwellerEvent(string title, string desc, Dwelling dwelling, DwellerCore.Domain.Entities.Dwellers.Dweller dweller)
+        private DwellerEvent(string title, string desc, Dwelling dwelling, Dweller dweller, string visibility)
         {
             Id = Guid.NewGuid();
             Title = title;
             Description = desc;
             Dwelling = dwelling;
             Dweller = dweller;
+            EventScope = DwellerScope.VisibilityFactory.CreateNewVisibilityScope(visibility);
 
             IsCreated = DateTime.Now;
             IsArchived = false;
         }
 
-        public async Task<DwellerResponse<bool>> SetScopeFromUI(string scope)
+        public static class DwellerEventFactory
         {
-            DwellerResponse<bool> response = new();
-
-            int parsedScope = int.Parse(scope);
-            if (parsedScope < 0 || parsedScope > 2)
+            public static DwellerEvent CreateNewDwellerEvent(
+                 string title, 
+                 string desc, 
+                 Dwelling dwelling, 
+                 Dweller dweller,
+                 string visibility)
             {
-                return await response.ErrorResponse("Could not set scope.");
+                return new DwellerEvent(title, desc,
+                    dwelling, dweller, visibility);
             }
-            var scopeResponse = await SetScopeFromDB(parsedScope);
-            return scopeResponse;
         }
 
-        public async Task<DwellerResponse<bool>> SetScopeFromDB(int scope)
+        public static string ConvertEnumToString(int value)
         {
-            DwellerResponse<bool> response = new();
-            try
-            {
-                EventScope = Visibility.FromDbValue(scope);
-                return await response.SuccessResponse();
-            }
-            catch (ArgumentException ex)
-            {
-                return await response.ErrorResponse(ex.Message);
-            }
+            var visibilityScope = DwellerScope.FromDbValue(value);
+            return visibilityScope.ToString();
         }
-    }
-
-    public class Dweller
-    {
     }
 }

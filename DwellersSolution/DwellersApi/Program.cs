@@ -1,14 +1,14 @@
 using Dwellers.Authentication;
+using Dwellers.Authentication.Infrastructure.Development;
 using Dwellers.Common.Application;
 using Dwellers.Common.Application.Commands.Chats.Hubs;
 using Dwellers.Common.Infrastructure;
+using Dwellers.Common.Infrastructure.Development;
 using DwellersApi;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.OpenApi.Models;
 using SharedKernel;
 using SharedKernel.Exceptions;
-using SharedKernel.Infrastructure.Configuration.Commands;
-using SharedKernel.Infrastructure.Configuration.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCoreServices();
 
 // Persistence and DA
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration, builder.Environment);
 
 // Auth
-builder.Services.AddAuthenticationServices(builder.Configuration);
+builder.Services.AddAuthenticationServices(builder.Configuration, builder.Environment);
 
 // Shared kernel
 builder.Services.AddSharedKernelServices(builder.Configuration);
@@ -45,7 +45,7 @@ c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                     Id = "Bearer"
                 }
             },
-            new string[] { }
+            Array.Empty<string>()
         }
     });
 });
@@ -74,7 +74,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<DwellersHub>("/dwellersHub", options =>
+    HubEndpointConventionBuilder hubEndpointConventionBuilder = endpoints.MapHub<DwellersHub>("/dwellersHub", options =>
     {
         options.TransportMaxBufferSize = 1024;
         options.LongPolling.PollTimeout = TimeSpan.FromSeconds(30);
@@ -83,5 +83,11 @@ app.UseEndpoints(endpoints =>
 });
 
 app.MapControllers();
+
+if (app.Environment.IsDevelopment())
+{
+    var id = await AuthInMemorySeeds.Initialize(app.Services);
+    await DwellerInMemorySeeds.Initialize(app.Services, id);
+}
 
 app.Run();
