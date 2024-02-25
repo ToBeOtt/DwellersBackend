@@ -34,7 +34,7 @@ namespace Dwellers.Common.Application.Commands.Bulletins.AddBulletin
             DwellerResponse<DwellerUnit> response = new();
             try
             {
-                var dweller = await _dwellerQueryRepository.GetDwellerByIdAsync(cmd.UserId);
+                var dweller = await _dwellerQueryRepository.GetDwellerByIdAsync(cmd.DwellerId);
                 var listOfDwellings = await _dwellingQueryRepository.GetAllDwellingsByListOfIdsAsync(cmd.ChosenDwellings);
 
                 var bulletin = Bulletin.BulletinPostFactory.CreateNewBulletin

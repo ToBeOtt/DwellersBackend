@@ -49,7 +49,7 @@ namespace DwellersApi.Controllers.DwellerCore
         }
 
         [HttpGet("GetDwellerDetails")]
-        public async Task<IActionResult> GetDwellerDetails(GetDwellerDetailsRequest request)
+        public async Task<IActionResult> GetDwellerDetails()
         {
             var userIdClaim = User.FindFirst("UserId") ?? throw new InvalidCredentialException();
             var dwellingIdClaim = User.FindFirst("HouseId") ?? throw new InvalidCredentialException();
@@ -58,7 +58,7 @@ namespace DwellersApi.Controllers.DwellerCore
                 DwellerId: userIdClaim.Value,
                 DwellingId: new Guid(dwellingIdClaim.Value));
 
-            var handler = _commandHandler.GetHandler<GetDwellerDetailsQuery, GetDwellerDetailsResult>();
+            var handler = _queryHandler.GetHandler<GetDwellerDetailsQuery, GetDwellerDetailsResult>();
             var result = await handler.Handle(cmd, new CancellationToken());
 
             return Ok(result);

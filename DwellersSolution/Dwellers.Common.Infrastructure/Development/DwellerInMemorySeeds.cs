@@ -1,29 +1,12 @@
 ﻿using Dwellers.Bulletins.Domain.Bulletins;
+using Dwellers.Chat.Domain.Entities;
 using Dwellers.Common.Infrastructure.Context;
 using Dwellers.DwellerCore.Domain.Entities;
 using Dwellers.DwellerCore.Domain.Entities.Dwellers;
 using Dwellers.DwellerCore.Domain.Entities.Dwellings;
 using Dwellers.DwellersEvents.Domain.Entites;
 using Dwellers.Offerings.Domain.DwellerItems;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Graph.Models;
-using Microsoft.Graph.Models.Security;
-using Microsoft.Graph.Models.TermStore;
-using Microsoft.Kiota.Abstractions;
-using System.IO.Pipelines;
-using System.Reflection.Metadata;
-using System.Security.Cryptography;
-using static Dwellers.Bulletins.Domain.Bulletins.BulletinPriority;
-using static Dwellers.Bulletins.Domain.Bulletins.BulletinScope;
-using static Dwellers.Bulletins.Domain.Bulletins.BulletinStatus;
-using static Dwellers.Bulletins.Domain.Bulletins.BulletinTag;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dwellers.Common.Infrastructure.Development
 {
@@ -73,6 +56,16 @@ namespace Dwellers.Common.Infrastructure.Development
                         Dweller = dweller
                     };
                     context.DwellingInhabitants.Add(dwellingInhabitant);
+
+                    // SEED CONVERSATION FOR DWELLING
+                    var dwellerConversation = new DwellerConversation("${Dwelling.Name} chat");
+                    //var membersOfConversation = DwellerConversation.AddNewConversationMembers(dwelling, dwellerConversation);
+                    var membersOfConversation = new MemberInConversation(dwelling, dwellerConversation);
+
+                    context.DwellerConversations.Add(dwellerConversation);
+                    context.MemberInConversations.Add(membersOfConversation);
+
+
 
                     // SEED BULLETINS
                     var bulletin = Bulletin.BulletinPostFactory.CreateNewBulletin(dweller, "New Droid Arrival: A Game-Changer for Our Community",

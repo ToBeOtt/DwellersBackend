@@ -19,6 +19,7 @@ namespace Dwellers.Common.Persistance.Repositories.DwellerEvents.Repositories
                     .Include(e => e.Dwelling)
                     .Include(e => e.Dweller)
                     .Where(e => e.Dwelling.Id == dwellingId)
+                    .OrderBy(e => e.IsCreated)
                     .ToListAsync();
         }
 

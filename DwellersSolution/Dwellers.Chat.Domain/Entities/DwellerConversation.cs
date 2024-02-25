@@ -1,4 +1,5 @@
 ﻿using Dwellers.DwellerCore.Domain.Entities.Dwellings;
+using Microsoft.Graph.Models;
 using SharedKernel.Domain;
 
 namespace Dwellers.Chat.Domain.Entities
@@ -36,6 +37,11 @@ namespace Dwellers.Chat.Domain.Entities
                 memberList.Add(member);
             }
             return memberList;
+        }
+
+        public static MemberInConversation AddNewConversationMembers(Dwelling dwelling, DwellerConversation conversation)
+        {
+            return new MemberInConversation(dwelling, conversation);
         }
     }
 }

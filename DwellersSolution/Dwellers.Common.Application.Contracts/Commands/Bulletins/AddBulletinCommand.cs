@@ -2,7 +2,7 @@
 {
 
     public record AddBulletinCommand(
-           string UserId,
+           string DwellerId,
            string Title,
            string Text,
            List<string> BulletinTags,

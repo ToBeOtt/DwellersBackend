@@ -1,6 +1,6 @@
 ﻿namespace Dwellers.Common.Application.Contracts.Queries.Chats
 {
-    public record GetConversationQuery(
+    public record GetDwellingConversationQuery(
         Guid DwellingId);
 
 }

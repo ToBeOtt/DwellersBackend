@@ -1,6 +1,7 @@
 ﻿using Dwellers.Chat.Domain.Entities;
 using Dwellers.Common.Application.Contracts.Commands.Chats;
 using Dwellers.Common.Application.Interfaces.Chats;
+using Dwellers.Common.Application.Interfaces.DwellerCore.Dwellers;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Infrastructure.Configuration.Commands;
 using SharedKernel.ServiceResponse;
@@ -8,21 +9,16 @@ using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
 namespace Dwellers.Common.Application.Commands.Chats.SaveMessage
 {
-    public class SaveMessageCommandHandler : ICommandHandler<SaveMessageCommand, DwellerUnit>
+    public class SaveMessageCommandHandler(
+        ILogger<SaveMessageCommandHandler> logger,
+        IChatQueryRepository chatQueryRepository,
+        IChatCommandRepository chatCommandRepository,
+        IDwellerQueryRepository dwellerQuery) : ICommandHandler<SaveMessageCommand, DwellerUnit>
     {
-        private readonly ILogger<SaveMessageCommandHandler> _logger;
-        private readonly IChatQueryRepository _chatQueryRepository;
-        private readonly IChatCommandRepository _chatCommandRepository;
-
-        public SaveMessageCommandHandler(
-            ILogger<SaveMessageCommandHandler> logger,
-            IChatQueryRepository chatQueryRepository,
-            IChatCommandRepository chatCommandRepository)
-        {
-            _logger = logger;
-            _chatQueryRepository = chatQueryRepository;
-            _chatCommandRepository = chatCommandRepository;
-        }
+        private readonly ILogger<SaveMessageCommandHandler> _logger = logger;
+        private readonly IChatQueryRepository _chatQueryRepository = chatQueryRepository;
+        private readonly IChatCommandRepository _chatCommandRepository = chatCommandRepository;
+        private readonly IDwellerQueryRepository _dwellerQuery = dwellerQuery;
 
         public async Task<DwellerResponse<DwellerUnit>> Handle
             (SaveMessageCommand cmd, CancellationToken cancellation)
@@ -30,11 +26,13 @@ namespace Dwellers.Common.Application.Commands.Chats.SaveMessage
             DwellerResponse<DwellerUnit> response = new();
 
             var conversation = await _chatQueryRepository.GetConversation(cmd.ConversationId);
-            if (conversation is null)
-                return await response.ErrorResponse("Chat not found or empty.");
+
+            var dweller = await _dwellerQuery.GetDwellerByIdAsync(cmd.DwellerId);
+            if (conversation is null || dweller is null)
+                return await response.ErrorResponse("Something went wrong.");
 
             // Create new message
-            DwellerMessage message = new(cmd.MessageText, cmd.DwellerId, cmd.ConversationId);
+            DwellerMessage message = new(cmd.MessageText, dweller, conversation);
 
             if (!await _chatCommandRepository.AddMessageAsync(message))
                 return await response.ErrorResponse("Message could not be sent.");

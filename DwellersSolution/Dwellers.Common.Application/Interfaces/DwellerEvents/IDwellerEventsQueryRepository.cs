@@ -5,7 +5,7 @@ namespace Dwellers.Common.Application.Interfaces.DwellerEvents
     public interface IDwellerEventsQueryRepository
     {
         Task<DwellerEvent> GetEvent(Guid eventId);
-        Task<ICollection<DwellerEvent>> GetAllEvents(Guid houseId);
-        Task<ICollection<DwellerEvent>> GetUpcomingEvents(Guid houseId);
+        Task<ICollection<DwellerEvent>> GetAllEvents(Guid dwellingId);
+        Task<ICollection<DwellerEvent>> GetUpcomingEvents(Guid dwellingId);
     }
 }

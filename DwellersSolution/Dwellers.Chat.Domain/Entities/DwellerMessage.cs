@@ -1,4 +1,5 @@
-﻿using SharedKernel.Domain;
+﻿using Dwellers.DwellerCore.Domain.Entities.Dwellers;
+using SharedKernel.Domain;
 
 namespace Dwellers.Chat.Domain.Entities
 {
@@ -10,19 +11,22 @@ namespace Dwellers.Chat.Domain.Entities
         public bool IsRead { get; set; }
 
         public string DwellerId { get; set; }
+        public Dweller Dweller { get; set; }
+
         public Guid ConversationId { get; set; }
+        public DwellerConversation Conversation { get; set; }
 
         public bool Archived { get; private set; }
         public DateTime IsCreated { get; private set; }
         public DateTime? IsModified { get; private set; }
 
         public DwellerMessage() { }
-        public DwellerMessage(string message, string dwellerId, Guid conversationId)
+        public DwellerMessage(string message, Dweller dweller, DwellerConversation conversation)
         {
             Id = Guid.NewGuid();
             MessageText = message;
-            DwellerId = dwellerId;
-            ConversationId = conversationId;
+            Dweller = dweller;
+            Conversation = conversation;
         }
 
 

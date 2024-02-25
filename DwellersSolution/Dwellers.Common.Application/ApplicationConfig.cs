@@ -1,25 +1,18 @@
-﻿using Dwellers.Offerings.Services.DwellerItems;
+﻿using Dwellers.Common.Application.Queries.Chats;
+using Dwellers.Offerings.Services.DwellerItems;
 using Dwellers.Offerings.Services.DwellerServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Dwellers.Common.Application.Queries.Chats;
-using Dwellers.Common.Application.Commands.Dwellers.AddDweller;
-using Dwellers.Common.Application.Contracts.Commands.Dwellers;
 using SharedKernel.Infrastructure.Configuration.Commands;
-using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
-using Microsoft.AspNetCore.Components.Web;
 using SharedKernel.Infrastructure.Configuration.Queries;
-using Dwellers.Common.Application.Interfaces;
 
 namespace Dwellers.Common.Application
-{ 
+{
     public static class ApplicationConfig
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Other services
-            services.AddTransient<ChatQueryServices>();
-
             services.AddTransient<DwellerItemCommandService>();
             services.AddTransient<DwellerItemQueryService>();
 

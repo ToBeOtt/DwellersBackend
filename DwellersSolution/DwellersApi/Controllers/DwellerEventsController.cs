@@ -73,7 +73,7 @@ namespace DwellersApi.Controllers
             var query = new GetAllEventsQuery(
                 DwellingId: new Guid(dwellingIdClaim.Value));
 
-            var handler = _queryHandler.GetHandler<GetAllEventsQuery, DwellerUnit>();
+            var handler = _queryHandler.GetHandler<GetAllEventsQuery, GetAllEventsResult>();
             var result = await handler.Handle(query, new CancellationToken());
 
             if (!result.IsSuccess)

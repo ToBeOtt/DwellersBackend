@@ -6,26 +6,26 @@ using Microsoft.Extensions.Logging;
 using SharedKernel.Infrastructure.Configuration.Queries;
 using SharedKernel.ServiceResponse;
 
-namespace Dwellers.Common.Application.Queries.Bulletins.GetDashboardBulletins
+namespace Dwellers.Common.Application.Queries.Bulletins.GetBulletinsByDwelling
 {
-    public class GetDashboardBulletinsQueryHandler(ILogger<GetDashboardBulletinsQueryHandler> logger,
+    public class GetAllBulletinsQueryHandler(ILogger<GetAllBulletinsQueryHandler> logger,
         IBulletinQueryRepository bulletinQueryRepository) :
-        IQueryHandler<GetDashboardBulletinsQuery, GetDashboardBulletinsResult>
+        IQueryHandler<GetAllBulletinsQuery, GetAllBulletinsResult>
     {
-        private readonly ILogger<GetDashboardBulletinsQueryHandler> _logger = logger;
+        private readonly ILogger<GetAllBulletinsQueryHandler> _logger = logger;
         private readonly IBulletinQueryRepository _bulletinQueryRepository = bulletinQueryRepository;
 
-        public async Task<DwellerResponse<GetDashboardBulletinsResult>> Handle
-            (GetDashboardBulletinsQuery query, CancellationToken cancellation)
+        public async Task<DwellerResponse<GetAllBulletinsResult>> Handle
+            (GetAllBulletinsQuery query, CancellationToken cancellation)
         {
-            DwellerResponse<GetDashboardBulletinsResult> response = new();
+            DwellerResponse<GetAllBulletinsResult> response = new();
 
-            var listOfBulletins = await _bulletinQueryRepository.GetDashboardBulletinsAsync(query.Dwellingid);
+            var listOfBulletins = await _bulletinQueryRepository.GetAllBulletinsForDwelling(query.DwellingId);
 
             var listOfBulletinsDto = new List<BulletinListDto>();
-            foreach ( var bulletin in listOfBulletins )
+            foreach (var bulletin in listOfBulletins)
             {
-                var dashboardBulletin = new BulletinListDto(bulletin.Title, 
+                var dashboardBulletin = new BulletinListDto(bulletin.Title,
                     bulletin.Dweller.Alias,
                     bulletin.Text,
                     bulletin.Scope.Visibility.ToString(),
@@ -36,7 +36,7 @@ namespace Dwellers.Common.Application.Queries.Bulletins.GetDashboardBulletins
 
 
             return await response.SuccessResponse(
-                new(ListOfBulletinsForDashboard: listOfBulletinsDto));
+                new(ListOfAllBulletins: listOfBulletinsDto));
         }
     }
 }

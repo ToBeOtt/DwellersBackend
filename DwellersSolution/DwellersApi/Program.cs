@@ -1,7 +1,7 @@
 using Dwellers.Authentication;
 using Dwellers.Authentication.Infrastructure.Development;
 using Dwellers.Common.Application;
-using Dwellers.Common.Application.Commands.Chats.Hubs;
+using Dwellers.Common.Application.Hubs;
 using Dwellers.Common.Infrastructure;
 using Dwellers.Common.Infrastructure.Development;
 using DwellersApi;

@@ -2,8 +2,7 @@
 
 namespace Dwellers.Common.Application.Contracts.Results.DwellerEvents
 {
-    
-    public record GetUpcomingEventsResult (
+    public record GetAllEventsResult(
         ICollection<ListEventDto> ListOfEvents
         );
 }

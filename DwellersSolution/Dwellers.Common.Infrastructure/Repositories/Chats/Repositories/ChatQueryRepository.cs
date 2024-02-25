@@ -20,38 +20,24 @@ namespace Dwellers.Common.Persistance.Repositories.Chats.Repositories
             return
                 await _context.DwellerConversations
                 .Where(c => c.Id == conversationId)
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<ICollection<DwellerMessage>> GetConversationMessages(Guid conversationId)
         {
             return
                 await _context.DwellerMessages
-                .Where(m => m.Id == conversationId)
+                .Include(dm => dm.Dweller)
+                .Where(m => m.ConversationId == conversationId)
                 .ToListAsync();
         }
 
-        public async Task<DwellerConversation> GetDwellingConversation(Guid dwellingId)
+        public async Task<DwellerConversation> GetDwellerConversation(Guid dwellingId)
         {
-            return
-                await _context.DwellerConversations
-                .Where(hc => hc.Id == dwellingId)
+               return await _context.DwellerConversations
+                    .Include(x => x.MemberInConversation)
+                    .Where(y => y.MemberInConversation.Any(m => m.DwellingId == dwellingId))
                     .SingleOrDefaultAsync();
-        }
-
-        Task<DwellerConversation> IChatQueryRepository.GetConversation(Guid conversationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ICollection<DwellerMessage>> IChatQueryRepository.GetConversationMessages(Guid conversationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<DwellerConversation> IChatQueryRepository.GetHouseholdConversation(Guid houseId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

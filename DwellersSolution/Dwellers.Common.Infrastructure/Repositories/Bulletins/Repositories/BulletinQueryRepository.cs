@@ -35,5 +35,14 @@ namespace Dwellers.Common.Infrastructure.Repositories.Bulletins.Repositories
             //    .Take(10)
             //    .ToListAsync();
         }
+
+        public async Task<List<Bulletin>> GetAllBulletinsForDwelling(Guid id)
+        {
+            return await _context.Bulletins
+                        .Include(d => d.Dweller)
+                        .Include(d => d.Scope.DwellingsInScope)
+                            .ThenInclude(x => x.Dwelling)
+                        .ToListAsync();
+        }
     }
 }

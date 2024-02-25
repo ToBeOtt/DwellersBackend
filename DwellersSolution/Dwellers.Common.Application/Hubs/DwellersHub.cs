@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Dwellers.Common.Application.Commands.Chats.Hubs
+namespace Dwellers.Common.Application.Hubs
 {
     public class DwellersHub : Hub
     {

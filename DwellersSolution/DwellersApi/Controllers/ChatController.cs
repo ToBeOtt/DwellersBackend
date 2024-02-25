@@ -5,6 +5,7 @@ using Dwellers.Common.Application.Contracts.Results.Chats;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel.Infrastructure.Configuration.Commands;
+using SharedKernel.Infrastructure.Configuration.Queries;
 using System.Security.Authentication;
 using static SharedKernel.ServiceResponse.EmptySuccessfulCommandResponse;
 
@@ -13,15 +14,11 @@ namespace DwellersApi.Controllers
     [ApiController]
     [Authorize]
     [Route("chat")]
-    public class ChatController : ControllerBase
+    public class ChatController(
+      ICommandHandlerFactory commandHandler, IQueryHandlerFactory queryHandler) : ControllerBase
     {
-        private readonly ICommandHandlerFactory _commandHandler;
-
-        public ChatController(
-          ICommandHandlerFactory commandHandler)
-        {
-            _commandHandler = commandHandler;
-        }
+        private readonly ICommandHandlerFactory _commandHandler = commandHandler;
+        private readonly IQueryHandlerFactory _queryHandler = queryHandler;
 
         public class MessageDto
         {
@@ -29,8 +26,8 @@ namespace DwellersApi.Controllers
             public string Message { get; set; }
         }
 
-        [HttpPost("message")]
-        public async Task<IActionResult> PersistMessage(SaveMessageRequest request)
+        [HttpPost("SaveMessage")]
+        public async Task<IActionResult> SaveMessage(SaveMessageRequest request)
         {
             var userIdClaim = User.FindFirst("UserId");
             if (userIdClaim is null)
@@ -52,17 +49,15 @@ namespace DwellersApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("GetConversation")]
-        public async Task<IActionResult> GetHouseholdConversation()
+        [HttpGet("GetDwellingConversation")]
+        public async Task<IActionResult> GetDwellingConversation()
         {
-            var dwellingIdClaim = User.FindFirst("HouseId");
-            if (dwellingIdClaim is null)
-                throw new InvalidCredentialException();
+            var dwellingIdClaim = User.FindFirst("HouseId") ?? throw new InvalidCredentialException();
 
-            var query = new GetConversationQuery(
+            var query = new GetDwellingConversationQuery(
                DwellingId: new Guid(dwellingIdClaim.Value));
 
-            var handler = _commandHandler.GetHandler<GetConversationQuery, GetConversationResult>();
+            var handler = _queryHandler.GetHandler<GetDwellingConversationQuery, GetDwellingConversationResult>();
             var result = await handler.Handle(query, new CancellationToken());
 
             if (!result.IsSuccess)
